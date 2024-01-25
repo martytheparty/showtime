@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import * as THREE from 'three';
+import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 
 @Component({
   selector: 'app-root',
@@ -22,18 +23,18 @@ export class AppComponent implements AfterViewInit {
 
 // init
 
-const camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
-camera.position.z = 10;
+const camera: PerspectiveCamera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
+camera.position.z = 5;
 
-const scene = new THREE.Scene();
+const scene: Scene = new THREE.Scene();
 
-const geometry = new THREE.BoxGeometry( 2, 2, 2 );
-const material = new THREE.MeshNormalMaterial();
+const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
 
-const mesh = new THREE.Mesh( geometry, material );
+const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
 scene.add( mesh );
 
-const renderer = new THREE.WebGLRenderer( { antialias: true } );
+const renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setSize( width, height );
 renderer.setAnimationLoop( animation );
 document.body.appendChild( renderer.domElement );
