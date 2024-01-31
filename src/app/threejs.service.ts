@@ -13,10 +13,40 @@ export class ThreejsService {
   camera: PerspectiveCamera = new THREE.PerspectiveCamera();
   meshes: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
+  scene: Scene = new THREE.Scene();
+
 
   constructor() { }
 
-  runThreeJs(window: Window): void
+  setDims(window: Window):void{
+
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+  }
+
+  setupCamera(): void
+  {
+    this.camera = new THREE.PerspectiveCamera( 70, this.width / this.height, 0.01, 10 );
+    this.camera.position.z = 5;
+  }
+
+  addMesh(): void
+  {
+    const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+    const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
+
+    const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
+    this.meshes.push(mesh);
+
+    this.scene.add( this.meshes[0] );
+  }
+
+  setupRenderer(): void
+  {
+    this.renderer.setSize( this.width, this.height );
+  }
+
+  runThreeJs(): void
   {
 
     const animation = ( time: number ) => {
@@ -27,26 +57,12 @@ export class ThreejsService {
           mesh.rotation.y = time / 1000;
         }
       );
-      this.renderer.render( scene, this.camera );
+      this.renderer.render( this.scene, this.camera );
     
     }
 
-    this.width = window.innerWidth
-    this.height = window.innerHeight;
-
-    this.camera = new THREE.PerspectiveCamera( 70, this.width / this.height, 0.01, 10 );
-    this.camera.position.z = 5;
-
-    const scene: Scene = new THREE.Scene();
-
-    const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
-
-    const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
-    this.meshes.push(mesh);
-    scene.add( this.meshes[0] );
-    this.renderer.setSize( this.width, this.height );
     this.renderer.setAnimationLoop( animation );
+
     document.body.appendChild( this.renderer.domElement );
   }
 }

@@ -20,6 +20,10 @@ export class AppComponent implements AfterViewInit {
   constructor(private window: Window){}
 
   ngAfterViewInit(): void {
-    this.threejsService.runThreeJs(window);
+    this.threejsService.setDims(window);
+    this.threejsService.setupCamera();
+    this.threejsService.addMesh();
+    this.threejsService.setupRenderer();
+    this.threejsService.runThreeJs();
   }
 }
