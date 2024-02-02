@@ -44,12 +44,12 @@ export class ThreejsService {
   setupRenderer(): void
   {
     this.renderer.setSize( this.width, this.height );
+    this.renderer.setAnimationLoop( this.animationCallback() );
   }
 
-  runThreeJs(): void
+  animationCallback(): XRFrameRequestCallback
   {
-
-    const animation = ( time: number ) => {
+    const animation: XRFrameRequestCallback = ( time: number ) => {
 
       this.meshes.forEach(
         (mesh) => {
@@ -58,11 +58,13 @@ export class ThreejsService {
         }
       );
       this.renderer.render( this.scene, this.camera );
-    
     }
 
-    this.renderer.setAnimationLoop( animation );
+    return animation;
+  }
 
+  attachDom(): void
+  {
     document.body.appendChild( this.renderer.domElement );
   }
 }

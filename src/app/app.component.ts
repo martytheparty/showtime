@@ -24,6 +24,6 @@ export class AppComponent implements AfterViewInit {
     this.threejsService.setupCamera();
     this.threejsService.addMesh();
     this.threejsService.setupRenderer();
-    this.threejsService.runThreeJs();
+    this.threejsService.attachDom();
   }
 }
