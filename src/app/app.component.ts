@@ -1,7 +1,6 @@
-import { Component, AfterViewInit, inject } from '@angular/core';
+import { Component, AfterViewInit, inject, ViewChild, ElementRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThreejsService } from './threejs.service';
-
 
 
 @Component({
@@ -9,21 +8,20 @@ import { ThreejsService } from './threejs.service';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  providers: [
-    { provide: Window, useValue: window }
-]
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements AfterViewInit {
   threejsService: ThreejsService = inject(ThreejsService);
+  @ViewChild('viz') viz!: ElementRef;
 
-  constructor(private window: Window){}
+  constructor(){}
 
   ngAfterViewInit(): void {
-    this.threejsService.setDims(window);
+    const vizDiv: HTMLDivElement = this.viz.nativeElement;
+    this.threejsService.setDims(vizDiv);
     this.threejsService.setupCamera();
     this.threejsService.addMesh();
     this.threejsService.setupRenderer();
-    this.threejsService.attachDom();
+    this.threejsService.attachDom(vizDiv);
   }
 }

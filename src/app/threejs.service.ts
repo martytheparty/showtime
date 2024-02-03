@@ -18,10 +18,10 @@ export class ThreejsService {
 
   constructor() { }
 
-  setDims(window: Window):void{
+  setDims(vizDiv: HTMLDivElement):void{
 
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    this.width = vizDiv.clientWidth;
+    this.height = vizDiv.clientHeight;
   }
 
   setupCamera(): void
@@ -63,8 +63,8 @@ export class ThreejsService {
     return animation;
   }
 
-  attachDom(): void
+  attachDom(vizDiv: HTMLDivElement): void
   {
-    document.body.appendChild( this.renderer.domElement );
+    vizDiv.appendChild( this.renderer.domElement );
   }
 }
