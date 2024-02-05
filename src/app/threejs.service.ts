@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
@@ -15,8 +15,15 @@ export class ThreejsService {
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
 
+  private initialized: WritableSignal<boolean> = signal(false);
+  isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
   constructor() { }
+
+  markAsInitialized(): void
+  {
+    this.initialized.set(true);
+  }
 
   setDims(vizDiv: HTMLDivElement):void{
 

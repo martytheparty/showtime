@@ -20,6 +20,7 @@ export class VizComponent implements AfterViewInit {
     this.threejsService.setDims(vizDiv);
     this.threejsService.setupRenderer();
     this.threejsService.attachDom(vizDiv);
+    this.threejsService.markAsInitialized();
   }
 
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../threejs.service';
 
 @Component({
@@ -8,12 +8,18 @@ import { ThreejsService } from '../threejs.service';
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'
 })
-export class ToolboxComponent implements AfterViewInit {
+export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);
   
-  ngAfterViewInit(): void {
-    this.threejsService.setupCamera();
-    this.threejsService.addMesh();
+  constructor(){
+    effect(
+      () => {
+        if (this.threejsService.isInitiazed())
+        {
+          this.threejsService.setupCamera();
+          this.threejsService.addMesh();
+        }
+      }
+    ); 
   }
-
 }
