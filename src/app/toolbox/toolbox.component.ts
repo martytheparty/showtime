@@ -10,16 +10,30 @@ import { ThreejsService } from '../threejs.service';
 })
 export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);
-  
+  xPosition = 0;
+
   constructor(){
     effect(
       () => {
         if (this.threejsService.isInitiazed())
         {
           this.threejsService.setupCamera();
-          this.threejsService.addMesh();
         }
       }
     ); 
+  }
+
+  addMesh(): void
+  {
+
+    this.threejsService.addMesh(this.xPosition);
+
+    if (this.xPosition === 0){
+      this.xPosition = 2;
+    } else if (this.xPosition > 0) {
+      this.xPosition = this.xPosition * -1;
+    } else if (this.xPosition < 0) {
+      this.xPosition = this.xPosition * -1 + 2;
+    }
   }
 }

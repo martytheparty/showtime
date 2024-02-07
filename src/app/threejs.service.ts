@@ -37,15 +37,18 @@ export class ThreejsService {
     this.camera.position.z = 5;
   }
 
-  addMesh(): void
+  addMesh(xPosition = 0): void
   {
     const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
 
     const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
+    mesh.position.setX(xPosition);    
+
     this.meshes.push(mesh);
 
-    this.scene.add( this.meshes[0] );
+    this.scene.add( mesh );
+
   }
 
   setupRenderer(): void
