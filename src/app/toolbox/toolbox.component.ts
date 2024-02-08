@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../threejs.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-toolbox',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'
 })
