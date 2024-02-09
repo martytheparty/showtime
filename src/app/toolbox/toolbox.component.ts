@@ -1,17 +1,20 @@
-import { AfterViewInit, Component, inject, effect } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../threejs.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-toolbox',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule],
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'
 })
 export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);
   xPosition = 0;
+
+  meshList: number[] = [];
 
   constructor(){
     effect(
@@ -20,6 +23,8 @@ export class ToolboxComponent{
         {
           this.threejsService.setupCamera();
         }
+
+        this.meshList = this.threejsService.melisList();
       }
     ); 
   }
@@ -36,5 +41,10 @@ export class ToolboxComponent{
     } else if (this.xPosition < 0) {
       this.xPosition = this.xPosition * -1 + 2;
     }
+  }
+
+  deleteMesh(id: number): void
+  {
+    this.threejsService.deleteMesh(id);
   }
 }

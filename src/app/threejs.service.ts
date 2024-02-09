@@ -18,6 +18,9 @@ export class ThreejsService {
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
+  private meshListSignal: WritableSignal<number[]> = signal([]);
+  melisList: Signal<number[]> = computed( () => this.meshListSignal() );
+
   constructor() { }
 
   markAsInitialized(): void
@@ -47,7 +50,23 @@ export class ThreejsService {
 
     this.meshes.push(mesh);
 
+    this.meshListSignal.set(this.meshes.map(mesh => mesh.id));
+
     this.scene.add( mesh );
+
+
+  }
+
+  deleteMesh(id: number): void
+  {
+    const mesh = this.meshes.find( (mesh) => mesh.id === id);
+
+    if(mesh)
+    {
+      this.scene.remove(mesh);
+      this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
+      this.meshListSignal.set(this.meshes.map(mesh => mesh.id));
+    }
 
   }
 

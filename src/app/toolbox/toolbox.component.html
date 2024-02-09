@@ -1,3 +1,17 @@
 <div class="toolbox">
-   <button mat-raised-button color="primary" (click)="addMesh()">Add Mesh</button>
+   <button class="add-mesh" mat-raised-button color="primary" (click)="addMesh()">Add Mesh</button>
+
+   <table>
+   @for( mesh of meshList; track mesh ){
+      <tr>
+         <td>{{mesh}}</td>
+         <td>
+            <button (click)="deleteMesh(mesh)" mat-icon-button color="warn">
+               <mat-icon>delete</mat-icon>
+            </button>
+         </td>
+      </tr>
+   }
+   </table>
+
 </div>
