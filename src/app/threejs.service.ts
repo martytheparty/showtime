@@ -2,6 +2,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { MeshInterface } from './interfaces/mesh-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class ThreejsService {
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
-  private meshListSignal: WritableSignal<number[]> = signal([]);
-  melisList: Signal<number[]> = computed( () => this.meshListSignal() );
+  private meshListSignal: WritableSignal<MeshInterface[]> = signal([]);
+  melisList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
   constructor() { }
 
@@ -50,7 +51,7 @@ export class ThreejsService {
 
     this.meshes.push(mesh);
 
-    this.meshListSignal.set(this.meshes.map(mesh => mesh.id));
+    this.meshListSignal.set(this.meshes.map(mesh => {return {id:mesh.id}}));
 
     this.scene.add( mesh );
 
@@ -65,7 +66,7 @@ export class ThreejsService {
     {
       this.scene.remove(mesh);
       this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
-      this.meshListSignal.set(this.meshes.map(mesh => mesh.id));
+      this.meshListSignal.set(this.meshes.map(mesh => {return {id:mesh.id}}));
     }
 
   }

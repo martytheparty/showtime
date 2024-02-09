@@ -2,11 +2,11 @@
    <button class="add-mesh" mat-raised-button color="primary" (click)="addMesh()">Add Mesh</button>
 
    <table>
-   @for( mesh of meshList; track mesh ){
+   @for( mesh of meshList; track mesh.id ){
       <tr>
-         <td>{{mesh}}</td>
+         <td>{{mesh.id}}</td>
          <td>
-            <button (click)="deleteMesh(mesh)" mat-icon-button color="warn">
+            <button (click)="deleteMesh(mesh.id)" mat-icon-button color="warn">
                <mat-icon>delete</mat-icon>
             </button>
          </td>

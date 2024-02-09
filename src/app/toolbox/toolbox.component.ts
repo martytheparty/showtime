@@ -2,6 +2,7 @@ import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../threejs.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MeshInterface } from '../interfaces/mesh-interface';
 
 @Component({
   selector: 'app-toolbox',
@@ -14,7 +15,7 @@ export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);
   xPosition = 0;
 
-  meshList: number[] = [];
+  meshList: MeshInterface[] = [];
 
   constructor(){
     effect(

@@ -1,7 +1,9 @@
 .toolbox
 {
     height: 50vh;
+    max-height: 50vh;
     width: 100vw;
+    overflow: auto;
 
     .add-mesh
     {
