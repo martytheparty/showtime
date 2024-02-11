@@ -15,11 +15,12 @@ export class ThreejsService {
   meshes: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
+  meshItems: MeshInterface[] = [];
 
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
-  private meshListSignal: WritableSignal<MeshInterface[]> = signal([]);
+  private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshItems);
   melisList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
   constructor() { }
@@ -51,7 +52,9 @@ export class ThreejsService {
 
     this.meshes.push(mesh);
 
-    this.meshListSignal.set(this.meshes.map(mesh => {return {id:mesh.id}}));
+    this.meshItems.push( {id: mesh.id, xPos: xPosition} );
+
+    this.meshListSignal.set(this.meshItems);
 
     this.scene.add( mesh );
 
@@ -66,7 +69,10 @@ export class ThreejsService {
     {
       this.scene.remove(mesh);
       this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
-      this.meshListSignal.set(this.meshes.map(mesh => {return {id:mesh.id}}));
+
+      this.meshItems = this.meshItems.filter((mesh) => mesh.id !== id);
+
+      this.meshListSignal.set(this.meshItems);
     }
 
   }

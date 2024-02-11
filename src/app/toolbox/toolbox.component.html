@@ -4,8 +4,22 @@
    <table>
    @for( mesh of meshList; track mesh.id ){
       <tr>
-         <td>{{mesh.id}}</td>
          <td>
+            <div class="data-row">
+               <div class="data-title">id:</div>
+               <div class="data-value">{{mesh.id}}</div>
+            </div>
+            <div class="data-row">
+               <div class="data-title">x Pos:</div>
+               <div class="data-value">{{mesh.xPos}}</div>
+            </div>
+            
+            
+         </td>
+         <td>
+            <button mat-icon-button color="basic">
+               <mat-icon>edit</mat-icon>
+            </button>
             <button (click)="deleteMesh(mesh.id)" mat-icon-button color="warn">
                <mat-icon>delete</mat-icon>
             </button>

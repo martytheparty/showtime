@@ -9,4 +9,20 @@
     {
         margin-top: 10px;
     }
+
+    .data-row
+    {
+        display: flex;
+
+        .data-title
+        {
+            width: 60px;
+            text-align: right;
+        }
+
+        .data-value
+        {
+            margin-left: 5px;
+        }
+    }
 }
