@@ -3,6 +3,7 @@ import { ThreejsService } from '../threejs.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MeshInterface } from '../interfaces/mesh-interface';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-toolbox',
@@ -14,6 +15,8 @@ import { MeshInterface } from '../interfaces/mesh-interface';
 export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);
   xPosition = 0;
+
+  editId = 0;
 
   meshList: MeshInterface[] = [];
 
@@ -33,7 +36,14 @@ export class ToolboxComponent{
   addMesh(): void
   {
 
-    this.threejsService.addMesh(this.xPosition);
+    const meshItem = this.threejsService.addMesh(this.xPosition);
+
+    const form = new FormGroup(
+      {
+        id: new FormControl(meshItem.id),
+        xPos: new FormControl(meshItem.xPos)
+      }
+    );
 
     if (this.xPosition === 0){
       this.xPosition = 2;
@@ -47,5 +57,15 @@ export class ToolboxComponent{
   deleteMesh(id: number): void
   {
     this.threejsService.deleteMesh(id);
+  }
+
+  setEditId(id: number): void
+  {
+    this.editId = id;
+  }
+
+  resetEditId(): void
+  {
+    this.editId = 0;
   }
 }
