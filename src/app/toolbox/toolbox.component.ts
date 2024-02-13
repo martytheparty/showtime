@@ -50,7 +50,9 @@ export class ToolboxComponent implements OnDestroy{
     const form = new FormGroup(
       {
         id: new FormControl(meshItem.id),
-        xPos: new FormControl(meshItem.xPos)
+        xPos: new FormControl(meshItem.xPos),
+        yPos: new FormControl(meshItem.yPos),
+        zPos: new FormControl(meshItem.zPos)
       }
     );
 
@@ -58,7 +60,20 @@ export class ToolboxComponent implements OnDestroy{
       () => {
         if(form.value.xPos || form.value.xPos === 0)
         {
-          // update...
+          meshItem.xPos = form.value.xPos;
+          this.threejsService.updateMesh(meshItem);
+        }
+
+        if(form.value.yPos || form.value.yPos === 0)
+        {
+          meshItem.yPos = form.value.yPos;
+          this.threejsService.updateMesh(meshItem);
+        }
+
+        if(form.value.zPos || form.value.zPos === 0)
+        {
+          meshItem.zPos = form.value.zPos;
+          this.threejsService.updateMesh(meshItem);
         }
       }
     );

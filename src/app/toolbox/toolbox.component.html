@@ -17,6 +17,14 @@
                      <div class="data-title">x Pos:</div>
                      <div class="data-value">{{mesh.xPos}}</div>
                   </div>
+                  <div class="data-row">
+                     <div class="data-title">y Pos:</div>
+                     <div class="data-value">{{mesh.yPos}}</div>
+                  </div>
+                  <div class="data-row">
+                     <div class="data-title">z Pos:</div>
+                     <div class="data-value">{{mesh.zPos}}</div>
+                  </div>
                } @else {
                   @if(mesh.form)
                   {
@@ -29,6 +37,18 @@
                            <div class="data-title">x Pos:</div>
                            <div class="data-value">
                               <input formControlName="xPos" type="text">
+                           </div>
+                        </div>
+                        <div class="data-row">
+                           <div class="data-title">y Pos:</div>
+                           <div class="data-value">
+                              <input formControlName="yPos" type="text">
+                           </div>
+                        </div>
+                        <div class="data-row">
+                           <div class="data-title">z Pos:</div>
+                           <div class="data-value">
+                              <input formControlName="zPos" type="text">
                            </div>
                         </div>
                      </form>

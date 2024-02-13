@@ -42,7 +42,7 @@ export class ThreejsService {
     this.camera.position.z = 5;
   }
 
-  addMesh(xPosition = 0): MeshInterface
+  addMesh(xPosition = 0, yPosition = 0, zPosition = 0): MeshInterface
   {
     const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
@@ -52,7 +52,12 @@ export class ThreejsService {
 
     this.meshes.push(mesh);
 
-    const meshItem: MeshInterface = {id: mesh.id, xPos: xPosition};
+    const meshItem: MeshInterface = {
+      id: mesh.id, 
+      xPos: xPosition,
+      yPos: yPosition,
+      zPos: zPosition
+    };
 
     this.meshItems.push( meshItem );
 
@@ -61,6 +66,15 @@ export class ThreejsService {
     this.scene.add( mesh );
 
     return meshItem;
+  }
+
+  updateMesh(meshItem: MeshInterface): void
+  {
+    const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
+
+    updateMesh?.position.setX(meshItem.xPos);
+    updateMesh?.position.setY(meshItem.yPos);
+    updateMesh?.position.setZ(meshItem.zPos);
   }
 
   deleteMesh(id: number): void
