@@ -18,14 +18,22 @@
                      <div class="data-value">{{mesh.xPos}}</div>
                   </div>
                } @else {
-                  <div class="data-row">
-                     <div class="data-title">id:</div>
-                     <div class="data-value">{{mesh.id}}</div>
-                  </div>
-                  <div class="data-row">
-                     <div class="data-title">x Pos:</div>
-                     <div class="data-value"><input type="text"></div>
-                  </div>
+                  @if(mesh.form)
+                  {
+                     <form [formGroup]="mesh.form">
+                        <div class="data-row">
+                           <div class="data-title">id:</div>
+                           <div class="data-value">{{mesh.id}}</div>
+                        </div>
+                        <div class="data-row">
+                           <div class="data-title">x Pos:</div>
+                           <div class="data-value">
+                              <input formControlName="xPos" type="text">
+                           </div>
+                        </div>
+                     </form>
+                  }
+
                }
 
                
@@ -37,7 +45,7 @@
                   <button (click)="setEditId(mesh.id)" mat-icon-button color="basic">
                      <mat-icon>edit</mat-icon>
                   </button>
-                  <button (click)="deleteMesh(mesh.id)" mat-icon-button color="warn">
+                  <button (click)="deleteMesh(mesh)" mat-icon-button color="warn">
                      <mat-icon>delete</mat-icon>
                   </button>
                } @else {
