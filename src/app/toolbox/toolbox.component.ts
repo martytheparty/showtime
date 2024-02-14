@@ -5,106 +5,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MeshInterface } from '../interfaces/mesh-interface';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { MeshManagerComponent } from './mesh-manager/mesh-manager.component';
 
 @Component({
   selector: 'app-toolbox',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, ReactiveFormsModule],
+  imports: [MeshManagerComponent],
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'
 })
-export class ToolboxComponent implements OnDestroy{
-  threejsService: ThreejsService = inject(ThreejsService);
-  xPosition = 0;
-
-  editId = 0;
-
-  meshList: MeshInterface[] = [];
-
-  subs: Subscription[] = [];
-
-  constructor(){
-    effect(
-      () => {
-        if (this.threejsService.isInitiazed())
-        {
-          this.threejsService.setupCamera();
-        }
-
-        this.meshList = this.threejsService.melisList();
-      }
-    ); 
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach(
-      (sub) => sub?.unsubscribe()
-    );
-  }
-
-  addMesh(): void
-  {
-
-    const meshItem = this.threejsService.addMesh(this.xPosition);
-
-    const form = new FormGroup(
-      {
-        id: new FormControl(meshItem.id),
-        xPos: new FormControl(meshItem.xPos),
-        yPos: new FormControl(meshItem.yPos),
-        zPos: new FormControl(meshItem.zPos)
-      }
-    );
-
-    const sub: Subscription = form.valueChanges.subscribe(
-      () => {
-        if(form.value.xPos || form.value.xPos === 0)
-        {
-          meshItem.xPos = form.value.xPos;
-          this.threejsService.updateMesh(meshItem);
-        }
-
-        if(form.value.yPos || form.value.yPos === 0)
-        {
-          meshItem.yPos = form.value.yPos;
-          this.threejsService.updateMesh(meshItem);
-        }
-
-        if(form.value.zPos || form.value.zPos === 0)
-        {
-          meshItem.zPos = form.value.zPos;
-          this.threejsService.updateMesh(meshItem);
-        }
-      }
-    );
-
-    this.subs.push(sub);
-    meshItem.sub = sub;
-
-    meshItem.form = form;
-
-    if (this.xPosition === 0){
-      this.xPosition = 2;
-    } else if (this.xPosition > 0) {
-      this.xPosition = this.xPosition * -1;
-    } else if (this.xPosition < 0) {
-      this.xPosition = this.xPosition * -1 + 2;
-    }
-  }
-
-  deleteMesh(meshItem: MeshInterface): void
-  {
-    this.threejsService.deleteMesh(meshItem.id);
-    meshItem.sub?.unsubscribe();
-  }
-
-  setEditId(id: number): void
-  {
-    this.editId = id;
-  }
-
-  resetEditId(): void
-  {
-    this.editId = 0;
-  }
+export class ToolboxComponent{
 }

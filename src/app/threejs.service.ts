@@ -42,22 +42,18 @@ export class ThreejsService {
     this.camera.position.z = 5;
   }
 
-  addMesh(xPosition = 0, yPosition = 0, zPosition = 0): MeshInterface
+  addMesh(meshItem: MeshInterface): MeshInterface
   {
     const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
     const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
 
     const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
-    mesh.position.setX(xPosition);    
-
     this.meshes.push(mesh);
 
-    const meshItem: MeshInterface = {
-      id: mesh.id, 
-      xPos: xPosition,
-      yPos: yPosition,
-      zPos: zPosition
-    };
+    this.updateMesh(meshItem);    
+
+
+    meshItem.id = mesh.id;
 
     this.meshItems.push( meshItem );
 

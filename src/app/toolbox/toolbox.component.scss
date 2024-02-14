@@ -3,31 +3,5 @@
     height: 50vh;
     max-height: 50vh;
     width: 100vw;
-    overflow: auto;
-
-    .add-mesh
-    {
-        margin-top: 10px;
-    }
-
-    .data-row
-    {
-        display: flex;
-
-        .data-title
-        {
-            width: 60px;
-            text-align: right;
-        }
-
-        .data-value
-        {
-            margin-left: 5px;
-
-            input
-            {
-                width: 35px;
-            }
-        }
-    }
+    overflow: auto; 
 }
