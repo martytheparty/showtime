@@ -15,4 +15,15 @@ import { MeshManagerComponent } from './mesh-manager/mesh-manager.component';
   styleUrl: './toolbox.component.scss'
 })
 export class ToolboxComponent{
+  threejsService: ThreejsService = inject(ThreejsService);
+  constructor(){
+    effect(
+      () => {
+        if (this.threejsService.isInitiazed())
+        {
+          this.threejsService.setupCamera();
+        }
+      }
+    ); 
+  }
 }

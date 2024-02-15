@@ -48,12 +48,10 @@ export class ThreejsService {
     const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
 
     const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
+    meshItem.id = mesh.id;
     this.meshes.push(mesh);
 
     this.updateMesh(meshItem);    
-
-
-    meshItem.id = mesh.id;
 
     this.meshItems.push( meshItem );
 

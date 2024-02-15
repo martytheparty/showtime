@@ -22,11 +22,6 @@ export class MeshManagerComponent implements OnDestroy{
   constructor(){
     effect(
       () => {
-        if (this.threejsService.isInitiazed())
-        {
-          this.threejsService.setupCamera();
-        }
-
         this.meshList = this.threejsService.melisList();
       }
     ); 
@@ -49,15 +44,12 @@ export class MeshManagerComponent implements OnDestroy{
     } 
     this.threejsService.addMesh(meshItem);
 
-    const form = new FormGroup(
-      {
-        id: new FormControl(meshItem.id),
-        xPos: new FormControl(meshItem.xPos),
-        yPos: new FormControl(meshItem.yPos),
-        zPos: new FormControl(meshItem.zPos)
-      }
-    );
+    const form = this.setupForm(meshItem);
+    this.setupSubs(meshItem, form);
+  }
 
+  setupSubs(meshItem: MeshInterface, form: FormGroup): void
+  {
     const sub: Subscription = form.valueChanges.subscribe(
       () => {
         if(form.value.xPos || form.value.xPos === 0)
@@ -83,8 +75,21 @@ export class MeshManagerComponent implements OnDestroy{
     this.subs.push(sub);
     meshItem.sub = sub;
 
-    meshItem.form = form;
+  }
 
+  setupForm(meshItem: MeshInterface): FormGroup
+  {
+    const form = new FormGroup(
+      {
+        id: new FormControl(meshItem.id),
+        xPos: new FormControl(meshItem.xPos),
+        yPos: new FormControl(meshItem.yPos),
+        zPos: new FormControl(meshItem.zPos)
+      }
+    );
+
+    meshItem.form = form;
+    return form;
   }
 
   deleteMesh(meshItem: MeshInterface): void
