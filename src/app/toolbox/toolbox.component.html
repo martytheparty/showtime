@@ -1,3 +1,19 @@
 <div class="toolbox">
-   <app-mesh-manager></app-mesh-manager>
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>camera</mat-icon>
+        camera
+      </ng-template>
+      coming soon!
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>view_in_ar</mat-icon>
+        mesh
+      </ng-template>
+      <app-mesh-manager></app-mesh-manager>
+    </mat-tab>
+  </mat-tab-group>
 </div>
