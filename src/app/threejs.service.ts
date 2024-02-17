@@ -3,6 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
+import { CameraInterface } from './interfaces/camera-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,15 @@ export class ThreejsService {
   width = 0;
   height = 0;
   camera: PerspectiveCamera = new THREE.PerspectiveCamera();
+  cameraItem: CameraInterface = {
+    fov: 70,
+    aspect: 1,
+    near: .01,
+    far: 2000,
+    xPos: 0,
+    yPos: 0,
+    zPos: 5
+  };
   meshes: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
@@ -31,15 +41,22 @@ export class ThreejsService {
   }
 
   setDims(vizDiv: HTMLDivElement):void{
-
     this.width = vizDiv.clientWidth;
     this.height = vizDiv.clientHeight;
+
+    this.cameraItem.aspect = this.width/this.height;
   }
 
   setupCamera(): void
   {
-    this.camera = new THREE.PerspectiveCamera( 70, this.width / this.height, 0.01, 10 );
-    this.camera.position.z = 5;
+    this.camera = new THREE.PerspectiveCamera( 
+      this.cameraItem.fov, 
+      this.cameraItem.aspect, 
+      this.cameraItem.near, 
+      this.cameraItem.far);
+      this.camera.position.z = this.cameraItem.zPos;
+      this.camera.position.x = this.cameraItem.xPos;
+      this.camera.position.y = this.cameraItem.yPos;
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface

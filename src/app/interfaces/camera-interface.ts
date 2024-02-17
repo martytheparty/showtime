@@ -1,4 +1,4 @@
-export interface CameraInterfacew {
+export interface CameraInterface {
     fov: number
     aspect: number
     near: number
