@@ -22,7 +22,7 @@ export class MeshManagerComponent implements OnDestroy{
   constructor(){
     effect(
       () => {
-        this.meshList = this.threejsService.melisList();
+        this.meshList = this.threejsService.meshList();
       }
     ); 
   }

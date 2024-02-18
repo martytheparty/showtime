@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../../threejs.service';
+import { CameraInterface } from '../../interfaces/camera-interface';
 
 @Component({
   selector: 'app-camera-manager',
@@ -11,6 +12,8 @@ import { ThreejsService } from '../../threejs.service';
 export class CameraManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
 
+  cameraItem: CameraInterface | undefined;
+
   constructor() {
     this.threeJsService.addMesh(
       {
@@ -20,6 +23,14 @@ export class CameraManagerComponent {
         zPos: 0
       }
     );
+
+    effect(
+      () => {
+        this.cameraItem = this.threeJsService.cameraItemValues();
+      }
+    ); 
   }
+
+
 
 }

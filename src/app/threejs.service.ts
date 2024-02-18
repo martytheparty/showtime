@@ -31,7 +31,10 @@ export class ThreejsService {
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
   private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshItems);
-  melisList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
+  meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
+
+  private cameraItemSignal: WritableSignal<CameraInterface> = signal(this.cameraItem);
+  cameraItemValues: Signal<CameraInterface> = computed( () => this.cameraItemSignal() );
 
   constructor() { }
 
