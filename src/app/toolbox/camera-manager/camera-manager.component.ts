@@ -1,16 +1,19 @@
 import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../../threejs.service';
 import { CameraInterface } from '../../interfaces/camera-interface';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-camera-manager',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './camera-manager.component.html',
   styleUrl: './camera-manager.component.scss'
 })
 export class CameraManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
+
+  editing = false;
 
   cameraItem: CameraInterface | undefined;
 
@@ -31,6 +34,9 @@ export class CameraManagerComponent {
     ); 
   }
 
-
+  toggleEdit(): void
+  {
+    this.editing = !this.editing;
+  }
 
 }
