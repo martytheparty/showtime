@@ -28,7 +28,12 @@ export class CameraManagerComponent {
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
-    aspect: new FormControl(0)
+    aspect: new FormControl(0),
+    near: new FormControl(0),
+    far: new FormControl(0),
+    xPos: new FormControl(0),
+    yPos: new FormControl(0),
+    zPos: new FormControl(0)
   });
 
   constructor() {
@@ -47,7 +52,12 @@ export class CameraManagerComponent {
 
         this.form.setValue({
           fov: this.cameraItem.fov,
-          aspect: this.cameraItem.aspect
+          aspect: this.cameraItem.aspect,
+          near: this.cameraItem.near,
+          far: this.cameraItem.far,
+          xPos: this.cameraItem.xPos,
+          yPos: this.cameraItem.yPos,
+          zPos: this.cameraItem.zPos
         });        
       }
     ); 
