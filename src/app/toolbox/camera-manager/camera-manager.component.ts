@@ -51,7 +51,7 @@ export class CameraManagerComponent {
         if (this.form.value.fov || this.form.value.fov === 0) {
           if (this.cameraItem?.fov)
           {
-            this.cameraItem.fov = parseInt(this.form.value.fov);
+            this.cameraItem.fov = this.form.value.fov;
           }
         }
 
