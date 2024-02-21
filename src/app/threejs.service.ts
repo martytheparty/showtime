@@ -62,6 +62,12 @@ export class ThreejsService {
       this.camera.position.y = this.cameraItem.yPos;
   }
 
+  updateCamera(cameraItem: CameraInterface): void
+  {
+    console.log(cameraItem);
+
+  }
+
   addMesh(meshItem: MeshInterface): MeshInterface
   {
     const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
