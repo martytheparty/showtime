@@ -48,59 +48,39 @@ export class CameraManagerComponent {
 
     this.form.valueChanges.subscribe(
       () => {
-        if (this.form.value.fov || this.form.value.fov === 0) {
-          if (this.cameraItem?.fov)
-          {
-            this.cameraItem.fov = this.form.value.fov;
-          }
-        }
-
-        if (this.form.value.aspect || this.form.value.aspect === 0) {
-          if (this.cameraItem?.aspect)
-          {
-            this.cameraItem.aspect = this.form.value.aspect;
-          }
-        }
-
-        if (this.form.value.near || this.form.value.near === 0) {
-          if (this.cameraItem?.near)
-          {
-            this.cameraItem.near = this.form.value.near;
-          }
-        }        
-
-        if (this.form.value.far || this.form.value.far === 0) {
-          if (this.cameraItem?.far)
-          {
-            this.cameraItem.far = this.form.value.far;
-          }
-        }        
-
-        if (this.form.value.xPos || this.form.value.xPos === 0) {
-          if (this.cameraItem?.xPos)
-          {
-            this.cameraItem.xPos = this.form.value.xPos;
-          }
-        }        
-
-        if (this.form.value.yPos || this.form.value.yPos === 0) {
-          if (this.cameraItem?.yPos)
-          {
-            this.cameraItem.yPos = this.form.value.yPos;
-          }
-        }        
-
-        if (this.form.value.zPos || this.form.value.zPos === 0) {
-          if (this.cameraItem?.zPos)
-          {
-            this.cameraItem.zPos = this.form.value.zPos;
-          }
-        }        
-
         if (this.cameraItem)
         {
+
+          if (this.form.value.fov || this.form.value.fov === 0) {          
+            this.cameraItem.fov = this.form.value.fov;
+          }
+
+          if (this.form.value.aspect || this.form.value.aspect === 0) {          
+            this.cameraItem.aspect = this.form.value.aspect;
+          }
+
+          if (this.form.value.near || this.form.value.near === 0) {          
+            this.cameraItem.near = this.form.value.near;
+          }        
+
+          if (this.form.value.far || this.form.value.far === 0) {          
+            this.cameraItem.far = this.form.value.far;
+          }        
+
+          if (this.form.value.xPos || this.form.value.xPos === 0) {          
+            this.cameraItem.xPos = this.form.value.xPos;
+          }        
+
+          if (this.form.value.yPos || this.form.value.yPos === 0) {          
+            this.cameraItem.yPos = this.form.value.yPos;
+          }        
+
+          if (this.form.value.zPos || this.form.value.zPos === 0) {          
+            this.cameraItem.zPos = this.form.value.zPos;
+          }
+
           const cameraItemValues: CameraInterface = this.cameraItem as CameraInterface;
-          this.threeJsService.updateCamera(cameraItemValues);
+          this.threeJsService.updateCamera();
         }
 
 

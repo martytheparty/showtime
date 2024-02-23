@@ -62,10 +62,9 @@ export class ThreejsService {
       this.camera.position.y = this.cameraItem.yPos;
   }
 
-  updateCamera(cameraItem: CameraInterface): void
+  updateCamera(): void
   {
-    console.log(cameraItem);
-
+    this.setupCamera();
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface
