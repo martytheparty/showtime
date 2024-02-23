@@ -1,10 +1,12 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ThreejsService } from '../../threejs.service';
 import { CameraInterface } from '../../interfaces/camera-interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,17 +16,20 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   templateUrl: './camera-manager.component.html',
   styleUrl: './camera-manager.component.scss'
 })
-export class CameraManagerComponent {
+export class CameraManagerComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);
 
   editing = true;
 
   cameraItem: CameraInterface | undefined;
+
+  cameraType: 'perspective' | 'orthographic' = 'perspective';
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
@@ -36,6 +41,8 @@ export class CameraManagerComponent {
     zPos: new FormControl(0)
   });
 
+  subs: Subscription[] = [];
+
   constructor() {
     this.threeJsService.addMesh(
       {
@@ -46,7 +53,7 @@ export class CameraManagerComponent {
       }
     );
 
-    this.form.valueChanges.subscribe(
+    const sub = this.form.valueChanges.subscribe(
       () => {
         if (this.cameraItem)
         {
@@ -87,6 +94,8 @@ export class CameraManagerComponent {
       }
     );
 
+    this.subs.push(sub);
+
     effect(
       () => {
         this.cameraItem = this.threeJsService.cameraItemValues();
@@ -104,9 +113,20 @@ export class CameraManagerComponent {
     ); 
   }
 
+  ngOnDestroy(): void {
+    this.subs.forEach(
+      sub => sub.unsubscribe()
+    );
+  }
+
   toggleEdit(): void
   {
     this.editing = !this.editing;
+  }
+
+  updateCameraType(event: MatCheckboxChange): void
+  {
+    this.cameraType = event.checked ? 'orthographic' : 'perspective';
   }
 
 }

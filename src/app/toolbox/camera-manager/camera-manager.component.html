@@ -6,7 +6,10 @@
         Show Edit Form
     }
 </button>
-@if(editing)
+
+<mat-checkbox (change)="updateCameraType($event)" [checked]="cameraType==='orthographic'" >Orthographic</mat-checkbox>
+
+@if(editing && cameraType === 'perspective')
 {
     <div>
         <form>
@@ -54,7 +57,7 @@
 
         </form>
     </div>
-} @else {
+} @else if(cameraType === 'perspective') {
     <table>
         <tr>
             <td>Aspect</td>
@@ -85,4 +88,8 @@
             <td>{{cameraItem?.zPos}}</td>
         </tr>
     </table>
+} @else if (editing && cameraType === 'orthographic') {
+    editing {{cameraType}}
+} @else {
+    showing {{cameraType}} 
 }
