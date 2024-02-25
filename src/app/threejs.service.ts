@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
-import { CameraInterface } from './interfaces/camera-interface';
+import { PerspectiveCameraInterface } from './interfaces/camera-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,9 @@ export class ThreejsService {
 
   width = 0;
   height = 0;
+  orthographicCamera: THREE.OrthographicCamera = new THREE.OrthographicCamera();
   camera: PerspectiveCamera = new THREE.PerspectiveCamera();
-  cameraItem: CameraInterface = {
+  cameraItem: PerspectiveCameraInterface = {
     fov: 70,
     aspect: 1,
     near: .01,
@@ -33,8 +34,8 @@ export class ThreejsService {
   private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshItems);
   meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
-  private cameraItemSignal: WritableSignal<CameraInterface> = signal(this.cameraItem);
-  cameraItemValues: Signal<CameraInterface> = computed( () => this.cameraItemSignal() );
+  private cameraItemSignal: WritableSignal<PerspectiveCameraInterface> = signal(this.cameraItem);
+  cameraItemValues: Signal<PerspectiveCameraInterface> = computed( () => this.cameraItemSignal() );
 
   constructor() { }
 

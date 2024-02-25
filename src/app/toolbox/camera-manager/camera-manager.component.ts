@@ -1,6 +1,6 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ThreejsService } from '../../threejs.service';
-import { CameraInterface } from '../../interfaces/camera-interface';
+import { PerspectiveCameraInterface } from '../../interfaces/camera-interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +27,7 @@ export class CameraManagerComponent implements OnDestroy {
 
   editing = true;
 
-  cameraItem: CameraInterface | undefined;
+  cameraItem: PerspectiveCameraInterface | undefined;
 
   cameraType: 'perspective' | 'orthographic' = 'perspective';
 
@@ -86,7 +86,7 @@ export class CameraManagerComponent implements OnDestroy {
             this.cameraItem.zPos = this.form.value.zPos;
           }
 
-          const cameraItemValues: CameraInterface = this.cameraItem as CameraInterface;
+          const cameraItemValues: PerspectiveCameraInterface = this.cameraItem as PerspectiveCameraInterface;
           this.threeJsService.updateCamera();
         }
 
@@ -100,15 +100,19 @@ export class CameraManagerComponent implements OnDestroy {
       () => {
         this.cameraItem = this.threeJsService.cameraItemValues();
 
-        this.form.setValue({
-          fov: this.cameraItem.fov,
-          aspect: this.cameraItem.aspect,
-          near: this.cameraItem.near,
-          far: this.cameraItem.far,
-          xPos: this.cameraItem.xPos,
-          yPos: this.cameraItem.yPos,
-          zPos: this.cameraItem.zPos
-        });        
+        if (this.cameraItem)
+        {
+          this.form.setValue({
+            fov: this.cameraItem.fov,
+            aspect: this.cameraItem.aspect,
+            near: this.cameraItem.near,
+            far: this.cameraItem.far,
+            xPos: this.cameraItem.xPos,
+            yPos: this.cameraItem.yPos,
+            zPos: this.cameraItem.zPos
+          });
+        }
+        
       }
     ); 
   }
