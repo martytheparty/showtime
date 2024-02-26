@@ -1,19 +1,31 @@
 import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import * as THREE from 'three';
-import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
-import { PerspectiveCameraInterface } from './interfaces/camera-interfaces';
+import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThreejsService {
 
+  cameraType: CameraType = 'perspective';
   width = 0;
   height = 0;
-  orthographicCamera: THREE.OrthographicCamera = new THREE.OrthographicCamera();
-  camera: PerspectiveCamera = new THREE.PerspectiveCamera();
+  orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
+  orthographicCameraItem: OrthographicCameraInterface = {
+    left: -10,
+    right: 10,
+    top: 10,
+    bottom: -10,
+    near: .01,
+    far: 2000,
+    xPos: 0,
+    yPos: 0,
+    zPos: 5
+  };
+  camera: PerspectiveCamera | OrthographicCamera = new THREE.PerspectiveCamera();
   cameraItem: PerspectiveCameraInterface = {
     fov: 70,
     aspect: 1,
@@ -53,19 +65,40 @@ export class ThreejsService {
 
   setupCamera(): void
   {
-    this.camera = new THREE.PerspectiveCamera( 
-      this.cameraItem.fov, 
-      this.cameraItem.aspect, 
-      this.cameraItem.near, 
-      this.cameraItem.far);
+    if (this.cameraType === 'perspective')
+    {
+      this.camera = new THREE.PerspectiveCamera( 
+        this.cameraItem.fov, 
+        this.cameraItem.aspect, 
+        this.cameraItem.near, 
+        this.cameraItem.far);
+        this.camera.position.z = this.cameraItem.zPos;
+        this.camera.position.x = this.cameraItem.xPos;
+        this.camera.position.y = this.cameraItem.yPos;
+    } else {
+      this.camera = new THREE.OrthographicCamera(
+        this.orthographicCameraItem.left,
+        this.orthographicCameraItem.right,
+        this.orthographicCameraItem.top,
+        this.orthographicCameraItem.bottom,
+        this.orthographicCameraItem.near,
+        this.orthographicCameraItem.far
+      );
       this.camera.position.z = this.cameraItem.zPos;
       this.camera.position.x = this.cameraItem.xPos;
       this.camera.position.y = this.cameraItem.yPos;
+    }
   }
 
   updateCamera(): void
   {
     this.setupCamera();
+  }
+
+  updateCameraType(cameraType: CameraType): void
+  {
+    this.cameraType = cameraType;
+    this.updateCamera();
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface

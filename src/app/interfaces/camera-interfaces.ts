@@ -8,11 +8,16 @@ export interface PerspectiveCameraInterface {
     zPos: number
 }
 
-export interface OrthographicInterface {
+export interface OrthographicCameraInterface {
     left: number
     right: number
     top: number
     bottom: number
-    new: number
+    near: number
     far: number
+    xPos: number
+    yPos: number
+    zPos: number
 }
+
+export type CameraType = 'perspective' | 'orthographic';

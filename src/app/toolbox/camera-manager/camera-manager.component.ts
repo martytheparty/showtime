@@ -1,6 +1,6 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ThreejsService } from '../../threejs.service';
-import { PerspectiveCameraInterface } from '../../interfaces/camera-interfaces';
+import { CameraType, PerspectiveCameraInterface } from '../../interfaces/camera-interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,7 +29,7 @@ export class CameraManagerComponent implements OnDestroy {
 
   cameraItem: PerspectiveCameraInterface | undefined;
 
-  cameraType: 'perspective' | 'orthographic' = 'perspective';
+  cameraType: CameraType = 'perspective';
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
@@ -131,6 +131,7 @@ export class CameraManagerComponent implements OnDestroy {
   updateCameraType(event: MatCheckboxChange): void
   {
     this.cameraType = event.checked ? 'orthographic' : 'perspective';
+    this.threeJsService.updateCameraType(this.cameraType);
   }
 
 }
