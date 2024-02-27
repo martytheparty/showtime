@@ -10,7 +10,7 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } f
 })
 export class ThreejsService {
 
-  cameraType: CameraType = 'perspective';
+  cameraType: CameraType = 'orthographic';
   width = 0;
   height = 0;
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
@@ -48,6 +48,9 @@ export class ThreejsService {
 
   private cameraItemSignal: WritableSignal<PerspectiveCameraInterface> = signal(this.cameraItem);
   cameraItemValues: Signal<PerspectiveCameraInterface> = computed( () => this.cameraItemSignal() );
+
+  private orthogonalCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
+  orthogonalCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthogonalCameraItemSignal() );
 
   constructor() { }
 

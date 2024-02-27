@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { OgDataComponent } from './og-data/og-data.component';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { Subscription } from 'rxjs';
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    OgDataComponent
   ],
   templateUrl: './camera-manager.component.html',
   styleUrl: './camera-manager.component.scss'
@@ -25,11 +27,11 @@ import { Subscription } from 'rxjs';
 export class CameraManagerComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);
 
-  editing = true;
+  editing = false;
 
   cameraItem: PerspectiveCameraInterface | undefined;
 
-  cameraType: CameraType = 'perspective';
+  cameraType: CameraType = 'orthographic';
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
