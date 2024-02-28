@@ -16,7 +16,7 @@ export class OgDataComponent {
 
   constructor(){
     effect(() => {
-      this.cameraItem = this.threeJsService.orthogonalCameraItemValues();
+      this.cameraItem = this.threeJsService.orthographicCameraItemValues();
     })
   }
 }

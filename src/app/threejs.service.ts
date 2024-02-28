@@ -10,15 +10,15 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } f
 })
 export class ThreejsService {
 
-  cameraType: CameraType = 'orthographic';
+  cameraType: CameraType = 'perspective';
   width = 0;
   height = 0;
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
   orthographicCameraItem: OrthographicCameraInterface = {
-    left: -10,
-    right: 10,
-    top: 10,
-    bottom: -10,
+    left: -6,
+    right: 6,
+    top: 5,
+    bottom: -5,
     near: .01,
     far: 2000,
     xPos: 0,
@@ -49,8 +49,8 @@ export class ThreejsService {
   private cameraItemSignal: WritableSignal<PerspectiveCameraInterface> = signal(this.cameraItem);
   cameraItemValues: Signal<PerspectiveCameraInterface> = computed( () => this.cameraItemSignal() );
 
-  private orthogonalCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
-  orthogonalCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthogonalCameraItemSignal() );
+  private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
+  orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
   constructor() { }
 
@@ -87,9 +87,9 @@ export class ThreejsService {
         this.orthographicCameraItem.near,
         this.orthographicCameraItem.far
       );
-      this.camera.position.z = this.cameraItem.zPos;
-      this.camera.position.x = this.cameraItem.xPos;
-      this.camera.position.y = this.cameraItem.yPos;
+      this.camera.position.z = this.orthographicCameraItem.zPos;
+      this.camera.position.x = this.orthographicCameraItem.xPos;
+      this.camera.position.y = this.orthographicCameraItem.yPos;
     }
   }
 

@@ -8,6 +8,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { OgDataComponent } from './og-data/og-data.component';
+import { OgFormComponent } from './og-form/og-form.component';
 
 
 @Component({
@@ -19,7 +20,8 @@ import { OgDataComponent } from './og-data/og-data.component';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    OgDataComponent
+    OgDataComponent,
+    OgFormComponent
   ],
   templateUrl: './camera-manager.component.html',
   styleUrl: './camera-manager.component.scss'
@@ -31,7 +33,7 @@ export class CameraManagerComponent implements OnDestroy {
 
   cameraItem: PerspectiveCameraInterface | undefined;
 
-  cameraType: CameraType = 'orthographic';
+  cameraType: CameraType = 'perspective';
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
@@ -88,7 +90,6 @@ export class CameraManagerComponent implements OnDestroy {
             this.cameraItem.zPos = this.form.value.zPos;
           }
 
-          const cameraItemValues: PerspectiveCameraInterface = this.cameraItem as PerspectiveCameraInterface;
           this.threeJsService.updateCamera();
         }
 
