@@ -11,83 +11,9 @@
 
 @if(editing && cameraType === 'perspective')
 {
-    <div>
-        <form>
-            <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>Field Of View (FOV)</mat-label>
-                <input formControlName="fov" matInput>
-                <mat-hint>The range of the observable world that is visible.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>Aspect Ratio</mat-label>
-                <input formControlName="aspect" matInput>
-                <mat-hint>The ratio of an image's width to its height.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>Near</mat-label>
-                <input formControlName="near" matInput>
-                <mat-hint>The nearest part of the scene that will be rendered.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>Far</mat-label>
-                <input formControlName="far" matInput>
-                <mat-hint>The farthest part of the scene that will be rendered.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>x position</mat-label>
-                <input formControlName="xPos" matInput>
-                <mat-hint>The position of the camera on the x axis.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>y position</mat-label>
-                <input formControlName="yPos" matInput>
-                <mat-hint>The position of the camera on the y axis.</mat-hint>
-              </mat-form-field>
-
-              <mat-form-field [formGroup]="form" appearance="fill">
-                <mat-label>z position</mat-label>
-                <input formControlName="zPos" matInput>
-                <mat-hint>The position of the camera on the z axis.</mat-hint>
-              </mat-form-field>
-
-        </form>
-    </div>
+    <app-perspective-form></app-perspective-form>
 } @else if(cameraType === 'perspective') {
-    <table>
-        <tr>
-            <td>Aspect</td>
-            <td>{{cameraItem?.aspect}}</td>
-        </tr>
-        <tr>
-            <td>Field Of View (FOV)</td>
-            <td>{{cameraItem?.fov}}</td>
-        </tr>
-        <tr>
-            <td>Far</td>
-            <td>{{cameraItem?.far}}</td>
-        </tr>
-        <tr>
-            <td>Near</td>
-            <td>{{cameraItem?.near}}</td>
-        </tr>
-        <tr>
-            <td>xPos</td>
-            <td>{{cameraItem?.xPos}}</td>
-        </tr>
-        <tr>
-            <td>yPos</td>
-            <td>{{cameraItem?.yPos}}</td>
-        </tr>
-        <tr>
-            <td>zPos</td>
-            <td>{{cameraItem?.zPos}}</td>
-        </tr>
-    </table>
+    <app-perspective-data></app-perspective-data>
 } @else if (editing && cameraType === 'orthographic') {
     <app-og-form></app-og-form>
 } @else {
