@@ -52,7 +52,15 @@ export class ThreejsService {
   private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
   orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
+  private animationSignal: WritableSignal<boolean> = signal(true);
+  animationValue: Signal<boolean> = computed( () => this.animationSignal());
+
   constructor() { }
+
+  updateAnimation(animationState: boolean): void
+  {
+    this.animationSignal.set(animationState);
+  }
 
   markAsInitialized(): void
   {
@@ -159,12 +167,16 @@ export class ThreejsService {
   {
     const animation: XRFrameRequestCallback = ( time: number ) => {
 
-      this.meshes.forEach(
-        (mesh) => {
-          mesh.rotation.x = time / 2000;
-          mesh.rotation.y = time / 1000;
-        }
-      );
+      if (this.animationValue())
+      {
+        this.meshes.forEach(
+          (mesh) => {
+            mesh.rotation.x = time / 2000;
+            mesh.rotation.y = time / 1000;
+          }
+        );
+      }
+
       this.renderer.render( this.scene, this.camera );
     }
 
