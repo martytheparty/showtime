@@ -5,6 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MeshManagerComponent } from './mesh-manager/mesh-manager.component';
 import { CameraManagerComponent } from './camera-manager/camera-manager.component';
 import { AnimationManagerComponent } from './animation-manager/animation-manager.component';
+import { LightManagerComponent } from './light-manager/light-manager.component';
 
 @Component({
   selector: 'app-toolbox',
@@ -14,7 +15,8 @@ import { AnimationManagerComponent } from './animation-manager/animation-manager
     MatTabsModule,
     MeshManagerComponent,
     CameraManagerComponent,
-    AnimationManagerComponent
+    AnimationManagerComponent,
+    LightManagerComponent
   ],
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'

@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
+import { LightInterface } from './interfaces/light-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -39,12 +40,16 @@ export class ThreejsService {
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
   meshItems: MeshInterface[] = [];
+  lightItems: LightInterface[] = [];
 
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
   private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshItems);
   meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
+
+  private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightItems);
+  lightListValues: Signal<LightInterface[]> = computed( () => this.lightListSignal() );
 
   private cameraItemSignal: WritableSignal<PerspectiveCameraInterface> = signal(this.cameraItem);
   cameraItemValues: Signal<PerspectiveCameraInterface> = computed( () => this.cameraItemSignal() );
@@ -110,6 +115,14 @@ export class ThreejsService {
   {
     this.cameraType = cameraType;
     this.updateCamera();
+  }
+
+  addLight(lightItem: LightInterface): LightInterface
+  {
+    this.lightItems.push(lightItem);
+    this.lightListSignal.set(this.lightItems);
+
+    return lightItem;
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface
