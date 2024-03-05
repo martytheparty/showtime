@@ -1,0 +1,46 @@
+<div class="pickers">
+    <div class="sliders">
+        <div 
+            class="color"
+            [ngStyle]="{'background-color': 'rgb('+red.value+',0,0)'}"
+            >
+            <mat-slider 
+                max="255" 
+                min="0">
+            <input
+                #red
+                (change)="updateColor($event, 'red')"
+                matSliderThumb>
+            </mat-slider> 
+            <div class="value">{{red.value}}</div>
+        </div>
+        <div 
+            class="color"
+            [ngStyle]="{'background-color': 'rgb(0,'+green.value+',0)'}"
+            >
+            <mat-slider max="255" min="0">
+            <input
+                #green
+                (change)="updateColor($event, 'green')"
+                matSliderThumb>
+            </mat-slider>
+            <div class="value">{{green.value}}</div>
+        </div>
+        <div
+            class="color"
+            [ngStyle]="{'background-color': 'rgb(0,0,'+blue.value+')'}"
+            >
+            <mat-slider max="255" min="0">
+            <input
+                #blue
+                (change)="updateColor($event, 'blue')"
+                matSliderThumb>
+            </mat-slider>
+            <div class="value">{{blue.value}}</div>
+        </div>
+    </div>
+    <div 
+        class="result"
+        [ngStyle]="{'background-color': 'rgb('+red.value+','+green.value+','+blue.value+')'}"
+        >&nbsp;</div>
+</div>

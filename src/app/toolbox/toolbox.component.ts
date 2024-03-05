@@ -6,6 +6,7 @@ import { MeshManagerComponent } from './mesh-manager/mesh-manager.component';
 import { CameraManagerComponent } from './camera-manager/camera-manager.component';
 import { AnimationManagerComponent } from './animation-manager/animation-manager.component';
 import { LightManagerComponent } from './light-manager/light-manager.component';
+import { SceneManagerComponent } from './scene-manager/scene-manager.component';
 
 @Component({
   selector: 'app-toolbox',
@@ -16,7 +17,8 @@ import { LightManagerComponent } from './light-manager/light-manager.component';
     MeshManagerComponent,
     CameraManagerComponent,
     AnimationManagerComponent,
-    LightManagerComponent
+    LightManagerComponent,
+    SceneManagerComponent
   ],
   templateUrl: './toolbox.component.html',
   styleUrl: './toolbox.component.scss'
