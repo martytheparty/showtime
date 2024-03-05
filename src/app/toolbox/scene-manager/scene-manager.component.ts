@@ -12,6 +12,13 @@ import { ColorPickerComponent } from '../common-components/color-picker/color-pi
 })
 export class SceneManagerComponent {
 
+  color = '010,100,100';
 
-
+  colorChange(newColor: string): void
+  {
+    if (newColor.length === 11)
+    {
+      console.log('Update The Color...', newColor);
+    }
+  }
 }

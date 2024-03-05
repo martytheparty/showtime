@@ -2,45 +2,45 @@
     <div class="sliders">
         <div 
             class="color"
-            [ngStyle]="{'background-color': 'rgb('+red.value+',0,0)'}"
+            [ngStyle]="{'background-color': 'rgb('+redValue+',0,0)'}"
             >
             <mat-slider 
                 max="255" 
                 min="0">
             <input
-                #red
+                [value]="redValue"
                 (change)="updateColor($event, 'red')"
                 matSliderThumb>
             </mat-slider> 
-            <div class="value">{{red.value}}</div>
+            <div class="value">{{redValue}}</div>
         </div>
         <div 
             class="color"
-            [ngStyle]="{'background-color': 'rgb(0,'+green.value+',0)'}"
+            [ngStyle]="{'background-color': 'rgb(0,'+greenValue+',0)'}"
             >
             <mat-slider max="255" min="0">
             <input
-                #green
+                [value]="greenValue"
                 (change)="updateColor($event, 'green')"
                 matSliderThumb>
             </mat-slider>
-            <div class="value">{{green.value}}</div>
+            <div class="value">{{greenValue}}</div>
         </div>
         <div
             class="color"
-            [ngStyle]="{'background-color': 'rgb(0,0,'+blue.value+')'}"
+            [ngStyle]="{'background-color': 'rgb(0,0,'+blueValue+')'}"
             >
             <mat-slider max="255" min="0">
             <input
-                #blue
+                [value]="blueValue"
                 (change)="updateColor($event, 'blue')"
                 matSliderThumb>
             </mat-slider>
-            <div class="value">{{blue.value}}</div>
+            <div class="value">{{blueValue}}</div>
         </div>
     </div>
     <div 
         class="result"
-        [ngStyle]="{'background-color': 'rgb('+red.value+','+green.value+','+blue.value+')'}"
+        [ngStyle]="{'background-color': 'rgb('+redValue+','+greenValue+','+blueValue+')'}"
         >&nbsp;</div>
 </div>

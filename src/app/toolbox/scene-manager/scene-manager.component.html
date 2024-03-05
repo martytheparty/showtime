@@ -1,1 +1,4 @@
-<app-color-picker></app-color-picker>
+<app-color-picker
+    [color]="color"
+    (colorUpdate)="colorChange($event)"
+    ></app-color-picker>
