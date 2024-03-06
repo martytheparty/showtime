@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
+import { ThreejsService } from '../../threejs.service';
+import { SceneInterface } from '../../interfaces/scene-interface';
 
 @Component({
   selector: 'app-scene-manager',
@@ -12,13 +14,50 @@ import { ColorPickerComponent } from '../common-components/color-picker/color-pi
 })
 export class SceneManagerComponent {
 
-  color = '010,100,100';
+  threejsService: ThreejsService = inject(ThreejsService);
 
-  colorChange(newColor: string): void
+  scene: SceneInterface | undefined;
+
+  red = 0;
+  green = 0;
+  blue = 0;
+
+  constructor() {
+    effect(
+      () => {
+        this.scene  = this.threejsService.sceneItemValues();
+        
+        this.red = this.scene.bgRedColor;
+        this.green = this.scene.bgGreenColor;
+        this.blue = this.scene.bgBlueColor;
+      }
+    );
+  }
+
+  redColorChange(newColor: number): void
   {
-    if (newColor.length === 11)
+    if (this.scene)
     {
-      console.log('Update The Color...', newColor);
+      this.scene.bgRedColor = newColor;
+      this.threejsService.updateScene(this.scene);
+    }
+  }
+
+  greenColorChange(newColor: number): void
+  {
+    if (this.scene)
+    {
+      this.scene.bgGreenColor = newColor;
+      this.threejsService.updateScene(this.scene);
+    }
+  }
+
+  blueColorChange(newColor: number): void
+  {
+    if (this.scene)
+    {
+      this.scene.bgBlueColor = newColor;
+      this.threejsService.updateScene(this.scene);
     }
   }
 }

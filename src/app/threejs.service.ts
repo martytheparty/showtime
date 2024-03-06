@@ -5,6 +5,7 @@ import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, OrthographicCa
 import { MeshInterface } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 import { LightInterface } from './interfaces/light-interface';
+import { SceneInterface } from './interfaces/scene-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,12 @@ export class ThreejsService {
   meshes: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
+  sceneItem: SceneInterface = {
+    bgRedColor: 0,
+    bgGreenColor: 0,
+    bgBlueColor: 0
+  };
+
   meshItems: MeshInterface[] = [];
   lightItems: LightInterface[] = [];
 
@@ -60,7 +67,8 @@ export class ThreejsService {
   private animationSignal: WritableSignal<boolean> = signal(true);
   animationValue: Signal<boolean> = computed( () => this.animationSignal());
 
-  constructor() { }
+  private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
+  sceneItemValues: Signal<SceneInterface> = computed( () => this.sceneSignal());
 
   updateAnimation(animationState: boolean): void
   {
@@ -77,6 +85,23 @@ export class ThreejsService {
     this.height = vizDiv.clientHeight;
 
     this.cameraItem.aspect = this.width/this.height;
+  }
+
+  setUpScene(): void
+  {
+    this.scene.background = new THREE.Color()
+                            .setRGB(
+                              this.sceneItem.bgRedColor/255,
+                              this.sceneItem.bgGreenColor/255,
+                              this.sceneItem.bgBlueColor/255
+                            );
+  }
+
+  updateScene(sceneItem: SceneInterface): void
+  {
+    this.sceneItem = { ...sceneItem }; // shallow clone
+    this.sceneSignal.set(this.sceneItem);
+    this.setUpScene();
   }
 
   setupCamera(): void

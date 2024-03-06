@@ -1,4 +1,8 @@
 <app-color-picker
-    [color]="color"
-    (colorUpdate)="colorChange($event)"
+    [redValue]="red"
+    [greenValue]="green"
+    [blueValue]="blue"
+    (redUpdate)="redColorChange($event)"
+    (greenUpdate)="greenColorChange($event)"
+    (blueUpdate)="blueColorChange($event)"
     ></app-color-picker>

@@ -31,6 +31,7 @@ export class ToolboxComponent{
         if (this.threejsService.isInitiazed())
         {
           this.threejsService.setupCamera();
+          this.threejsService.setUpScene();
         }
       }
     ); 

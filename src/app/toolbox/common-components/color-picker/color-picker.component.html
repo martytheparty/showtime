@@ -2,45 +2,45 @@
     <div class="sliders">
         <div 
             class="color"
-            [ngStyle]="{'background-color': 'rgb('+redValue+',0,0)'}"
+            [ngStyle]="{'background-color': 'rgb('+redValue()+',0,0)'}"
             >
             <mat-slider 
                 max="255" 
                 min="0">
             <input
-                [value]="redValue"
+                [value]="redValue()"
                 (change)="updateColor($event, 'red')"
                 matSliderThumb>
             </mat-slider> 
-            <div class="value">{{redValue}}</div>
+            <div class="value">{{redValue()}}</div>
         </div>
         <div 
             class="color"
-            [ngStyle]="{'background-color': 'rgb(0,'+greenValue+',0)'}"
+            [ngStyle]="{'background-color': 'rgb(0,'+greenValue()+',0)'}"
             >
             <mat-slider max="255" min="0">
             <input
-                [value]="greenValue"
+                [value]="greenValue()"
                 (change)="updateColor($event, 'green')"
                 matSliderThumb>
             </mat-slider>
-            <div class="value">{{greenValue}}</div>
+            <div class="value">{{greenValue()}}</div>
         </div>
         <div
             class="color"
-            [ngStyle]="{'background-color': 'rgb(0,0,'+blueValue+')'}"
+            [ngStyle]="{'background-color': 'rgb(0,0,'+blueValue()+')'}"
             >
             <mat-slider max="255" min="0">
             <input
-                [value]="blueValue"
+                [value]="blueValue()"
                 (change)="updateColor($event, 'blue')"
                 matSliderThumb>
             </mat-slider>
-            <div class="value">{{blueValue}}</div>
+            <div class="value">{{blueValue()}}</div>
         </div>
     </div>
     <div 
         class="result"
-        [ngStyle]="{'background-color': 'rgb('+redValue+','+greenValue+','+blueValue+')'}"
+        [ngStyle]="{'background-color': 'rgb('+redValue()+','+greenValue()+','+blueValue()+')'}"
         >&nbsp;</div>
 </div>
