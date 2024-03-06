@@ -24,6 +24,10 @@
                   <div class="data-title">z Pos:</div>
                   <div class="data-value">{{mesh.zPos}}</div>
                </div>
+               <div class="data-row">
+                  <div class="data-title">material:</div>
+                  <div class="data-value">{{mesh.materialType}}</div>
+               </div>
             } @else {
                @if(mesh.form)
                {
@@ -32,24 +36,34 @@
                         <div class="data-title">id:</div>
                         <div class="data-value">{{mesh.id}}</div>
                      </div>
-                     <div class="data-row">
-                        <div class="data-title">x Pos:</div>
-                        <div class="data-value">
-                           <input formControlName="xPos" type="text">
-                        </div>
-                     </div>
-                     <div class="data-row">
-                        <div class="data-title">y Pos:</div>
-                        <div class="data-value">
-                           <input formControlName="yPos" type="text">
-                        </div>
-                     </div>
-                     <div class="data-row">
-                        <div class="data-title">z Pos:</div>
-                        <div class="data-value">
-                           <input formControlName="zPos" type="text">
-                        </div>
-                     </div>
+                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
+                        <mat-label>X Position</mat-label>
+                        <input formControlName="xPos" matInput>
+                        <mat-hint>The position of the object along the x-axis.</mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
+                     <mat-label>Y Position</mat-label>
+                     <input formControlName="yPos" matInput>
+                     <mat-hint>The position of the object along the y-axis.</mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
+                     <mat-label>Z Position</mat-label>
+                     <input formControlName="zPos" matInput>
+                     <mat-hint>The position of the object along the z-axis.</mat-hint>
+                  </mat-form-field>
+ 
+                  <mat-form-field [formGroup]="mesh.form">
+                     <mat-label>Choose one</mat-label>
+                     <mat-select formControlName="materialType">
+                        <mat-option value="normal">normal</mat-option>
+                        <mat-option value="basic">basic</mat-option>
+                        <mat-option value="phong">phong</mat-option>
+                     </mat-select>
+                     <mat-hint>Select A Materials</mat-hint>
+                  </mat-form-field>
+                     
                   </form>
                }
             }  

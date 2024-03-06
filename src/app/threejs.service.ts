@@ -1,7 +1,7 @@
 import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import * as THREE from 'three';
-import { BoxGeometry, Mesh, MeshNormalMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 import { LightInterface } from './interfaces/light-interface';
@@ -37,7 +37,7 @@ export class ThreejsService {
     yPos: 0,
     zPos: 5
   };
-  meshes: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap>[] = [];
+  meshes: Mesh<BoxGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
   sceneItem: SceneInterface = {
@@ -153,9 +153,15 @@ export class ThreejsService {
   addMesh(meshItem: MeshInterface): MeshInterface
   {
     const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material: MeshNormalMaterial = new THREE.MeshNormalMaterial();
+    let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
 
-    const mesh: Mesh<BoxGeometry, MeshNormalMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
+    if (meshItem.materialType === 'basic') {
+      material = new THREE.MeshBasicMaterial();
+    } else if (meshItem.materialType === 'phong') {
+      material = new THREE.MeshPhongMaterial();
+    }
+
+    const mesh: Mesh<BoxGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
     meshItem.id = mesh.id;
     this.meshes.push(mesh);
 
@@ -177,6 +183,31 @@ export class ThreejsService {
     updateMesh?.position.setX(meshItem.xPos);
     updateMesh?.position.setY(meshItem.yPos);
     updateMesh?.position.setZ(meshItem.zPos);
+
+    let updateMaterial = false;
+    if (
+      (updateMesh?.material.type === "MeshNormalMaterial"
+      && meshItem.materialType !== 'normal')
+      || (updateMesh?.material.type === "MeshBasicMaterial"
+      && meshItem.materialType !== 'basic')
+      || (updateMesh?.material.type === "MeshPhongMaterial"
+      && meshItem.materialType !== 'phong')
+      ) {
+        updateMaterial = true;
+    }
+
+    if (updateMaterial) {
+      if (meshItem.materialType === 'basic' && updateMesh) {
+        const newMaterial = new THREE.MeshBasicMaterial();
+        updateMesh.material = newMaterial;
+      } else if (meshItem.materialType === 'normal' && updateMesh) {
+        const newMaterial = new THREE.MeshNormalMaterial();
+        updateMesh.material = newMaterial;
+      } else if (meshItem.materialType === 'phong' && updateMesh) {
+        const newMaterial = new THREE.MeshPhongMaterial();
+        updateMesh.material = newMaterial;
+      }
+    }
   }
 
   deleteMesh(id: number): void

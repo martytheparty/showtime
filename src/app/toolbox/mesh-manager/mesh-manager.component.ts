@@ -5,11 +5,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../threejs.service';
 import { MeshInterface } from '../../interfaces/mesh-interface';
 import { Subscription } from 'rxjs';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-mesh-manager',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, ReactiveFormsModule],
+  imports: [
+    MatButtonModule, 
+    MatIconModule, 
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule
+  ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
 })
@@ -40,7 +49,8 @@ export class MeshManagerComponent implements OnDestroy{
       id: -1,
       xPos: 0,
       yPos: 0,
-      zPos: 0
+      zPos: 0,
+      materialType: 'normal'
     } 
     this.threejsService.addMesh(meshItem);
 
@@ -52,21 +62,34 @@ export class MeshManagerComponent implements OnDestroy{
   {
     const sub: Subscription = form.valueChanges.subscribe(
       () => {
+        let updated = false;
+
         if(form.value.xPos || form.value.xPos === 0)
         {
           meshItem.xPos = form.value.xPos;
-          this.threejsService.updateMesh(meshItem);
+          updated = true;
         }
 
         if(form.value.yPos || form.value.yPos === 0)
         {
           meshItem.yPos = form.value.yPos;
-          this.threejsService.updateMesh(meshItem);
+          updated = true;
         }
 
         if(form.value.zPos || form.value.zPos === 0)
         {
           meshItem.zPos = form.value.zPos;
+          updated = true;
+        }
+
+        if(form.value.materialType)
+        {
+          meshItem.materialType = form.value.materialType;
+          updated = true;
+        }
+
+        if (updated)
+        {
           this.threejsService.updateMesh(meshItem);
         }
       }
@@ -84,7 +107,8 @@ export class MeshManagerComponent implements OnDestroy{
         id: new FormControl(meshItem.id),
         xPos: new FormControl(meshItem.xPos),
         yPos: new FormControl(meshItem.yPos),
-        zPos: new FormControl(meshItem.zPos)
+        zPos: new FormControl(meshItem.zPos),
+        materialType: new FormControl(meshItem.materialType)
       }
     );
 

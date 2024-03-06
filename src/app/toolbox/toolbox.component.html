@@ -2,12 +2,18 @@
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
+        <mat-icon>view_in_ar</mat-icon>
+        mesh
+      </ng-template>
+      <app-mesh-manager></app-mesh-manager>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
         <mat-icon>wallpaper</mat-icon>
         scene
       </ng-template>
       <app-scene-manager></app-scene-manager>
     </mat-tab>
-
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>lights</mat-icon>
@@ -15,21 +21,12 @@
       </ng-template>
       <app-light-manager></app-light-manager>
     </mat-tab>
-
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>camera</mat-icon>
         camera
       </ng-template>
       <app-camera-manager></app-camera-manager>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>view_in_ar</mat-icon>
-        mesh
-      </ng-template>
-      <app-mesh-manager></app-mesh-manager>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>

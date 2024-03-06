@@ -8,4 +8,7 @@ export interface MeshInterface {
     zPos: number
     form?: FormGroup
     sub?: Subscription
+    materialType: MaterialTypes
 }
+
+export type MaterialTypes = 'basic' | 'phong' | 'normal'
