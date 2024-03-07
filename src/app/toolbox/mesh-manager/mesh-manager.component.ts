@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 @Component({
   selector: 'app-mesh-manager',
   standalone: true,
@@ -17,7 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    ColorPickerComponent
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
@@ -27,6 +29,7 @@ export class MeshManagerComponent implements OnDestroy{
   editId = 0;
   meshList: MeshInterface[] = [];
   subs: Subscription[] = [];
+  meshDict: {[key: number]: MeshInterface }= {};
 
   constructor(){
     effect(
@@ -44,15 +47,20 @@ export class MeshManagerComponent implements OnDestroy{
 
   addMesh(): void
   {
-
     const meshItem: MeshInterface = {
       id: -1,
       xPos: 0,
       yPos: 0,
       zPos: 0,
-      materialType: 'normal'
+      materialType: 'normal',
+      redColor: 0,
+      greenColor: 0,
+      blueColor: 0
     } 
+     
     this.threejsService.addMesh(meshItem);
+
+    this.meshDict[meshItem.id] = meshItem;
 
     const form = this.setupForm(meshItem);
     this.setupSubs(meshItem, form);
@@ -130,6 +138,24 @@ export class MeshManagerComponent implements OnDestroy{
   resetEditId(): void
   {
     this.editId = 0;
+  }
+
+  redUpdate(value: number, meshItemId: number): void
+  {
+    this.meshDict[meshItemId].redColor = value;
+    this.threejsService.updateMesh(this.meshDict[meshItemId]);
+  }
+
+  greenUpdate(value: number, meshItemId: number): void
+  {
+    this.meshDict[meshItemId].greenColor = value;
+    this.threejsService.updateMesh(this.meshDict[meshItemId]);
+  }
+
+  blueUpdate(value: number, meshItemId: number): void
+  {
+    this.meshDict[meshItemId].blueColor = value;
+    this.threejsService.updateMesh(this.meshDict[meshItemId]);
   }
 
 }

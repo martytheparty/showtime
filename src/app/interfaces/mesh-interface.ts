@@ -9,6 +9,9 @@ export interface MeshInterface {
     form?: FormGroup
     sub?: Subscription
     materialType: MaterialTypes
+    redColor: number
+    greenColor: number
+    blueColor: number
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'

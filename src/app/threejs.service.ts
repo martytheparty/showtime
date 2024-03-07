@@ -208,6 +208,16 @@ export class ThreejsService {
         updateMesh.material = newMaterial;
       }
     }
+
+    if (meshItem.materialType === 'basic' && updateMesh) {
+      const material = updateMesh.material as MeshBasicMaterial;
+      material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255)
+    }
+
+    if (meshItem.materialType === 'phong' && updateMesh) {
+      const material = updateMesh.material as MeshPhongMaterial;
+      material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255)
+    }
   }
 
   deleteMesh(id: number): void
