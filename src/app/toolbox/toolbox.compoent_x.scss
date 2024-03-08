@@ -1,0 +1,17 @@
+app-toolbox
+{
+    mat-tab-group
+    {
+        max-height: 50vh;
+    }
+
+    .mat-mdc-tab-body-content
+    {
+        min-height: 200px;
+    }
+
+    mat-tab-body
+    {
+        margin: 10px;
+    }
+}
