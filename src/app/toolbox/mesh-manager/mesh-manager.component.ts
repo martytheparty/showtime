@@ -9,6 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
+import { MaterialsComponent } from './materials/materials.component';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-mesh-manager',
   standalone: true,
@@ -19,7 +22,8 @@ import { ColorPickerComponent } from '../common-components/color-picker/color-pi
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    ColorPickerComponent
+    ColorPickerComponent,
+    MaterialsComponent
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
@@ -30,6 +34,7 @@ export class MeshManagerComponent implements OnDestroy{
   meshList: MeshInterface[] = [];
   subs: Subscription[] = [];
   meshDict: {[key: number]: MeshInterface }= {};
+  dialog = inject(MatDialog);
 
   constructor(){
     effect(
@@ -156,6 +161,10 @@ export class MeshManagerComponent implements OnDestroy{
   {
     this.meshDict[meshItemId].blueColor = value;
     this.threejsService.updateMesh(this.meshDict[meshItemId]);
+  }
+
+  launchMaterialDialog() {
+    this.dialog.open(MaterialsComponent, {});
   }
 
 }
