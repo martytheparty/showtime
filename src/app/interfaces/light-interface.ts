@@ -7,6 +7,7 @@ export interface LightInterface {
     xPos: number
     yPos: number
     zPos: number
+    intensity: number
     form?: FormGroup
     sub?: Subscription
 }

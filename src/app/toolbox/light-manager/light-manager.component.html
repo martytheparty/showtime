@@ -1,3 +1,35 @@
 <button class="add-light" mat-raised-button color="primary" (click)="addLight()">Add Light</button>
 
-There are {{lightsList.length}} lights.
+@if(lightsList)
+{
+    <table mat-table [dataSource]="lightsList">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let light"> {{light.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="xPos">
+            <th mat-header-cell *matHeaderCellDef> x position </th>
+            <td mat-cell *matCellDef="let light"> {{light.xPos}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="yPos">
+            <th mat-header-cell *matHeaderCellDef> y position </th>
+            <td mat-cell *matCellDef="let light"> {{light.yPos}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="zPos">
+            <th mat-header-cell *matHeaderCellDef> x position </th>
+            <td mat-cell *matCellDef="let light"> {{light.zPos}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="intensity">
+            <th mat-header-cell *matHeaderCellDef> intensity </th>
+            <td mat-cell *matCellDef="let light"> {{light.intensity}} </td>
+        </ng-container>
+        
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+}

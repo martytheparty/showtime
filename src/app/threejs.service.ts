@@ -1,7 +1,7 @@
 import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import * as THREE from 'three';
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 import { LightInterface } from './interfaces/light-interface';
@@ -38,6 +38,7 @@ export class ThreejsService {
     zPos: 5
   };
   meshes: Mesh<BoxGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>[] = [];
+  lights: PointLight[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
   sceneItem: SceneInterface = {
@@ -145,7 +146,20 @@ export class ThreejsService {
   addLight(lightItem: LightInterface): LightInterface
   {
     this.lightItems.push(lightItem);
+    this.lightItems = [... this.lightItems];
+
+    const light = new THREE.PointLight();
+    this.lights.push(light);
+    light.intensity = lightItem.intensity;
+    light.position.setX(lightItem.xPos);
+    light.position.setY(lightItem.yPos);
+    light.position.setZ(lightItem.zPos);
+    lightItem.id = light.id;
+
+
     this.lightListSignal.set(this.lightItems);
+
+    this.scene.add( light );
 
     return lightItem;
   }

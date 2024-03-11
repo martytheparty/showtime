@@ -2,6 +2,14 @@
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
+        <mat-icon>lights</mat-icon>
+        light
+      </ng-template>
+      <app-light-manager></app-light-manager>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
         <mat-icon>view_in_ar</mat-icon>
         mesh
       </ng-template>
@@ -13,13 +21,6 @@
         scene
       </ng-template>
       <app-scene-manager></app-scene-manager>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>lights</mat-icon>
-        light
-      </ng-template>
-      <app-light-manager></app-light-manager>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
