@@ -147,7 +147,6 @@ export class ThreejsService {
   {
     this.lightItems.push(lightItem);
     this.lightItems = [... this.lightItems];
-
     const light = new THREE.PointLight();
     this.lights.push(light);
     light.intensity = lightItem.intensity;
@@ -155,13 +154,28 @@ export class ThreejsService {
     light.position.setY(lightItem.yPos);
     light.position.setZ(lightItem.zPos);
     lightItem.id = light.id;
-
-
     this.lightListSignal.set(this.lightItems);
-
     this.scene.add( light );
 
     return lightItem;
+  }
+
+  updateLight(lightItem: LightInterface): void
+  {
+    const light = this.lights.find( (light: PointLight) => {
+      return (light.id === lightItem.id)
+    } );
+
+    if (light)
+    {
+      light?.position.setX(lightItem.xPos);
+      light?.position.setY(lightItem.yPos);
+      light?.position.setZ(lightItem.zPos);
+      if (lightItem.name)
+      {
+        light.name = lightItem.name;
+      }
+    }
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface

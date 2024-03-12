@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnDestroy } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,7 +28,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
 })
-export class MeshManagerComponent implements OnDestroy{
+export class MeshManagerComponent implements OnDestroy, OnInit{
   threejsService: ThreejsService = inject(ThreejsService);
   editId = 0;
   meshList: MeshInterface[] = [];
@@ -43,6 +43,14 @@ export class MeshManagerComponent implements OnDestroy{
       }
     ); 
   }
+  ngOnInit(): void {
+    const meshItem: MeshInterface = this.addMesh();
+
+    meshItem.xPos = 1;
+    meshItem.redColor = 255;
+    meshItem.materialType = 'phong';
+    this.threejsService.updateMesh(meshItem);
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach(
@@ -50,7 +58,7 @@ export class MeshManagerComponent implements OnDestroy{
     );
   }
 
-  addMesh(): void
+  addMesh(): MeshInterface
   {
     const meshItem: MeshInterface = {
       id: -1,
@@ -69,6 +77,8 @@ export class MeshManagerComponent implements OnDestroy{
 
     const form = this.setupForm(meshItem);
     this.setupSubs(meshItem, form);
+
+    return meshItem;
   }
 
   setupSubs(meshItem: MeshInterface, form: FormGroup): void
