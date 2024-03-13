@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 
 @Component({
   selector: 'app-light-manager',
@@ -20,7 +21,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatFormFieldModule,
     MatIcon,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableFilterComponent
   ],
   templateUrl: './light-manager.component.html',
   styleUrl: './light-manager.component.scss'
@@ -30,6 +32,10 @@ export class LightManagerComponent implements OnDestroy {
   threejsService: ThreejsService = inject(ThreejsService);
 
   lightsList: LightInterface[] = [];
+  filteredLightsList: LightInterface[] = [];
+
+  filterValue: string = '';
+
   subs: Subscription[] = [];
 
   displayedColumns: string[] = ['id', "name","xPos", "yPos", "zPos", "intensity", "expand"];
@@ -40,6 +46,15 @@ export class LightManagerComponent implements OnDestroy {
     effect(
       () => {
         this.lightsList = this.threejsService.lightListValues();
+        if(this.filterValue === '') {
+          this.filteredLightsList = this.lightsList;
+        } else  {
+          this.filteredLightsList = this.lightsList.filter(
+            (light: LightInterface) => {
+              return light.name?.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
+            }
+          );
+        }
       }
     ); 
   }
@@ -111,5 +126,17 @@ export class LightManagerComponent implements OnDestroy {
   toggleEdit(): void
   {
     this.edit = !this.edit;
+  }
+
+  updateFilter(event: string): void
+  {
+    this.filterValue = event;
+
+    this.filteredLightsList = this.lightsList.filter(
+      (light: LightInterface) => {
+        return light.name?.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
+      }
+    );
+
   }
 }

@@ -6,12 +6,13 @@
     (click)="toggleEdit()">
     @if(edit) { Show Raw Data  } @else { Show Edit Forms } 
 </button>
+<app-table-filter (filterValue)="updateFilter($event)"></app-table-filter>
 
 @if(lightsList)
 {
     <table 
         mat-table 
-        [dataSource]="lightsList"
+        [dataSource]="filteredLightsList"
         multiTemplateDataRows
         >
         <ng-container matColumnDef="id">
