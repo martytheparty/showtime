@@ -8,8 +8,10 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
+import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 
 @Component({
   selector: 'app-light-manager',
@@ -22,7 +24,9 @@ import { TableFilterComponent } from '../common-components/table-filter/table-fi
     MatFormFieldModule,
     MatIcon,
     ReactiveFormsModule,
-    TableFilterComponent
+    TableFilterComponent,
+    MatSliderModule,
+    ColorPickerComponent
   ],
   templateUrl: './light-manager.component.html',
   styleUrl: './light-manager.component.scss'
@@ -38,8 +42,8 @@ export class LightManagerComponent implements OnDestroy {
 
   subs: Subscription[] = [];
 
-  displayedColumns: string[] = ['id', "name","xPos", "yPos", "zPos", "intensity", "expand"];
-  edit = true;
+  displayedColumns: string[] = ['id', "name","xPos", "yPos", "zPos", "expand"];
+  edit = false;
   expandedLightId = 0;
 
   constructor(){
@@ -66,7 +70,10 @@ export class LightManagerComponent implements OnDestroy {
       xPos: 0,
       yPos: 0,
       zPos: 0,
-      intensity: 1
+      intensity: 1,
+      redColor: 255,
+      greenColor: 255,
+      blueColor: 255
     };
 
     this.threejsService.addLight(lightItem);
@@ -109,8 +116,11 @@ export class LightManagerComponent implements OnDestroy {
           {
             lightItem.zPos = zPosition;
           }
-
         }
+
+        // this is updated very often by the slider... this may need to be debounced
+        // if there are performance issues.
+        lightItem.intensity = lightItem.form?.value.intensity;
 
         this.threejsService.updateLight(lightItem);
       }
@@ -137,6 +147,32 @@ export class LightManagerComponent implements OnDestroy {
         return light.name?.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
       }
     );
+  }
 
+  deleteLight(lightItem: LightInterface): void
+  {
+    this.threejsService.deleteLight(lightItem);
+  }
+
+  formatLabel(value: number): string {
+    return `${value}`;
+  }
+
+  redUpdate(event: number, lightItem: LightInterface): void
+  {
+    lightItem.redColor = event;
+    this.threejsService.updateLight(lightItem);
+  }
+
+  greenUpdate(event: number, lightItem: LightInterface): void
+  {
+    lightItem.greenColor = event;
+    this.threejsService.updateLight(lightItem);
+  }
+
+  blueUpdate(event: number, lightItem: LightInterface): void
+  {
+    lightItem.blueColor = event;
+    this.threejsService.updateLight(lightItem);
   }
 }

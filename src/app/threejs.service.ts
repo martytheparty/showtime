@@ -146,7 +146,7 @@ export class ThreejsService {
   addLight(lightItem: LightInterface): LightInterface
   {
     this.lightItems.push(lightItem);
-    this.lightItems = [... this.lightItems];
+   this.lightItems = [... this.lightItems];
     const light = new THREE.PointLight();
     this.lights.push(light);
     light.intensity = lightItem.intensity;
@@ -168,14 +168,36 @@ export class ThreejsService {
 
     if (light)
     {
-      light?.position.setX(lightItem.xPos);
-      light?.position.setY(lightItem.yPos);
-      light?.position.setZ(lightItem.zPos);
+      light.position.setX(lightItem.xPos);
+      light.position.setY(lightItem.yPos);
+      light.position.setZ(lightItem.zPos);
+      light.intensity = lightItem.intensity;
       if (lightItem.name)
       {
         light.name = lightItem.name;
       }
+      light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
     }
+  }
+
+  deleteLight(lightItem: LightInterface): void
+  {
+    const light = this.lights.find( (light: PointLight) => {
+      return (light.id === lightItem.id)
+    } );
+
+    const id = lightItem.id;
+
+    if(light)
+    {
+      this.scene.remove(light);
+      this.lights = this.lights.filter((light) => light.id !== id);
+
+      this.lightItems = this.lightItems.filter((light) => light.id !== id);
+
+      this.lightListSignal.set(this.lightItems);
+    }
+
   }
 
   addMesh(meshItem: MeshInterface): MeshInterface
@@ -239,7 +261,7 @@ export class ThreejsService {
 
     if (meshItem.materialType === 'basic' && updateMesh) {
       const material = updateMesh.material as MeshBasicMaterial;
-      material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255)
+      material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255);
     }
 
     if (meshItem.materialType === 'phong' && updateMesh) {

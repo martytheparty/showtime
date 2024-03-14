@@ -44,12 +44,6 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     ); 
   }
   ngOnInit(): void {
-    const meshItem: MeshInterface = this.addMesh();
-
-    meshItem.xPos = 1;
-    meshItem.redColor = 255;
-    meshItem.materialType = 'phong';
-    this.threejsService.updateMesh(meshItem);
   }
 
   ngOnDestroy(): void {
