@@ -22,28 +22,53 @@ multiTemplateDataRows
 <ng-container matColumnDef="name">
    <th mat-header-cell *matHeaderCellDef> name </th>
    <td mat-cell *matCellDef="let mesh"> 
-       {{mesh.name}}
+      @if (edit) {
+         <form [formGroup]="mesh.form">
+            <input formControlName="name" type="text">
+        </form>         
+      } @else {
+         {{mesh.name}}
+      }
+
    </td>
 </ng-container>
 
 <ng-container matColumnDef="xPos">
    <th mat-header-cell *matHeaderCellDef> x position  </th>
-   <td mat-cell *matCellDef="let mesh"> 
-       {{mesh.xPos}}
+   <td mat-cell *matCellDef="let mesh">
+      @if (edit) {
+         <form [formGroup]="mesh.form">
+            <input formControlName="xPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.xPos}}
+      } 
    </td>
 </ng-container>
 
 <ng-container matColumnDef="yPos">
    <th mat-header-cell *matHeaderCellDef> y position  </th>
    <td mat-cell *matCellDef="let mesh"> 
-       {{mesh.yPos}}
+      @if (edit) {
+         <form [formGroup]="mesh.form">
+            <input formControlName="yPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.yPos}}
+      } 
    </td>
 </ng-container>
 
 <ng-container matColumnDef="zPos">
    <th mat-header-cell *matHeaderCellDef> z position  </th>
    <td mat-cell *matCellDef="let mesh"> 
-       {{mesh.zPos}}
+      @if (edit) {
+         <form [formGroup]="mesh.form">
+            <input formControlName="zPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.zPos}}
+      } 
    </td>
 </ng-container>
 
@@ -83,116 +108,52 @@ multiTemplateDataRows
    </td>
  </ng-container>
 
+ <ng-container matColumnDef="expandedDetail">
+   <td mat-cell 
+       *matCellDef="let mesh" 
+       [attr.colspan]="displayedColumns.length"
+   >
+     <div class="light-detail"
+           [ngClass]="{ 
+               'collapsed':  mesh.id != expandedMeshId
+           }"
+       >
+       <div class="detail-form">
+         <mat-form-field [formGroup]="mesh.form">
+            <mat-label>Choose one</mat-label>
+            <mat-select formControlName="materialType">
+               <mat-option value="normal">normal</mat-option>
+               <mat-option value="basic">basic</mat-option>
+               <mat-option value="phong">phong</mat-option>
+            </mat-select>
+            <mat-hint>
+               The material that will be rendered for the mesh.
+               <mat-icon tabindex="0" (keyup.enter)="launchMaterialDialog()" (click)="launchMaterialDialog()" class="tt-info">information</mat-icon>
+            </mat-hint>
+         </mat-form-field>
+            
+         @if(mesh.materialType !== 'normal')
+         {
+            <app-color-picker
+            [redValue]="mesh.redColor"
+            [greenValue]="mesh.greenColor"
+            [blueValue]="mesh.blueColor"
+            (redUpdate)="redUpdate($event, mesh)"
+            (greenUpdate)="greenUpdate($event, mesh)"
+            (blueUpdate)="blueUpdate($event, mesh)"
+            ></app-color-picker>
+         }
+
+       </div>
+     </div>
+   </td>
+ </ng-container>
+
 
 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
-
-<table>
-@for( mesh of meshList; track mesh.id ){
-   @if(editId === 0 || editId === mesh.id)
-   {
-      <tr>
-         <td>
-            @if(editId === 0)
-            {
-               <div class="data-row">
-                  <div class="data-title">id:</div>
-                  <div class="data-value">{{mesh.id}}</div>
-               </div>
-               <div class="data-row">
-                  <div class="data-title">x Pos:</div>
-                  <div class="data-value">{{mesh.xPos}}</div>
-               </div>
-               <div class="data-row">
-                  <div class="data-title">y Pos:</div>
-                  <div class="data-value">{{mesh.yPos}}</div>
-               </div>
-               <div class="data-row">
-                  <div class="data-title">z Pos:</div>
-                  <div class="data-value">{{mesh.zPos}}</div>
-               </div>
-               <div class="data-row">
-                  <div class="data-title">material:</div>
-                  <div class="data-value">{{mesh.materialType}}</div>
-               </div>
-               @if(meshDict[mesh.id].materialType !== 'normal'){
-                  <div class="data-row">
-                     <div class="data-title">color:</div>
-                     <div class="data-value">{{mesh.redColor}}, {{mesh.greenColor}}, {{mesh.blueColor}}</div>
-                  </div>
-               }
-            } @else {
-               @if(mesh.form)
-               {
-                  <form [formGroup]="mesh.form">
-                     <div class="data-row">
-                        <div class="data-title">id:</div>
-                        <div class="data-value">{{mesh.id}}</div>
-                     </div>
-                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
-                        <mat-label>X Position</mat-label>
-                        <input formControlName="xPos" matInput>
-                        <mat-hint>The position of the object along the x-axis.</mat-hint>
-                  </mat-form-field>
-
-                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
-                     <mat-label>Y Position</mat-label>
-                     <input formControlName="yPos" matInput>
-                     <mat-hint>The position of the object along the y-axis.</mat-hint>
-                  </mat-form-field>
-
-                  <mat-form-field [formGroup]="mesh.form" appearance="fill">
-                     <mat-label>Z Position</mat-label>
-                     <input formControlName="zPos" matInput>
-                     <mat-hint>The position of the object along the z-axis.</mat-hint>
-                  </mat-form-field>
- 
-                  <mat-form-field [formGroup]="mesh.form">
-                     <mat-label>Choose one</mat-label>
-                     <mat-select formControlName="materialType">
-                        <mat-option value="normal">normal</mat-option>
-                        <mat-option value="basic">basic</mat-option>
-                        <mat-option value="phong">phong</mat-option>
-                     </mat-select>
-                     <mat-hint>
-                        The material that will be rendered for the mesh.
-                        <mat-icon tabindex="0" (keyup.enter)="launchMaterialDialog()" (click)="launchMaterialDialog()" class="tt-info">information</mat-icon>
-                     </mat-hint>
-                  </mat-form-field>
-                     
-                  @if(meshDict[mesh.id].materialType !== 'normal')
-                  {
-                     <app-color-picker
-                     [redValue]="meshDict[mesh.id].redColor"
-                     [greenValue]="meshDict[mesh.id].greenColor"
-                     [blueValue]="meshDict[mesh.id].blueColor"
-                     (redUpdate)="redUpdate($event, mesh.id)"
-                     (greenUpdate)="greenUpdate($event, mesh.id)"
-                     (blueUpdate)="blueUpdate($event, mesh.id)"
-                     ></app-color-picker>
-                  }
-                  </form>
-               }
-            }  
-         </td>
-         <td>
-            @if(editId === 0)
-            {
-               <button (click)="setEditId(mesh.id)" mat-icon-button color="basic">
-                  <mat-icon>edit</mat-icon>
-               </button>
-               <button (click)="deleteMesh(mesh)" mat-icon-button color="warn">
-                  <mat-icon>delete</mat-icon>
-               </button>
-            } @else {
-               <button (click)="resetEditId()" mat-icon-button color="basic">
-                  <mat-icon>done</mat-icon>
-               </button>
-            }
-         </td>
-      </tr>
-   }
-}
+<tr mat-row 
+*matRowDef="let row; columns: ['expandedDetail']" 
+class="detail-row">
+</tr>
 </table>

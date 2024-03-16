@@ -12,6 +12,8 @@ import { ColorPickerComponent } from '../common-components/color-picker/color-pi
 import { MaterialsComponent } from './materials/materials.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -25,20 +27,20 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     ColorPickerComponent,
     MaterialsComponent,
-    MatTableModule
+    MatTableModule,
+    CommonModule,
+    MatSliderModule
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
 })
 export class MeshManagerComponent implements OnDestroy, OnInit{
   threejsService: ThreejsService = inject(ThreejsService);
-  editId = 0;
   meshList: MeshInterface[] = [];
   subs: Subscription[] = [];
-  meshDict: {[key: number]: MeshInterface }= {};
   dialog = inject(MatDialog);
   displayedColumns: string[] = ['id', 'name', 'xPos', 'yPos', 'zPos', 'expand'];
-  edit = false;
+  edit = true;
   expandedMeshId = 0;
 
   constructor(){
@@ -72,8 +74,6 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     } 
      
     this.threejsService.addMesh(meshItem);
-
-    this.meshDict[meshItem.id] = meshItem;
 
     const form = this.setupForm(meshItem);
     this.setupSubs(meshItem, form);
@@ -128,6 +128,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     const form = new FormGroup(
       {
         id: new FormControl(meshItem.id),
+        name: new FormControl(meshItem.name),
         xPos: new FormControl(meshItem.xPos),
         yPos: new FormControl(meshItem.yPos),
         zPos: new FormControl(meshItem.zPos),
@@ -145,32 +146,22 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     meshItem.sub?.unsubscribe();
   }
 
-  setEditId(id: number): void
+  redUpdate(value: number, meshItem: MeshInterface): void
   {
-    this.editId = id;
+    meshItem.redColor = value;
+    this.threejsService.updateMesh(meshItem);
   }
 
-  resetEditId(): void
+  greenUpdate(value: number, meshItem: MeshInterface): void
   {
-    this.editId = 0;
+    meshItem.greenColor = value;
+    this.threejsService.updateMesh(meshItem);
   }
 
-  redUpdate(value: number, meshItemId: number): void
+  blueUpdate(value: number, meshItem: MeshInterface): void
   {
-    this.meshDict[meshItemId].redColor = value;
-    this.threejsService.updateMesh(this.meshDict[meshItemId]);
-  }
-
-  greenUpdate(value: number, meshItemId: number): void
-  {
-    this.meshDict[meshItemId].greenColor = value;
-    this.threejsService.updateMesh(this.meshDict[meshItemId]);
-  }
-
-  blueUpdate(value: number, meshItemId: number): void
-  {
-    this.meshDict[meshItemId].blueColor = value;
-    this.threejsService.updateMesh(this.meshDict[meshItemId]);
+    meshItem.blueColor = value;
+    this.threejsService.updateMesh(meshItem);
   }
 
   launchMaterialDialog() {
