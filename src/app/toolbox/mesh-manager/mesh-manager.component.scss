@@ -1,7 +1,4 @@
 .add-mesh
-    {
-        margin-top: 10px;
-    }
 
     .data-row
     {
@@ -36,4 +33,8 @@
             position: relative;
             cursor: pointer;
         }
+    }
+
+    button {
+        margin: 10px 2px 0 2px;
     }

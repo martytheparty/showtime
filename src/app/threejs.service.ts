@@ -146,7 +146,7 @@ export class ThreejsService {
   addLight(lightItem: LightInterface): LightInterface
   {
     this.lightItems.push(lightItem);
-   this.lightItems = [... this.lightItems];
+    this.lightItems = [... this.lightItems];
     const light = new THREE.PointLight();
     this.lights.push(light);
     light.intensity = lightItem.intensity;
@@ -218,6 +218,8 @@ export class ThreejsService {
     this.updateMesh(meshItem);    
 
     this.meshItems.push( meshItem );
+
+    this.meshItems = [... this.meshItems];
 
     this.meshListSignal.set(this.meshItems);
 

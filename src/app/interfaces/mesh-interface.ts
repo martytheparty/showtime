@@ -3,6 +3,7 @@ import { Subscription } from "rxjs"
 
 export interface MeshInterface {
     id: number
+    name: string
     xPos: number
     yPos: number
     zPos: number

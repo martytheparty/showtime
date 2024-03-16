@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 import { MaterialsComponent } from './materials/materials.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -23,7 +24,8 @@ import { MatDialog } from '@angular/material/dialog';
     MatFormFieldModule,
     MatSelectModule,
     ColorPickerComponent,
-    MaterialsComponent
+    MaterialsComponent,
+    MatTableModule
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
@@ -35,6 +37,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   subs: Subscription[] = [];
   meshDict: {[key: number]: MeshInterface }= {};
   dialog = inject(MatDialog);
+  displayedColumns: string[] = ['id', 'name', 'xPos', 'yPos', 'zPos', 'expand'];
+  edit = false;
+  expandedMeshId = 0;
 
   constructor(){
     effect(
@@ -56,6 +61,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   {
     const meshItem: MeshInterface = {
       id: -1,
+      name: '',
       xPos: 0,
       yPos: 0,
       zPos: 0,
@@ -169,6 +175,10 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
   launchMaterialDialog() {
     this.dialog.open(MaterialsComponent, {});
+  }
+
+  toggleEdit(): void {
+    this.edit = !this.edit;
   }
 
 }
