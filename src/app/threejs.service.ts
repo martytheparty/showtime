@@ -2,7 +2,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
-import { MeshInterface } from './interfaces/mesh-interface';
+import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 import { LightInterface } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
@@ -37,7 +37,7 @@ export class ThreejsService {
     yPos: 0,
     zPos: 5
   };
-  meshes: Mesh<BoxGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>[] = [];
+  meshes: SupportedMeshes[] = [];
   lights: PointLight[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
@@ -202,16 +202,22 @@ export class ThreejsService {
 
   addMesh(meshItem: MeshInterface): MeshInterface
   {
-    const geometry: BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+    let geometry: BoxGeometry | THREE.SphereGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+
+    if (meshItem.shape === 'SphereGeometry') {
+      geometry = new THREE.SphereGeometry(.5,32,32);
+    }
+
     let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
 
+    
     if (meshItem.materialType === 'basic') {
       material = new THREE.MeshBasicMaterial();
     } else if (meshItem.materialType === 'phong') {
       material = new THREE.MeshPhongMaterial();
     }
 
-    const mesh: Mesh<BoxGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap> = new THREE.Mesh( geometry, material );
+    const mesh: SupportedMeshes = new THREE.Mesh( geometry, material );
     meshItem.id = mesh.id;
     this.meshes.push(mesh);
 
@@ -231,6 +237,25 @@ export class ThreejsService {
   updateMesh(meshItem: MeshInterface): void
   {
     const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
+
+    if (updateMesh?.geometry.type !== meshItem.shape) {
+      // the mesh needs to be converted
+      if (updateMesh && meshItem.shape === 'SphereGeometry') {
+        const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(.5, 32, 32);
+        // the commented code was povided by chatGPT but does not seem to be necessary
+        //updateMesh.geometry.dispose();
+        updateMesh.geometry = geometry;
+        // updateMesh.updateMatrix();
+        // updateMesh.geometry.computeBoundingBox();
+      } else if (updateMesh) {
+        const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
+        // the commented code was povided by chatGPT but does not seem to be necessary
+        //updateMesh.geometry.dispose();
+        updateMesh.geometry = geometry;
+        // updateMesh.updateMatrix();
+        // updateMesh.geometry.computeBoundingBox();
+      }
+    }
 
     updateMesh?.position.setX(meshItem.xPos);
     updateMesh?.position.setY(meshItem.yPos);

@@ -120,7 +120,19 @@ multiTemplateDataRows
        >
        <div class="detail-form">
          <mat-form-field [formGroup]="mesh.form">
-            <mat-label>Choose one</mat-label>
+            <mat-label>Choose Shape</mat-label>
+            <mat-select formControlName="shape">
+               <mat-option value="BoxGeometry">Cube</mat-option>
+               <mat-option value="SphereGeometry">Sphere</mat-option>
+            </mat-select>
+            <mat-hint>
+               The material that will be rendered for the mesh.
+               <mat-icon tabindex="0" (keyup.enter)="launchMaterialDialog()" (click)="launchMaterialDialog()" class="tt-info">information</mat-icon>
+            </mat-hint>
+         </mat-form-field>
+
+         <mat-form-field [formGroup]="mesh.form">
+            <mat-label>Choose Material</mat-label>
             <mat-select formControlName="materialType">
                <mat-option value="normal">normal</mat-option>
                <mat-option value="basic">basic</mat-option>

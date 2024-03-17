@@ -121,6 +121,7 @@ export class LightManagerComponent implements OnDestroy {
         // this is updated very often by the slider... this may need to be debounced
         // if there are performance issues.
         lightItem.intensity = lightItem.form?.value.intensity;
+        lightItem.name = lightItem.form?.value.name;
 
         this.threejsService.updateLight(lightItem);
       }

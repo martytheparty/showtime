@@ -64,6 +64,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     const meshItem: MeshInterface = {
       id: -1,
       name: '',
+      shape: 'BoxGeometry',
       xPos: 0,
       yPos: 0,
       zPos: 0,
@@ -111,6 +112,19 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           updated = true;
         }
 
+        if(form.value.name)
+        {
+          meshItem.name = form.value.name;
+          updated = true;
+        }
+
+        if (form.value.shape)
+        {
+          meshItem.shape = form.value.shape;
+          updated = true;
+        }
+
+
         if (updated)
         {
           this.threejsService.updateMesh(meshItem);
@@ -132,6 +146,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         xPos: new FormControl(meshItem.xPos),
         yPos: new FormControl(meshItem.yPos),
         zPos: new FormControl(meshItem.zPos),
+        shape: new FormControl(meshItem.shape),
         materialType: new FormControl(meshItem.materialType)
       }
     );
