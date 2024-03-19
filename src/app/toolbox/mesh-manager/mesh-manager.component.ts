@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../threejs.service';
-import { MeshInterface } from '../../interfaces/mesh-interface';
+import { MeshInterface, } from '../../interfaces/mesh-interface';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -71,7 +71,11 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       materialType: 'normal',
       redColor: 0,
       greenColor: 0,
-      blueColor: 0
+      blueColor: 0,
+      width: 1,
+      height: 1,
+      depth: 1,
+      radius: 1
     } 
      
     this.threejsService.addMesh(meshItem);
@@ -86,49 +90,17 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   {
     const sub: Subscription = form.valueChanges.subscribe(
       () => {
-        let updated = false;
-
-        if(form.value.xPos || form.value.xPos === 0)
-        {
           meshItem.xPos = form.value.xPos;
-          updated = true;
-        }
-
-        if(form.value.yPos || form.value.yPos === 0)
-        {
           meshItem.yPos = form.value.yPos;
-          updated = true;
-        }
-
-        if(form.value.zPos || form.value.zPos === 0)
-        {
           meshItem.zPos = form.value.zPos;
-          updated = true;
-        }
-
-        if(form.value.materialType)
-        {
           meshItem.materialType = form.value.materialType;
-          updated = true;
-        }
-
-        if(form.value.name)
-        {
           meshItem.name = form.value.name;
-          updated = true;
-        }
-
-        if (form.value.shape)
-        {
           meshItem.shape = form.value.shape;
-          updated = true;
-        }
-
-
-        if (updated)
-        {
+          meshItem.width = form.value.width;
+          meshItem.height = form.value.height;
+          meshItem.depth = form.value.depth;
+          meshItem.radius = form.value.radius;
           this.threejsService.updateMesh(meshItem);
-        }
       }
     );
 
@@ -139,6 +111,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
   setupForm(meshItem: MeshInterface): FormGroup
   {
+
     const form = new FormGroup(
       {
         id: new FormControl(meshItem.id),
@@ -147,7 +120,11 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         yPos: new FormControl(meshItem.yPos),
         zPos: new FormControl(meshItem.zPos),
         shape: new FormControl(meshItem.shape),
-        materialType: new FormControl(meshItem.materialType)
+        materialType: new FormControl(meshItem.materialType),
+        width: new FormControl(meshItem.width),
+        height: new FormControl(meshItem.height),
+        depth: new FormControl(meshItem.depth),
+        radius: new FormControl(meshItem.radius)
       }
     );
 

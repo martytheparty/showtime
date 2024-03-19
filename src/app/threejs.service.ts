@@ -256,6 +256,28 @@ export class ThreejsService {
         // updateMesh.geometry.computeBoundingBox();
       }
     }
+    
+    if (meshItem.shape === 'BoxGeometry' && updateMesh) {
+      const geo: THREE.BoxGeometry = updateMesh.geometry as THREE.BoxGeometry;
+      
+      if (geo.parameters.width !== meshItem.width 
+          || geo.parameters.height !== meshItem.height
+          || geo.parameters.depth !== meshItem.depth)
+      {
+        const newGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(meshItem.width, meshItem.height, meshItem.depth, 1);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'SphereGeometry' && updateMesh) {
+      const geo: THREE.SphereGeometry = updateMesh.geometry as THREE.SphereGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(meshItem.radius, 32, 32);
+        updateMesh.geometry = newGeometry;
+      }
+    }
 
     updateMesh?.position.setX(meshItem.xPos);
     updateMesh?.position.setY(meshItem.yPos);

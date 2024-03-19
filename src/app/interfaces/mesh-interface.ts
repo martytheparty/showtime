@@ -15,6 +15,10 @@ export interface MeshInterface {
     redColor: number
     greenColor: number
     blueColor: number
+    width: number
+    height: number
+    depth: number
+    radius: number
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
