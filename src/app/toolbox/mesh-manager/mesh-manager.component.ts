@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
+import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -29,7 +30,8 @@ import { MatSliderModule } from '@angular/material/slider';
     MaterialsComponent,
     MatTableModule,
     CommonModule,
-    MatSliderModule
+    MatSliderModule,
+    TableFilterComponent
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
@@ -37,6 +39,10 @@ import { MatSliderModule } from '@angular/material/slider';
 export class MeshManagerComponent implements OnDestroy, OnInit{
   threejsService: ThreejsService = inject(ThreejsService);
   meshList: MeshInterface[] = [];
+  filteredMeshList: MeshInterface[] = [];
+
+  filterValue: string = '';
+
   subs: Subscription[] = [];
   dialog = inject(MatDialog);
   displayedColumns: string[] = ['id', 'name', 'xPos', 'yPos', 'zPos', 'expand'];
@@ -47,6 +53,16 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     effect(
       () => {
         this.meshList = this.threejsService.meshList();
+
+        if(this.filterValue === '') {
+          this.filteredMeshList = this.meshList;
+        } else  {
+          this.filteredMeshList = this.meshList.filter(
+            (mesh: MeshInterface) => {
+              return mesh.name?.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
+            }
+          );
+        }
       }
     ); 
   }
@@ -162,6 +178,17 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
   toggleEdit(): void {
     this.edit = !this.edit;
+  }
+
+  updateFilter(event: string): void
+  {
+    this.filterValue = event;
+
+    this.filteredMeshList = this.meshList.filter(
+      (mesh: MeshInterface) => {
+        return mesh.name?.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
+      }
+    );
   }
 
 }

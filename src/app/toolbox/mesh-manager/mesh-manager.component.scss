@@ -1,52 +1,57 @@
-.add-mesh
+.data-row
+{
+    display: flex;
 
-    .data-row
+    .data-title
     {
-        display: flex;
-
-        .data-title
-        {
-            width: 60px;
-            text-align: right;
-        }
-
-        .data-value
-        {
-            margin-left: 5px;
-
-            input
-            {
-                width: 35px;
-            }
-        }
+        width: 60px;
+        text-align: right;
     }
 
-    mat-form-field
+    .data-value
     {
-        width: 400px;
-        display: block;
+        margin-left: 5px;
 
-        .tt-info
+        input
         {
-            font-size: 16px;
-            top: 4px;
-            position: relative;
-            cursor: pointer;
+            width: 35px;
         }
     }
+}
 
-    button {
-        margin: 10px 2px 0 2px;
-    }
+mat-form-field
+{
+    width: 400px;
+    display: block;
 
-    input {
-        width: 50px;
+    .tt-info
+    {
+        font-size: 16px;
+        top: 4px;
+        position: relative;
+        cursor: pointer;
     }
+}
 
-    .collapsed {
-        display: none;
-    }
+button {
+    margin: 10px 2px 0 2px;
+}
 
-    .detail-row {
-        height: 0px;
-    }
+input {
+    width: 50px;
+}
+
+.collapsed {
+    display: none;
+}
+
+.detail-row {
+    height: 0px;
+}
+
+app-table-filter{
+    display: inline-block;
+    margin: 0 2px;
+    position: relative;
+    top: 5px;
+}
