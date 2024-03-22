@@ -6,6 +6,7 @@ import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
 import { LightInterface } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
+import { RendererInterface } from './interfaces/renderer-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,7 @@ export class ThreejsService {
     yPos: 0,
     zPos: 5
   };
+  rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
   lights: PointLight[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -65,11 +67,14 @@ export class ThreejsService {
   private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
   orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
-  private animationSignal: WritableSignal<boolean> = signal(true);
+  private animationSignal: WritableSignal<boolean> = signal(false);
   animationValue: Signal<boolean> = computed( () => this.animationSignal());
 
   private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
   sceneItemValues: Signal<SceneInterface> = computed( () => this.sceneSignal());
+
+  private rendererSignal: WritableSignal<RendererInterface> = signal(this.rendererItem);
+  rendererItemValues: Signal<RendererInterface> = computed( () => this.rendererSignal());
 
   updateAnimation(animationState: boolean): void
   {
@@ -143,6 +148,11 @@ export class ThreejsService {
     this.updateCamera();
   }
 
+  updateRenderer(renderItem: RendererInterface): void
+  {
+    this.rendererItem = renderItem;
+  }
+
   addLight(lightItem: LightInterface): LightInterface
   {
     this.lightItems.push(lightItem);
@@ -155,6 +165,7 @@ export class ThreejsService {
     light.position.setZ(lightItem.zPos);
     lightItem.id = light.id;
     this.lightListSignal.set(this.lightItems);
+    light.castShadow = true;
     this.scene.add( light );
 
     return lightItem;
@@ -228,6 +239,8 @@ export class ThreejsService {
     this.meshItems = [... this.meshItems];
 
     this.meshListSignal.set(this.meshItems);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
 
     this.scene.add( mesh );
 
@@ -352,6 +365,15 @@ export class ThreejsService {
             mesh.rotation.x = time / 2000;
             mesh.rotation.y = time / 1000;
           }
+        );
+      }
+
+      if (this.renderer.shadowMap.enabled !== this.rendererItem.castShadows) {
+        // this doesn't work by itself the lights need to be turned off as well
+        this.renderer.shadowMap.enabled = this.rendererItem.castShadows;
+
+        this.lights.forEach(
+          (light) => light.castShadow = this.rendererItem.castShadows
         );
       }
 
