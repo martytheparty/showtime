@@ -171,9 +171,21 @@ multiTemplateDataRows
                <mat-icon tabindex="0" (keyup.enter)="launchMaterialDialog()" (click)="launchMaterialDialog()" class="tt-info">information</mat-icon>
             </mat-hint>
          </mat-form-field>
-            
+          
+         <form [formGroup]="mesh.form">
+            <mat-checkbox formControlName="castShadow">Cast Shadows</mat-checkbox>
+        </form>
+
+        @if(mesh.materialType === 'phong')
+        {
+         <form [formGroup]="mesh.form">
+            <mat-checkbox formControlName="receiveShadow">Receieve Shadows</mat-checkbox>
+        </form>
+        }
+
          @if(mesh.materialType !== 'normal')
          {
+            <div>Color:</div>
             <app-color-picker
             [redValue]="mesh.redColor"
             [greenValue]="mesh.greenColor"

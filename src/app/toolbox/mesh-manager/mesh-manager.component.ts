@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -26,6 +27,7 @@ import { TableFilterComponent } from '../common-components/table-filter/table-fi
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatCheckboxModule,
     ColorPickerComponent,
     MaterialsComponent,
     MatTableModule,
@@ -91,7 +93,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       width: 1,
       height: 1,
       depth: 1,
-      radius: 1
+      radius: 1,
+      castShadow: true,
+      receiveShadow: true
     } 
      
     this.threejsService.addMesh(meshItem);
@@ -116,6 +120,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.height = form.value.height;
           meshItem.depth = form.value.depth;
           meshItem.radius = form.value.radius;
+          meshItem.castShadow = form.value.castShadow;
+          meshItem.receiveShadow = form.value.receiveShadow;
           this.threejsService.updateMesh(meshItem);
       }
     );
@@ -140,7 +146,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         width: new FormControl(meshItem.width),
         height: new FormControl(meshItem.height),
         depth: new FormControl(meshItem.depth),
-        radius: new FormControl(meshItem.radius)
+        radius: new FormControl(meshItem.radius),
+        castShadow: new FormControl(meshItem.castShadow),
+        receiveShadow: new FormControl(meshItem.receiveShadow)
       }
     );
 

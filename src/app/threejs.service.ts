@@ -293,9 +293,14 @@ export class ThreejsService {
       }
     }
 
-    updateMesh?.position.setX(meshItem.xPos);
-    updateMesh?.position.setY(meshItem.yPos);
-    updateMesh?.position.setZ(meshItem.zPos);
+    if (updateMesh) {
+      updateMesh.position.setX(meshItem.xPos);
+      updateMesh.position.setY(meshItem.yPos);
+      updateMesh.position.setZ(meshItem.zPos);
+      updateMesh.castShadow = meshItem.castShadow;
+      updateMesh.receiveShadow = meshItem.receiveShadow;
+    }
+
 
     let updateMaterial = false;
     if (

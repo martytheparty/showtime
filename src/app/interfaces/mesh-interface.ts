@@ -19,6 +19,9 @@ export interface MeshInterface {
     height: number
     depth: number
     radius: number
+    castShadow: boolean
+    receiveShadow: boolean
+
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
