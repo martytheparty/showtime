@@ -164,8 +164,8 @@ export class ThreejsService {
     light.position.setY(lightItem.yPos);
     light.position.setZ(lightItem.zPos);
     lightItem.id = light.id;
+    light.castShadow = lightItem.castShadow;
     this.lightListSignal.set(this.lightItems);
-    light.castShadow = true;
     this.scene.add( light );
 
     return lightItem;
@@ -188,6 +188,7 @@ export class ThreejsService {
         light.name = lightItem.name;
       }
       light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
+      light.castShadow = lightItem.castShadow;
     }
   }
 
@@ -373,7 +374,21 @@ export class ThreejsService {
         this.renderer.shadowMap.enabled = this.rendererItem.castShadows;
 
         this.lights.forEach(
-          (light) => light.castShadow = this.rendererItem.castShadows
+          (light) => 
+          {
+            if (this.renderer.shadowMap.enabled)
+            {
+              const lightItem: LightInterface | undefined = this.lightItems.find(li => li.id === light.id);
+              if (lightItem)
+              {
+                light.castShadow = lightItem.castShadow;
+              }
+
+            } else {
+              light.castShadow = this.rendererItem.castShadows;
+            }
+
+          }
         );
       }
 

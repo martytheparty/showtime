@@ -12,6 +12,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-light-manager',
@@ -26,7 +27,8 @@ import { ColorPickerComponent } from '../common-components/color-picker/color-pi
     ReactiveFormsModule,
     TableFilterComponent,
     MatSliderModule,
-    ColorPickerComponent
+    ColorPickerComponent,
+    MatCheckboxModule
   ],
   templateUrl: './light-manager.component.html',
   styleUrl: './light-manager.component.scss'
@@ -71,6 +73,7 @@ export class LightManagerComponent implements OnDestroy {
       yPos: 0,
       zPos: 0,
       intensity: 1,
+      castShadow: true,
       redColor: 255,
       greenColor: 255,
       blueColor: 255
@@ -85,7 +88,8 @@ export class LightManagerComponent implements OnDestroy {
         xPos: new FormControl(lightItem.xPos),
         yPos: new FormControl(lightItem.yPos),
         zPos: new FormControl(lightItem.zPos),
-        intensity: new FormControl(lightItem.intensity)
+        intensity: new FormControl(lightItem.intensity),
+        castShadow: new FormControl(lightItem.castShadow)
       }
     );
 
@@ -122,6 +126,7 @@ export class LightManagerComponent implements OnDestroy {
         // if there are performance issues.
         lightItem.intensity = lightItem.form?.value.intensity;
         lightItem.name = lightItem.form?.value.name;
+        lightItem.castShadow = lightItem.form?.value.castShadow;
 
         this.threejsService.updateLight(lightItem);
       }

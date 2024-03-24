@@ -11,6 +11,7 @@ export interface LightInterface {
     greenColor: number
     blueColor: number
     intensity: number
+    castShadow: boolean
     form?: FormGroup
     sub?: Subscription
 }

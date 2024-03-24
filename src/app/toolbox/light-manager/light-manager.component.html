@@ -150,6 +150,15 @@
                                 (greenUpdate)="greenUpdate($event, light)"
                                 ></app-color-picker></td>
                         </tr>
+                        <tr>
+                            <td>cast shadows</td>
+                            <td>
+                                <form [formGroup]="light.form">
+                                    <mat-checkbox formControlName="castShadow"></mat-checkbox>
+                                </form>
+                            </td>
+                        </tr>
+
                     </table>
 
                 </div>

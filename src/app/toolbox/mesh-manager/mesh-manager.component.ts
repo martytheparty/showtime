@@ -46,7 +46,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   subs: Subscription[] = [];
   dialog = inject(MatDialog);
   displayedColumns: string[] = ['id', 'name', 'xPos', 'yPos', 'zPos', 'expand'];
-  edit = true;
+  edit = false;
   expandedMeshId = 0;
 
   constructor(){
