@@ -2,6 +2,13 @@
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
+        <mat-icon>camera</mat-icon>
+        camera
+      </ng-template>
+      <app-camera-manager></app-camera-manager>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
         <mat-icon>lights</mat-icon>
         light
       </ng-template>
@@ -20,13 +27,6 @@
         scene
       </ng-template>
       <app-scene-manager></app-scene-manager>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>camera</mat-icon>
-        camera
-      </ng-template>
-      <app-camera-manager></app-camera-manager>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>

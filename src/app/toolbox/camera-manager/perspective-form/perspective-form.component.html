@@ -41,5 +41,23 @@
             <input formControlName="zPos" matInput>
             <mat-hint>The position of the camera on the z axis.</mat-hint>
           </mat-form-field>
+
+          <mat-form-field [formGroup]="form" appearance="fill">
+            <mat-label>x look-at</mat-label>
+            <input formControlName="xLookat" matInput>
+            <mat-hint>The position on the x axis that the camera is pointed at.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="form" appearance="fill">
+            <mat-label>y look-at</mat-label>
+            <input formControlName="yLookat" matInput>
+            <mat-hint>The position on the y axis that the camera is pointed at.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="form" appearance="fill">
+            <mat-label>z look-at</mat-label>
+            <input formControlName="zLookat" matInput>
+            <mat-hint>The position on the z axis that the camera is pointed at.</mat-hint>
+          </mat-form-field>
     </form>
 </div>

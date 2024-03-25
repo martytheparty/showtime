@@ -26,7 +26,10 @@ export class ThreejsService {
     far: 2000,
     xPos: 0,
     yPos: 0,
-    zPos: 5
+    zPos: 5,
+    xLookat: 0,
+    yLookat: 0,
+    zLookat: 0
   };
   camera: PerspectiveCamera | OrthographicCamera = new THREE.PerspectiveCamera();
   cameraItem: PerspectiveCameraInterface = {
@@ -36,7 +39,10 @@ export class ThreejsService {
     far: 2000,
     xPos: 0,
     yPos: 0,
-    zPos: 5
+    zPos: 5,
+    xLookat: 0,
+    yLookat: 0,
+    zLookat: 0
   };
   rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
@@ -122,6 +128,7 @@ export class ThreejsService {
         this.camera.position.z = this.cameraItem.zPos;
         this.camera.position.x = this.cameraItem.xPos;
         this.camera.position.y = this.cameraItem.yPos;
+        this.camera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
     } else {
       this.camera = new THREE.OrthographicCamera(
         this.orthographicCameraItem.left,
@@ -134,6 +141,7 @@ export class ThreejsService {
       this.camera.position.z = this.orthographicCameraItem.zPos;
       this.camera.position.x = this.orthographicCameraItem.xPos;
       this.camera.position.y = this.orthographicCameraItem.yPos;
+      this.camera.lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
     }
   }
 

@@ -29,7 +29,10 @@ export class PerspectiveFormComponent implements OnDestroy {
     far: new FormControl(0),
     xPos: new FormControl(0),
     yPos: new FormControl(0),
-    zPos: new FormControl(0)
+    zPos: new FormControl(0), 
+    xLookat: new FormControl(0),
+    yLookat: new FormControl(0),
+    zLookat: new FormControl(0)
   });
 
   subs: Subscription[] = [];
@@ -68,6 +71,30 @@ export class PerspectiveFormComponent implements OnDestroy {
             this.cameraItem.zPos = this.form.value.zPos;
           }
 
+          if (this.form.value.xLookat || this.form.value.xLookat === 0) {          
+            const xLookat = parseFloat(this.form.value.xLookat);
+            if (!isNaN(xLookat))
+            {
+              this.cameraItem.xLookat = xLookat;
+            }
+          }
+
+          if (this.form.value.yLookat || this.form.value.yLookat === 0) {          
+            const yLookat = parseFloat(this.form.value.yLookat);
+            if (!isNaN(yLookat))
+            {
+              this.cameraItem.yLookat = yLookat;
+            }
+          }
+
+          if (this.form.value.zLookat || this.form.value.zLookat === 0) {          
+            const zLookat = parseFloat(this.form.value.zLookat);
+            if (!isNaN(zLookat))
+            {
+              this.cameraItem.zLookat = zLookat;
+            }
+          }
+
           this.threeJsService.updateCamera();
         }
       }
@@ -88,7 +115,10 @@ export class PerspectiveFormComponent implements OnDestroy {
             far: this.cameraItem.far,
             xPos: this.cameraItem.xPos,
             yPos: this.cameraItem.yPos,
-            zPos: this.cameraItem.zPos
+            zPos: this.cameraItem.zPos,
+            xLookat: this.cameraItem.xLookat,
+            yLookat: this.cameraItem.yLookat,
+            zLookat: this.cameraItem.zLookat
           });
         }
         
