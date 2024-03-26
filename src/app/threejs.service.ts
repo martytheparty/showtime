@@ -13,6 +13,11 @@ import { RendererInterface } from './interfaces/renderer-interface';
 })
 export class ThreejsService {
 
+  clock = new THREE.Clock();
+  lastTime = 0;
+  lastDiff = 0;
+  biggestDiff = 0;
+
   cameraType: CameraType = 'perspective';
   width = 0;
   height = 0;
@@ -73,7 +78,7 @@ export class ThreejsService {
   private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
   orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
-  private animationSignal: WritableSignal<boolean> = signal(false);
+  private animationSignal: WritableSignal<boolean> = signal(true);
   animationValue: Signal<boolean> = computed( () => this.animationSignal());
 
   private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
@@ -372,14 +377,65 @@ export class ThreejsService {
   {
     const animation: XRFrameRequestCallback = ( time: number ) => {
 
+      const currentTime = this.clock.getElapsedTime();
+      const diff = currentTime - this.lastTime;
+      console.log('elapsed time',currentTime.toFixed(3), (currentTime - this.lastTime).toFixed(3), this.biggestDiff);
+      if (diff > this.biggestDiff) {
+        this.biggestDiff = diff;
+      }
+
+      if (diff !== this.lastDiff) {
+        console.log('****************************************', diff);
+        console.log('****************************************', diff);
+        console.log('****************************************', diff);
+      } else {
+        console.log('++++++++++++++++++++++++++++++++++++++');
+      }
+
+      this.lastTime = currentTime;
+      this.lastDiff = diff;
+
+      const moveDist = .1
+      
+
       if (this.animationValue())
       {
-        this.meshes.forEach(
-          (mesh) => {
-            mesh.rotation.x = time / 2000;
-            mesh.rotation.y = time / 1000;
+        this.meshItems.forEach(
+          (meshItem) => {
+            if (meshItem.xPos < 4 
+              && (meshItem.yPos === -2 || meshItem.yPos === 0 || meshItem.yPos === 2)) {
+              meshItem.xPos = meshItem.xPos + moveDist;
+            } else if(meshItem.xPos > -4 
+              && (meshItem.yPos%2 === - 1 || meshItem.yPos === 1)) {
+              meshItem.xPos = meshItem.xPos - moveDist;
+            } else if (meshItem.yPos > 1 && meshItem.xPos > 4) { 
+              meshItem.xPos = -4;
+              meshItem.yPos = -2;
+              meshItem.zPos = meshItem.zPos - 1; 
+            } else {
+             meshItem.yPos = meshItem.yPos + 1;
+            }
+            
           }
         );
+        this.meshes.forEach(
+          (mesh) => {
+
+            const meshItem: MeshInterface | undefined = this.meshItems.find( (meshItem: MeshInterface) => {
+              return meshItem.id === mesh.id
+            } )
+
+            mesh.rotation.x = time / 2000;
+            mesh.rotation.y = time / 1000;
+            if (meshItem) {
+              mesh.position.setX(meshItem.xPos);
+              mesh.position.setY(meshItem.yPos);
+              mesh.position.setZ(meshItem.zPos);
+            }
+
+          }
+        );
+        
       }
 
       if (this.renderer.shadowMap.enabled !== this.rendererItem.castShadows) {
