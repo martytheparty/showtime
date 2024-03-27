@@ -56,6 +56,10 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       () => {
         this.meshList = this.threejsService.meshList();
 
+        this.meshList.forEach(
+          (meshItem) => this.updateForm(meshItem)
+        );
+
         if(this.filterValue === '') {
           this.filteredMeshList = this.meshList;
         } else  {
@@ -158,6 +162,33 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
     meshItem.form = form;
     return form;
+  }
+
+  updateForm(meshItem: MeshInterface): void
+  { 
+    if(meshItem.form) {
+      meshItem.form.setValue(
+        {
+          id: meshItem.id,
+          name: meshItem.name,
+          xPos: meshItem.xPos,
+          yPos: meshItem.yPos,
+          zPos: meshItem.zPos,
+          shape: meshItem.shape,
+          materialType: meshItem.materialType,
+          width: meshItem.width,
+          height: meshItem.height,
+          depth: meshItem.depth,
+          radius: meshItem.radius,
+          castShadow: meshItem.castShadow,
+          receiveShadow: meshItem.receiveShadow
+        }, { emitEvent: false}
+      );
+    } else {
+      console.log('This mesh was added outside of this component... add the form in');
+      // const form = this.setupForm(meshItem);
+      // this.setupSubs(meshItem, form);
+    }
   }
 
   deleteMesh(meshItem: MeshInterface): void

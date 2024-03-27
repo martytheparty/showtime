@@ -349,6 +349,9 @@ export class ThreejsService {
       const material = updateMesh.material as MeshPhongMaterial;
       material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255)
     }
+
+    this.meshItems = [... this.meshItems];
+    this.meshListSignal.set(this.meshItems);
   }
 
   deleteMesh(id: number): void
@@ -378,26 +381,9 @@ export class ThreejsService {
     const animation: XRFrameRequestCallback = ( time: number ) => {
 
       const currentTime = this.clock.getElapsedTime();
-      const diff = currentTime - this.lastTime;
-      console.log('elapsed time',currentTime.toFixed(3), (currentTime - this.lastTime).toFixed(3), this.biggestDiff);
-      if (diff > this.biggestDiff) {
-        this.biggestDiff = diff;
-      }
-
-      if (diff !== this.lastDiff) {
-        console.log('****************************************', diff);
-        console.log('****************************************', diff);
-        console.log('****************************************', diff);
-      } else {
-        console.log('++++++++++++++++++++++++++++++++++++++');
-      }
-
-      this.lastTime = currentTime;
-      this.lastDiff = diff;
-
+      
       const moveDist = .1
       
-
       if (this.animationValue())
       {
         this.meshItems.forEach(
@@ -415,23 +401,24 @@ export class ThreejsService {
             } else {
              meshItem.yPos = meshItem.yPos + 1;
             }
+            this.updateMesh(meshItem);
             
           }
         );
         this.meshes.forEach(
           (mesh) => {
 
-            const meshItem: MeshInterface | undefined = this.meshItems.find( (meshItem: MeshInterface) => {
-              return meshItem.id === mesh.id
-            } )
+            // const meshItem: MeshInterface | undefined = this.meshItems.find( (meshItem: MeshInterface) => {
+            //   return meshItem.id === mesh.id
+            // } )
 
             mesh.rotation.x = time / 2000;
             mesh.rotation.y = time / 1000;
-            if (meshItem) {
-              mesh.position.setX(meshItem.xPos);
-              mesh.position.setY(meshItem.yPos);
-              mesh.position.setZ(meshItem.zPos);
-            }
+            // if (meshItem) {
+            //   mesh.position.setX(meshItem.xPos);
+            //   mesh.position.setY(meshItem.yPos);
+            //   mesh.position.setZ(meshItem.zPos);
+            // }
 
           }
         );
