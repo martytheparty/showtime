@@ -83,24 +83,20 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
   addMesh(): MeshInterface
   {
-    const rR = Math.round(Math.random());
-    const gR = Math.round(Math.random());
-    const bR = Math.round(Math.random());
-
     const meshItem: MeshInterface = {
       id: -1,
       name: '',
       shape: 'BoxGeometry',
-      xPos: -4,
-      yPos: -2,
+      xPos: 0,
+      yPos: 0,
       zPos: 0,
       materialType: 'basic',
-      redColor: rR*255,
-      greenColor: gR*255,
-      blueColor: bR*255,
-      width: .5,
-      height: .5,
-      depth: .5,
+      redColor: 255,
+      greenColor: 255,
+      blueColor: 255,
+      width: 1,
+      height: 1,
+      depth: 1,
       radius: 1,
       castShadow: true,
       receiveShadow: true

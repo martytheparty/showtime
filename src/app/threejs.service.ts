@@ -352,6 +352,7 @@ export class ThreejsService {
 
     this.meshItems = [... this.meshItems];
     this.meshListSignal.set(this.meshItems);
+    this.clock.start();
   }
 
   deleteMesh(id: number): void
@@ -386,39 +387,32 @@ export class ThreejsService {
       
       if (this.animationValue())
       {
-        this.meshItems.forEach(
-          (meshItem) => {
-            if (meshItem.xPos < 4 
-              && (meshItem.yPos === -2 || meshItem.yPos === 0 || meshItem.yPos === 2)) {
-              meshItem.xPos = meshItem.xPos + moveDist;
-            } else if(meshItem.xPos > -4 
-              && (meshItem.yPos%2 === - 1 || meshItem.yPos === 1)) {
-              meshItem.xPos = meshItem.xPos - moveDist;
-            } else if (meshItem.yPos > 1 && meshItem.xPos > 4) { 
-              meshItem.xPos = -4;
-              meshItem.yPos = -2;
-              meshItem.zPos = meshItem.zPos - 1; 
-            } else {
-             meshItem.yPos = meshItem.yPos + 1;
-            }
-            this.updateMesh(meshItem);
+        // this.meshItems.forEach(
+        //   (meshItem) => {
+        //     if (meshItem.xPos < 4 
+        //       && (meshItem.yPos === -2 || meshItem.yPos === 0 || meshItem.yPos === 2)) {
+        //       meshItem.xPos = meshItem.xPos + moveDist;
+        //     } else if(meshItem.xPos > -4 
+        //       && (meshItem.yPos%2 === - 1 || meshItem.yPos === 1)) {
+        //       meshItem.xPos = meshItem.xPos - moveDist;
+        //     } else if (meshItem.yPos > 1 && meshItem.xPos > 4) { 
+        //       meshItem.xPos = -4;
+        //       meshItem.yPos = -2;
+        //       meshItem.zPos = meshItem.zPos - 1; 
+        //     } else {
+        //      meshItem.yPos = meshItem.yPos + 1;
+        //     }
+        //     this.updateMesh(meshItem);
             
-          }
-        );
+        //   }
+        // );
         this.meshes.forEach(
           (mesh) => {
 
-            // const meshItem: MeshInterface | undefined = this.meshItems.find( (meshItem: MeshInterface) => {
-            //   return meshItem.id === mesh.id
-            // } )
-
             mesh.rotation.x = time / 2000;
             mesh.rotation.y = time / 1000;
-            // if (meshItem) {
-            //   mesh.position.setX(meshItem.xPos);
-            //   mesh.position.setY(meshItem.yPos);
-            //   mesh.position.setZ(meshItem.zPos);
-            // }
+
+            this.updateMeshForTime(mesh, this.clock.elapsedTime);
 
           }
         );
@@ -454,8 +448,38 @@ export class ThreejsService {
     return animation;
   }
 
+  updateMeshForTime(mesh: SupportedMeshes, time: number): void
+  {
+    const meshItem: MeshInterface | undefined = 
+      this.meshItems.find( 
+        (mi: MeshInterface) => mi.id === mesh.id 
+      );
+
+    if (meshItem)
+    {
+      const xSpeed = 2; // 2 units per second
+      const ySpeed = 1; // 1 unit per second
+      const zSpeed = 3; // 30 units per second
+      mesh.position.setX(meshItem.xPos*1 + xSpeed * time);
+      mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
+      mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
+    }
+
+
+  }
+
   attachDom(vizDiv: HTMLDivElement): void
   {
     vizDiv.appendChild( this.renderer.domElement );
+  }
+
+  resetClock(): void {
+    this.clock.start();
+
+    this.meshes.forEach(
+      (mesh) => {
+        this.updateMeshForTime(mesh, 0);
+      }
+    );
   }
 }
