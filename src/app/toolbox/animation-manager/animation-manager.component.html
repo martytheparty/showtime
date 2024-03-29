@@ -1,6 +1,20 @@
-<mat-checkbox 
+@if(animation)
+{
+    <mat-checkbox 
     (change)="updateAnimation($event)" 
-    [checked]="checked" >Animation</mat-checkbox>
-<div>
-<button (click)="restartAnimation()" mat-raised-button color="primary">Restart</button>
-</div>
+    [checked]="animation.running" >Animation</mat-checkbox>
+    <div class="looping">
+    <mat-checkbox 
+    (change)="updateAnimationLooping($event)" 
+    [checked]="animation.looping">looping</mat-checkbox>
+    @if(animation.looping) {
+        <mat-form-field>
+            <mat-label>Loop Time (seconds)</mat-label>
+            <input (keyup)="updateLoopTime()" matInput type="text" [(ngModel)]="animation.time">
+          </mat-form-field>
+    }
+    </div>
+    <div>
+    <button (click)="restartAnimation()" mat-raised-button color="primary">Restart</button>
+    </div>
+}

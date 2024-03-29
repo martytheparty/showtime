@@ -7,6 +7,7 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } f
 import { LightInterface } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
 import { RendererInterface } from './interfaces/renderer-interface';
+import { AnimationInterface } from './interfaces/animations-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,12 @@ import { RendererInterface } from './interfaces/renderer-interface';
 export class ThreejsService {
 
   clock = new THREE.Clock();
-  lastTime = 0;
-  lastDiff = 0;
-  biggestDiff = 0;
 
+  animationItem: AnimationInterface = {
+    looping: true,
+    running: true,
+    time: 3
+  };
   cameraType: CameraType = 'perspective';
   width = 0;
   height = 0;
@@ -78,8 +81,8 @@ export class ThreejsService {
   private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
   orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
-  private animationSignal: WritableSignal<boolean> = signal(true);
-  animationValue: Signal<boolean> = computed( () => this.animationSignal());
+  private animationSignal: WritableSignal<AnimationInterface> = signal(this.animationItem);
+  animationValue: Signal<AnimationInterface> = computed( () => this.animationSignal());
 
   private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
   sceneItemValues: Signal<SceneInterface> = computed( () => this.sceneSignal());
@@ -87,9 +90,9 @@ export class ThreejsService {
   private rendererSignal: WritableSignal<RendererInterface> = signal(this.rendererItem);
   rendererItemValues: Signal<RendererInterface> = computed( () => this.rendererSignal());
 
-  updateAnimation(animationState: boolean): void
+  updateAnimation(animation: AnimationInterface): void
   {
-    this.animationSignal.set(animationState);
+    this.animationSignal.set(animation);
   }
 
   markAsInitialized(): void
@@ -381,31 +384,15 @@ export class ThreejsService {
   {
     const animation: XRFrameRequestCallback = ( time: number ) => {
 
-      const currentTime = this.clock.getElapsedTime();
+      const currentLoopTime = this.clock.getElapsedTime();
+
+      if(this.animationItem.looping && currentLoopTime > this.animationItem.time ) {
+        this.resetClock();
+      }
       
-      const moveDist = .1
       
-      if (this.animationValue())
+      if (this.animationItem.running)
       {
-        // this.meshItems.forEach(
-        //   (meshItem) => {
-        //     if (meshItem.xPos < 4 
-        //       && (meshItem.yPos === -2 || meshItem.yPos === 0 || meshItem.yPos === 2)) {
-        //       meshItem.xPos = meshItem.xPos + moveDist;
-        //     } else if(meshItem.xPos > -4 
-        //       && (meshItem.yPos%2 === - 1 || meshItem.yPos === 1)) {
-        //       meshItem.xPos = meshItem.xPos - moveDist;
-        //     } else if (meshItem.yPos > 1 && meshItem.xPos > 4) { 
-        //       meshItem.xPos = -4;
-        //       meshItem.yPos = -2;
-        //       meshItem.zPos = meshItem.zPos - 1; 
-        //     } else {
-        //      meshItem.yPos = meshItem.yPos + 1;
-        //     }
-        //     this.updateMesh(meshItem);
-            
-        //   }
-        // );
         this.meshes.forEach(
           (mesh) => {
 

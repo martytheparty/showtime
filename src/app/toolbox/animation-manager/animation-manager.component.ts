@@ -2,11 +2,21 @@ import { Component, effect, inject } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { ThreejsService } from '../../threejs.service';
+import { AnimationInterface } from '../../interfaces/animations-interfaces';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-animation-manager',
   standalone: true,
-  imports: [MatCheckboxModule, MatButtonModule],
+  imports: [
+    MatCheckboxModule,
+    MatButtonModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule
+  ],
   templateUrl: './animation-manager.component.html',
   styleUrl: './animation-manager.component.scss'
 })
@@ -14,18 +24,44 @@ export class AnimationManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
 
   checked = false;
+  animation: AnimationInterface | undefined;
 
   constructor(){
     effect(() => {
-      this.checked = this.threeJsService.animationValue();
+      this.animation = this.threeJsService.animationValue();
     })
   }
 
   updateAnimation(event: MatCheckboxChange): void
   {
-    this.threeJsService.updateAnimation(event.checked);
-    if (event.checked) {
-      this.restartAnimation();
+    if (this.animation) {
+      this.animation.running = event.checked;
+      this.threeJsService.updateAnimation(this.animation);
+      if (event.checked) {
+        this.restartAnimation();
+      }
+    }
+  }
+
+  updateAnimationLooping(event: MatCheckboxChange): void
+  {
+    if (this.animation) {
+      this.animation.looping = event.checked;
+      this.threeJsService.updateAnimation(this.animation);
+      if (event.checked) {
+        this.restartAnimation();
+      }
+    }
+  }
+
+  updateLoopTime(): void
+  {
+    if (this.animation) {
+      this.animation.time = this.animation.time*1;
+      if (Number.isNaN(this.animation.time)) {
+        this.animation.time = 0;
+      }
+      this.threeJsService.updateAnimation(this.animation);
     }
   }
 
