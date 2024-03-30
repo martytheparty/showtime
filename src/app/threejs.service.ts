@@ -19,7 +19,9 @@ export class ThreejsService {
   animationItem: AnimationInterface = {
     looping: true,
     running: true,
-    time: 3
+    time: 3,
+    pause: false,
+    pauseTime: 0
   };
   cameraType: CameraType = 'perspective';
   width = 0;
@@ -386,7 +388,9 @@ export class ThreejsService {
 
       const currentLoopTime = this.clock.getElapsedTime();
 
-      if(this.animationItem.looping && currentLoopTime > this.animationItem.time ) {
+      if(
+        this.animationItem.looping
+        && currentLoopTime > this.animationItem.time ) {
         this.resetClock();
       }
       
@@ -399,7 +403,12 @@ export class ThreejsService {
             mesh.rotation.x = time / 2000;
             mesh.rotation.y = time / 1000;
 
-            this.updateMeshForTime(mesh, this.clock.elapsedTime);
+            if (this.animationItem.pause) {
+              this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.animationItem.pauseTime);
+            } else {
+              this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime);
+            }
+
 
           }
         );
@@ -420,11 +429,9 @@ export class ThreejsService {
               {
                 light.castShadow = lightItem.castShadow;
               }
-
             } else {
               light.castShadow = this.rendererItem.castShadows;
             }
-
           }
         );
       }
@@ -435,13 +442,20 @@ export class ThreejsService {
     return animation;
   }
 
-  updateMeshForTime(mesh: SupportedMeshes, time: number): void
+  getMeshItemForId(meshId: number): MeshInterface | undefined
   {
-    const meshItem: MeshInterface | undefined = 
-      this.meshItems.find( 
-        (mi: MeshInterface) => mi.id === mesh.id 
-      );
+    return this.meshItems.find(
+      (mi: MeshInterface) => mi.id === meshId
+    );
 
+  }
+
+  updateMeshForTime(
+    mesh: SupportedMeshes,
+    meshItem: MeshInterface | undefined,
+    time: number
+  ): void
+  {
     if (meshItem)
     {
       const xSpeed = 2; // 2 units per second
@@ -451,8 +465,6 @@ export class ThreejsService {
       mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
     }
-
-
   }
 
   attachDom(vizDiv: HTMLDivElement): void
@@ -465,7 +477,7 @@ export class ThreejsService {
 
     this.meshes.forEach(
       (mesh) => {
-        this.updateMeshForTime(mesh, 0);
+        this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime);
       }
     );
   }

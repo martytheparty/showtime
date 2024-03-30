@@ -6,7 +6,7 @@ import { AnimationInterface } from '../../interfaces/animations-interfaces';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { MatSliderModule } from '@angular/material/slider';
 @Component({
   selector: 'app-animation-manager',
   standalone: true,
@@ -15,7 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatButtonModule,
     FormsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSliderModule
   ],
   templateUrl: './animation-manager.component.html',
   styleUrl: './animation-manager.component.scss'
@@ -61,6 +62,14 @@ export class AnimationManagerComponent {
       if (Number.isNaN(this.animation.time)) {
         this.animation.time = 0;
       }
+      this.threeJsService.updateAnimation(this.animation);
+    }
+  }
+
+  updatePause(event: MatCheckboxChange): void
+  {
+    if (this.animation) {
+      this.animation.pause = event.checked;
       this.threeJsService.updateAnimation(this.animation);
     }
   }

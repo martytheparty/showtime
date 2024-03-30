@@ -14,6 +14,21 @@
           </mat-form-field>
     }
     </div>
+    @if (animation.looping) {
+        <div>
+            <mat-checkbox 
+            (change)="updatePause($event)" 
+            [checked]="animation.pause" >Pause</mat-checkbox>
+            </div>
+            @if (animation.pause) 
+            {
+                <div>Pause Time
+                    <mat-slider  min="0" [max]="animation.time" step=".1" showTickMarks discrete>
+                        <input  matSliderThumb [(ngModel)]="animation.pauseTime">
+                    </mat-slider>
+                </div>
+            }
+    }
     <div>
     <button (click)="restartAnimation()" mat-raised-button color="primary">Restart</button>
     </div>
