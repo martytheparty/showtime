@@ -312,7 +312,7 @@ export class ThreejsService {
     }
 
     if (updateMesh) {
-      updateMesh.position.setX(meshItem.xPos);
+      updateMesh.position.setX(meshItem.xPos.startValue);
       updateMesh.position.setY(meshItem.yPos);
       updateMesh.position.setZ(meshItem.zPos);
       updateMesh.castShadow = meshItem.castShadow;
@@ -458,12 +458,20 @@ export class ThreejsService {
   {
     if (meshItem)
     {
-      const xSpeed = 2; // 2 units per second
+      let xSpeed = 2; // 2 units per second
+
+      if (meshItem.xPos.animated) {
+        xSpeed = (meshItem.xPos.endValue*1 - meshItem.xPos.startValue*1)/this.animationItem.time;
+      } else { // not animated so speed is 0
+        xSpeed = 0;
+      }
+
       const ySpeed = 1; // 1 unit per second
       const zSpeed = 3; // 30 units per second
-      mesh.position.setX(meshItem.xPos*1 + xSpeed * time);
+      mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
+      console.log(meshItem.xPos.startValue*1 + xSpeed * time);
     }
   }
 

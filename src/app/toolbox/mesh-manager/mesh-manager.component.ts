@@ -87,7 +87,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       id: -1,
       name: '',
       shape: 'BoxGeometry',
-      xPos: 0,
+      xPos: { startValue: 0, endValue: 2, animated: true},
       yPos: 0,
       zPos: 0,
       materialType: 'basic',
@@ -114,7 +114,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   {
     const sub: Subscription = form.valueChanges.subscribe(
       () => {
-          meshItem.xPos = form.value.xPos;
+          meshItem.xPos.startValue = form.value.xPos;
           meshItem.yPos = form.value.yPos;
           meshItem.zPos = form.value.zPos;
           meshItem.materialType = form.value.materialType;
@@ -142,7 +142,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       {
         id: new FormControl(meshItem.id),
         name: new FormControl(meshItem.name),
-        xPos: new FormControl(meshItem.xPos),
+        xPos: new FormControl(meshItem.xPos.startValue),
         yPos: new FormControl(meshItem.yPos),
         zPos: new FormControl(meshItem.zPos),
         shape: new FormControl(meshItem.shape),
@@ -167,7 +167,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         {
           id: meshItem.id,
           name: meshItem.name,
-          xPos: meshItem.xPos,
+          xPos: meshItem.xPos.startValue,
           yPos: meshItem.yPos,
           zPos: meshItem.zPos,
           shape: meshItem.shape,

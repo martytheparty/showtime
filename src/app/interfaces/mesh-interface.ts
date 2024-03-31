@@ -1,12 +1,13 @@
 import { FormGroup } from "@angular/forms"
 import { Subscription } from "rxjs"
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
+import { AnimationPropertyDescriptor } from "./animations-interfaces"
 
 export interface MeshInterface {
     id: number
     shape: 'BoxGeometry' | 'SphereGeometry'
     name: string
-    xPos: number
+    xPos: AnimationPropertyDescriptor
     yPos: number
     zPos: number
     form?: FormGroup

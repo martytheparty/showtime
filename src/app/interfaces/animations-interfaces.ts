@@ -5,3 +5,9 @@ export interface AnimationInterface {
     pause: boolean
     pauseTime: number
 }
+
+export interface AnimationPropertyDescriptor {
+    startValue: number
+    endValue: number
+    animated: boolean
+}
