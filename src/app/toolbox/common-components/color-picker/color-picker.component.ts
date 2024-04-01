@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output, effect, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatSliderModule } from '@angular/material/slider';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
@@ -25,9 +25,9 @@ export class ColorPickerComponent {
   greenValue = input.required<number>();
   blueValue = input.required<number>();
 
-  @Output() redUpdate: EventEmitter<number> = new EventEmitter();
-  @Output() greenUpdate: EventEmitter<number> = new EventEmitter();
-  @Output() blueUpdate: EventEmitter<number> = new EventEmitter();
+ redUpdate = output<number>();
+ greenUpdate = output<number>();
+ blueUpdate = output<number>();
 
 
   updateColor(event: Event, color: 'red' | 'green' | 'blue')

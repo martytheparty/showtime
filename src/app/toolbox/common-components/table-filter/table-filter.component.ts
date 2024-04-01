@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class TableFilterComponent {
 
-  @Output() filterValue: EventEmitter<string> = new EventEmitter();
+  filterValue = output<string>();
 
   emitFilter(event: KeyboardEvent): void
   {
