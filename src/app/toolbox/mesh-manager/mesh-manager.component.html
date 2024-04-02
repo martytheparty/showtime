@@ -196,6 +196,10 @@ multiTemplateDataRows
             ></app-color-picker>
          }
 
+         <form [formGroup]="mesh.form">
+            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
+        </form>
+
        </div>
      </div>
    </td>

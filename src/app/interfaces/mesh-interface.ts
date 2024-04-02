@@ -22,6 +22,7 @@ export interface MeshInterface {
     radius: number
     castShadow: boolean
     receiveShadow: boolean
+    animated: boolean
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'

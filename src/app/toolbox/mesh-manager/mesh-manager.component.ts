@@ -99,7 +99,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       depth: 1,
       radius: 1,
       castShadow: true,
-      receiveShadow: true
+      receiveShadow: true,
+      animated: false
     } 
      
     this.threejsService.addMesh(meshItem);
@@ -126,6 +127,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.radius = form.value.radius;
           meshItem.castShadow = form.value.castShadow;
           meshItem.receiveShadow = form.value.receiveShadow;
+          meshItem.animated = form.value.animated;
           this.threejsService.updateMesh(meshItem);
       }
     );
@@ -152,7 +154,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         depth: new FormControl(meshItem.depth),
         radius: new FormControl(meshItem.radius),
         castShadow: new FormControl(meshItem.castShadow),
-        receiveShadow: new FormControl(meshItem.receiveShadow)
+        receiveShadow: new FormControl(meshItem.receiveShadow),
+        animated: new FormControl(meshItem.animated)
       }
     );
 
@@ -177,7 +180,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           depth: meshItem.depth,
           radius: meshItem.radius,
           castShadow: meshItem.castShadow,
-          receiveShadow: meshItem.receiveShadow
+          receiveShadow: meshItem.receiveShadow,
+          animated: meshItem.animated
         }, { emitEvent: false}
       );
     } else {

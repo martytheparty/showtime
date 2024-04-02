@@ -399,17 +399,19 @@ export class ThreejsService {
       {
         this.meshes.forEach(
           (mesh) => {
+            const meshItem: MeshInterface | undefined = this.getMeshItemForId(mesh.id);
 
-            mesh.rotation.x = time / 2000;
-            mesh.rotation.y = time / 1000;
-
-            if (this.animationItem.pause) {
-              this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.animationItem.pauseTime);
-            } else {
-              this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime);
+            if (meshItem && meshItem.animated)
+            {
+              mesh.rotation.x = time / 2000;
+              mesh.rotation.y = time / 1000;
+  
+              if (this.animationItem.pause) {
+                this.updateMeshForTime(mesh, meshItem, this.animationItem.pauseTime);
+              } else {
+                this.updateMeshForTime(mesh, meshItem, this.clock.elapsedTime);
+              }
             }
-
-
           }
         );
         
@@ -471,7 +473,6 @@ export class ThreejsService {
       mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
-      console.log(meshItem.xPos.startValue*1 + xSpeed * time);
     }
   }
 
