@@ -1,3 +1,5 @@
+import { MeshInterface, SupportedMeshes } from "./mesh-interface"
+
 export interface AnimationInterface {
     running: boolean
     looping: boolean
@@ -10,4 +12,9 @@ export interface AnimationPropertyDescriptor {
     startValue: number
     endValue: number
     animated: boolean
+}
+
+export interface AnimationPair {
+    item: MeshInterface,
+    threeObj: SupportedMeshes
 }

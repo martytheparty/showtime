@@ -7,7 +7,7 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } f
 import { LightInterface } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
 import { RendererInterface } from './interfaces/renderer-interface';
-import { AnimationInterface } from './interfaces/animations-interfaces';
+import { AnimationInterface, AnimationPair } from './interfaces/animations-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +67,8 @@ export class ThreejsService {
 
   meshItems: MeshInterface[] = [];
   lightItems: LightInterface[] = [];
+  
+  animationsPairs: AnimationPair[] = [];
 
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
@@ -85,6 +87,9 @@ export class ThreejsService {
 
   private animationSignal: WritableSignal<AnimationInterface> = signal(this.animationItem);
   animationValue: Signal<AnimationInterface> = computed( () => this.animationSignal());
+
+  private animationPairSignal: WritableSignal<AnimationPair[]> = signal(this.animationsPairs);
+  animationPairValues: Signal<AnimationPair[]> = computed( () => this.animationPairSignal());
 
   private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
   sceneItemValues: Signal<SceneInterface> = computed( () => this.sceneSignal());
@@ -263,8 +268,21 @@ export class ThreejsService {
 
     this.scene.add( mesh );
 
+    this.setAnimationPairs(meshItem, mesh);
+
     return meshItem;
   }
+
+  setAnimationPairs(meshItem: MeshInterface, mesh: SupportedMeshes): void
+  {
+    if (meshItem.animated)
+    {
+      const animationPair: AnimationPair = { item: meshItem, threeObj: mesh };
+      this.animationsPairs.push(animationPair);
+      this.animationsPairs = [... this.animationsPairs];
+      this.animationPairSignal.set(this.animationsPairs);
+    }
+  } 
 
   updateMesh(meshItem: MeshInterface): void
   {
@@ -357,6 +375,13 @@ export class ThreejsService {
 
     this.meshItems = [... this.meshItems];
     this.meshListSignal.set(this.meshItems);
+
+    if (meshItem.animated && updateMesh) {
+      this.setAnimationPairs(meshItem, updateMesh);
+    } else {
+      this.pruneAnimationPairs();
+    }
+
     this.clock.start();
   }
 
@@ -372,8 +397,29 @@ export class ThreejsService {
       this.meshItems = this.meshItems.filter((mesh) => mesh.id !== id);
 
       this.meshListSignal.set(this.meshItems);
+
+      // delete any animation pairs that have been deleted
+      // huge risk of a memory leak if stale pairs are not
+      // deleted
+      const pairs: AnimationPair[] = this.animationsPairs
+      .filter( (pair: AnimationPair) => pair.item.animated );
+
+      this.animationsPairs = pairs;
+      this.animationPairSignal.set(this.animationsPairs);
+
     }
 
+  }
+
+  pruneAnimationPairs(): void
+  {
+    // basically deleted any pairs that are not animated
+    const pairs: AnimationPair[] = this.animationsPairs
+    .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
+
+    console.log(pairs);
+    this.animationsPairs = pairs;
+    this.animationPairSignal.set(this.animationsPairs);
   }
 
   setupRenderer(): void

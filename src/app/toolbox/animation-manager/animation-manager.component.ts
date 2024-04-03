@@ -2,11 +2,12 @@ import { Component, effect, inject } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { ThreejsService } from '../../threejs.service';
-import { AnimationInterface } from '../../interfaces/animations-interfaces';
+import { AnimationInterface, AnimationPair } from '../../interfaces/animations-interfaces';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-animation-manager',
   standalone: true,
@@ -16,7 +17,8 @@ import { MatSliderModule } from '@angular/material/slider';
     FormsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSliderModule
+    MatSliderModule,
+    CommonModule
   ],
   templateUrl: './animation-manager.component.html',
   styleUrl: './animation-manager.component.scss'
@@ -27,9 +29,13 @@ export class AnimationManagerComponent {
   checked = false;
   animation: AnimationInterface | undefined;
 
+  animationPairs: AnimationPair[] = [];
+
   constructor(){
     effect(() => {
       this.animation = this.threeJsService.animationValue();
+
+      this.animationPairs = this.threeJsService.animationPairValues();
     })
   }
 
