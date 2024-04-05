@@ -6,12 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "upgrade": "ng update",
-    "cdk": "ng update @angular/cdk",
-    "cli": "ng update @angular/cli",
-    "core": "ng update @angular/core",
-    "material": "ng update @angular/material"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
