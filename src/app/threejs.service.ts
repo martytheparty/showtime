@@ -275,7 +275,9 @@ export class ThreejsService {
 
   setAnimationPairs(meshItem: MeshInterface, mesh: SupportedMeshes): void
   {
-    if (meshItem.animated)
+    const pair = this.animationsPairs
+                  .find( (pair) => pair.item.id === meshItem.id );
+    if (meshItem.animated && !pair)
     {
       const animationPair: AnimationPair = { item: meshItem, threeObj: mesh };
       this.animationsPairs.push(animationPair);
@@ -330,6 +332,7 @@ export class ThreejsService {
     }
 
     if (updateMesh) {
+      updateMesh.name = meshItem.name;
       updateMesh.position.setX(meshItem.xPos.startValue);
       updateMesh.position.setY(meshItem.yPos);
       updateMesh.position.setZ(meshItem.zPos);
@@ -401,11 +404,11 @@ export class ThreejsService {
       // delete any animation pairs that have been deleted
       // huge risk of a memory leak if stale pairs are not
       // deleted
-      const pairs: AnimationPair[] = this.animationsPairs
-      .filter( (pair: AnimationPair) => pair.item.animated );
 
-      this.animationsPairs = pairs;
-      this.animationPairSignal.set(this.animationsPairs);
+      this.animationsPairs = this.animationsPairs
+            .filter( (pair: AnimationPair) => pair.item.id !== id );
+
+      this.pruneAnimationPairs();
 
     }
 
@@ -417,7 +420,6 @@ export class ThreejsService {
     const pairs: AnimationPair[] = this.animationsPairs
     .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
 
-    console.log(pairs);
     this.animationsPairs = pairs;
     this.animationPairSignal.set(this.animationsPairs);
   }
@@ -514,8 +516,8 @@ export class ThreejsService {
         xSpeed = 0;
       }
 
-      const ySpeed = 1; // 1 unit per second
-      const zSpeed = 3; // 30 units per second
+      const ySpeed = 0; // 1 unit per second
+      const zSpeed = 0; // 30 units per second
       mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);

@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
+import { AnimatedItemsComponent } from './animated-items/animated-items.component';
 @Component({
   selector: 'app-animation-manager',
   standalone: true,
@@ -18,7 +19,8 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatFormFieldModule,
     MatSliderModule,
-    CommonModule
+    CommonModule,
+    AnimatedItemsComponent
   ],
   templateUrl: './animation-manager.component.html',
   styleUrl: './animation-manager.component.scss'
@@ -29,13 +31,9 @@ export class AnimationManagerComponent {
   checked = false;
   animation: AnimationInterface | undefined;
 
-  animationPairs: AnimationPair[] = [];
-
   constructor(){
     effect(() => {
       this.animation = this.threeJsService.animationValue();
-
-      this.animationPairs = this.threeJsService.animationPairValues();
     })
   }
 
