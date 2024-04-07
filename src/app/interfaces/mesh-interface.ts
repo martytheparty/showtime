@@ -8,7 +8,7 @@ export interface MeshInterface {
     shape: 'BoxGeometry' | 'SphereGeometry'
     name: string
     xPos: AnimationPropertyDescriptor
-    yPos: number
+    yPos: AnimationPropertyDescriptor
     zPos: number
     form?: FormGroup
     sub?: Subscription

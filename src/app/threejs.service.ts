@@ -288,6 +288,7 @@ export class ThreejsService {
 
   updateMesh(meshItem: MeshInterface): void
   {
+    console.log('mesh item',meshItem);
     const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
 
     if (updateMesh?.geometry.type !== meshItem.shape) {
@@ -334,7 +335,7 @@ export class ThreejsService {
     if (updateMesh) {
       updateMesh.name = meshItem.name;
       updateMesh.position.setX(meshItem.xPos.startValue);
-      updateMesh.position.setY(meshItem.yPos);
+      updateMesh.position.setY(meshItem.yPos.startValue);
       updateMesh.position.setZ(meshItem.zPos);
       updateMesh.castShadow = meshItem.castShadow;
       updateMesh.receiveShadow = meshItem.receiveShadow;
@@ -384,6 +385,8 @@ export class ThreejsService {
     } else {
       this.pruneAnimationPairs();
     }
+    this.animationsPairs = [... this.animationsPairs];
+    this.animationPairSignal.set(this.animationsPairs);
 
     this.clock.start();
   }
@@ -509,6 +512,7 @@ export class ThreejsService {
     if (meshItem)
     {
       let xSpeed = 2; // 2 units per second
+      let ySpeed = 0; // 1 unit per second
 
       if (meshItem.xPos.animated) {
         xSpeed = (meshItem.xPos.endValue*1 - meshItem.xPos.startValue*1)/this.animationItem.time;
@@ -516,10 +520,15 @@ export class ThreejsService {
         xSpeed = 0;
       }
 
-      const ySpeed = 0; // 1 unit per second
+      if (meshItem.yPos.animated) {
+        ySpeed = (meshItem.yPos.endValue*1 - meshItem.yPos.startValue*1)/this.animationItem.time;
+      } else { // not animated so speed is 0
+        ySpeed = 0;
+      }
+
       const zSpeed = 0; // 30 units per second
       mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
-      mesh.position.setY(meshItem.yPos*1 + ySpeed * time);
+      mesh.position.setY(meshItem.yPos.startValue*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
     }
   }

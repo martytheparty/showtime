@@ -1,4 +1,4 @@
-@if(this.animationForms.length > 0)
+@if(this.xAnimationForms.length > 0)
 {
     <table>
         <tr>
@@ -9,13 +9,34 @@
             <td>current x</td>
         </tr>
     
-        @for(form of this.animationForms; track $index) {
+        @for(form of this.xAnimationForms; track $index) {
             <tr>
                 <td>{{form.controls.id.value }}</td>
                 <td>{{getPair(form.controls.id.value).threeObj.name}} </td>
-                <td><input (keyup)="updateMesh(form)" [formControl]="form.controls.startValue"></td>
-                <td><input (keyup)="updateMesh(form)" [formControl]="form.controls.endValue"></td>
+                <td>{{form.controls.startValue.value }}
+                    <input (keyup)="updateXMesh(form)" [formControl]="form.controls.startValue"></td>
+                <td><input (keyup)="updateXMesh(form)" [formControl]="form.controls.endValue"></td>
                 <td>{{getPair(form.controls.id.value).threeObj.position.x | number : '1.2-2'}} </td>
+            </tr>
+        }
+    </table>
+
+    <table>
+        <tr>
+            <td>id</td>
+            <td>name</td>
+            <td>start y</td>
+            <td>end y</td>
+            <td>current y</td>
+        </tr>
+    
+        @for(form of this.yAnimationForms; track $index) {
+            <tr>
+                <td>{{form.controls.id.value }}</td>
+                <td>{{getPair(form.controls.id.value).threeObj.name}} </td>
+                <td><input (keyup)="updateYMesh(form)" [formControl]="form.controls.startValue"></td>
+                <td><input (keyup)="updateYMesh(form)" [formControl]="form.controls.endValue"></td>
+                <td>{{getPair(form.controls.id.value).threeObj.position.y | number : '1.2-2'}} </td>
             </tr>
         }
     </table>

@@ -16,21 +16,46 @@ export class AnimatedItemsComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
   animationPairs: AnimationPair[] = [];
   animationFormsDictionary: { [key: number]: AnimationPair } = {};
-  animationForms: FormGroup<AnimationPropertyGroup>[] = [];
+  xAnimationForms: FormGroup<AnimationPropertyGroup>[] = [];
+  yAnimationForms: FormGroup<AnimationPropertyGroup>[] = [];
 
   constructor(){
     effect(() => {
+      console.log('effect');
       this.animationPairs = this.threeJsService.animationPairValues();
       this.animationPairs.forEach( (pair: AnimationPair) => {
-        if (!this.animationFormsDictionary[pair.item.id]) {
-          const formGroup: FormGroup<AnimationPropertyGroup> = new FormGroup<AnimationPropertyGroup>({
+        if (this.animationFormsDictionary[pair.item.id]) {
+          let form = this.xAnimationForms.find(
+            (form) => form.value.id = pair.item.id
+          );
+
+          if (form) {
+            form.patchValue({startValue: pair.item.xPos.startValue*1});
+
+            form = {... form} as FormGroup<AnimationPropertyGroup>;
+
+            this.xAnimationForms = [... this.xAnimationForms];
+          }
+        }
+        else {
+          // create a new form
+          const formXGroup: FormGroup<AnimationPropertyGroup> = new FormGroup<AnimationPropertyGroup>({
             id: new FormControl(pair.item.id),
             startValue: new FormControl(pair.item.xPos.startValue),
             endValue: new FormControl(pair.item.xPos.endValue)
           });
-          this.animationFormsDictionary[pair.item.id] = pair;
-          this.animationForms.push(formGroup);
+          this.xAnimationForms.push(formXGroup);
+
+          const formYGroup: FormGroup<AnimationPropertyGroup> = new FormGroup<AnimationPropertyGroup>({
+            id: new FormControl(pair.item.id),
+            startValue: new FormControl(pair.item.yPos.startValue),
+            endValue: new FormControl(pair.item.yPos.endValue)
+          });
+          this.yAnimationForms.push(formYGroup);
         } 
+
+        this.animationFormsDictionary[pair.item.id] = pair;
+
       } );
 
       const keys = Object.keys(this.animationFormsDictionary);
@@ -39,7 +64,12 @@ export class AnimatedItemsComponent {
         if (pair === undefined) {
           delete this.animationPairs[parseInt(key)];
 
-          this.animationForms = this.animationForms
+          this.xAnimationForms = this.xAnimationForms
+          .filter( (form) => {
+            return form.value.id !== parseInt(key);
+          }  );
+
+          this.yAnimationForms = this.yAnimationForms
           .filter( (form) => {
             return form.value.id !== parseInt(key);
           }  );
@@ -55,7 +85,7 @@ export class AnimatedItemsComponent {
     return this.animationFormsDictionary[forcedId];
   }
 
-  updateMesh(form: FormGroup<AnimationPropertyGroup>): void
+  updateXMesh(form: FormGroup<AnimationPropertyGroup>): void
   {
     const id: number = form.value.id as number;
     let xPosStart: number | null | undefined = form.value.startValue;
@@ -80,6 +110,33 @@ export class AnimatedItemsComponent {
     }
     this.threeJsService.updateMesh(item);
   }
+
+  updateYMesh(form: FormGroup<AnimationPropertyGroup>): void
+  {
+    const id: number = form.value.id as number;
+    let yPosStart: number | null | undefined = form.value.startValue;
+    let yPosEnd: number | null | undefined = form.value.endValue;
+    const pair: AnimationPair = this.animationFormsDictionary[id];
+    const item: MeshInterface = pair.item;
+
+    if (yPosStart !== null && yPosStart !== undefined) {
+      yPosStart = yPosStart*1;
+      if (!Number.isNaN(yPosStart))
+      {
+        item.yPos.startValue = yPosStart;
+      }
+    }
+
+    if (yPosEnd !== null && yPosEnd !== undefined) {
+      yPosEnd = yPosEnd*1;
+      if (!Number.isNaN(yPosEnd))
+      {
+        item.yPos.endValue = yPosEnd;
+      }
+    }
+    this.threeJsService.updateMesh(item);
+  }
+
 }
 
 interface AnimationPropertyGroup {
