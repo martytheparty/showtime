@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td>
+        <td>start {{displayName()}}</td>
+        <td>end {{displayName()}}</td>
+        <td>current {{displayName()}}</td>
+    </tr>
+    @for(pair of animationPairs(); track $index) {
+        <tr>
+            <td>{{pair.item.id}}</td>
+            <td>{{getStart(pair.item.id)}}</td>
+            <td>{{getEnd(pair.item.id)}}</td>
+            <td>{{getCurrent(pair.item.id)}}</td>
+        </tr>
+    
+    }
+</table>

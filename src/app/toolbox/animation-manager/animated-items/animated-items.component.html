@@ -1,5 +1,10 @@
 @if(this.xAnimationForms.length > 0)
 {
+    <app-animation-property
+        displayName="x"
+        propertyName="xPos"
+        [animationPairs]="animationPairs"
+        ></app-animation-property>
     <table>
         <tr>
             <td>id</td>
@@ -20,7 +25,11 @@
             </tr>
         }
     </table>
-
+    <app-animation-property
+        displayName="y"
+        propertyName="yPos"
+        [animationPairs]="animationPairs"
+        ></app-animation-property>
     <table>
         <tr>
             <td>id</td>

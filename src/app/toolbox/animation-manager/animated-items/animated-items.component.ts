@@ -4,11 +4,16 @@ import { AnimationPair } from '../../../interfaces/animations-interfaces';
 import { FormControl, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MeshInterface } from '../../../interfaces/mesh-interface';
+import { AnimationPropertyComponent } from './animation-property/animation-property.component';
 
 @Component({
   selector: 'app-animated-items',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,
+    AnimationPropertyComponent
+  ],
   templateUrl: './animated-items.component.html',
   styleUrl: './animated-items.component.scss'
 })
