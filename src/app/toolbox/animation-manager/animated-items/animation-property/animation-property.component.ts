@@ -1,5 +1,10 @@
 import { Component, input } from '@angular/core';
-import { AnimationInterface, AnimationPair } from '../../../../interfaces/animations-interfaces';
+import { 
+  AnimationInterfaceProperties,
+  AnimationPair,
+  ThreeObjProperties,
+  ThreeObjSubProperties
+} from '../../../../interfaces/animations-interfaces';
 
 @Component({
   selector: 'app-animation-property',
@@ -11,30 +16,28 @@ import { AnimationInterface, AnimationPair } from '../../../../interfaces/animat
 export class AnimationPropertyComponent {
 
   displayName = input.required<string>();
-  propertyName = input.required<string>();
+  propertyName = input.required<AnimationInterfaceProperties>();
   animationPairs = input.required<AnimationPair[]>();
+  threePropertyName = input.required<ThreeObjProperties>();
+  threeSubPropertyName = input.required<ThreeObjSubProperties>();
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const property: 'xPos' | 'yPos' = this.getProperty();
 
-    return pair.item[property].startValue;
+    return pair.item[this.propertyName()].startValue;
   }
 
   getEnd(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const property: 'xPos' | 'yPos' = this.getProperty();
 
-    return pair.item[property].endValue
+    return pair.item[this.propertyName()].endValue
   }
 
   getCurrent(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const property: 'xPos' | 'yPos' = this.getProperty();
-// the 'position' attribute needs to be configurable
 // the 'x' or 'y' needs to be configuraable
 
-    return pair.threeObj.position.x;
+    return pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()];
   }
 
   getPair(id: number): AnimationPair {
@@ -44,7 +47,12 @@ export class AnimationPropertyComponent {
     return pair;
   }
 
-  getProperty(): 'xPos' | 'yPos' {
-    return this.propertyName() as 'xPos' | 'yPos';
+  updateStart(id: number, event: KeyboardEvent): void
+  {
+    console.log(id);
+
+    const target = event.target as HTMLInputElement;
+    console.log(target.value);
   }
+
 }

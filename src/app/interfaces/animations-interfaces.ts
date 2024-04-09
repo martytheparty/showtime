@@ -18,3 +18,7 @@ export interface AnimationPair {
     item: MeshInterface,
     threeObj: SupportedMeshes
 }
+
+export type AnimationInterfaceProperties = 'xPos' | 'yPos';
+export type ThreeObjProperties = 'position';
+export type ThreeObjSubProperties = 'x' | 'y';

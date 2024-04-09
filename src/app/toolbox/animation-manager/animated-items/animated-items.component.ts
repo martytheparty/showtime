@@ -26,7 +26,6 @@ export class AnimatedItemsComponent {
 
   constructor(){
     effect(() => {
-      console.log('effect');
       this.animationPairs = this.threeJsService.animationPairValues();
       this.animationPairs.forEach( (pair: AnimationPair) => {
         if (this.animationFormsDictionary[pair.item.id]) {
