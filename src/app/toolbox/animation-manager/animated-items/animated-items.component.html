@@ -1,4 +1,4 @@
-@if(this.xAnimationForms.length > 0)
+@if(this.animationPairs.length > 0)
 {
     <app-animation-property
         displayName="x"
@@ -6,51 +6,18 @@
         [animationPairs]="animationPairs"
         threePropertyName="position"
         threeSubPropertyName="x"
+        (startValueChange)="valueChange($event)"
+        (endValueChange)="valueChange($event)"
         ></app-animation-property>
-    <table>
-        <tr>
-            <td>id</td>
-            <td>name</td>
-            <td>start x</td>
-            <td>end x</td>
-            <td>current x</td>
-        </tr>
-    
-        @for(form of this.xAnimationForms; track $index) {
-            <tr>
-                <td>{{form.controls.id.value }}</td>
-                <td>{{getPair(form.controls.id.value).threeObj.name}} </td>
-                <td>{{form.controls.startValue.value }}
-                    <input (keyup)="updateXMesh(form)" [formControl]="form.controls.startValue"></td>
-                <td><input (keyup)="updateXMesh(form)" [formControl]="form.controls.endValue"></td>
-                <td>{{getPair(form.controls.id.value).threeObj.position.x | number : '1.2-2'}} </td>
-            </tr>
-        }
-    </table>
+
     <app-animation-property
         displayName="y"
         propertyName="yPos"
         [animationPairs]="animationPairs"
         threePropertyName="position"
         threeSubPropertyName="y"
+        (startValueChange)="valueChange($event)"
+        (endValueChange)="valueChange($event)"
         ></app-animation-property>
-    <table>
-        <tr>
-            <td>id</td>
-            <td>name</td>
-            <td>start y</td>
-            <td>end y</td>
-            <td>current y</td>
-        </tr>
-    
-        @for(form of this.yAnimationForms; track $index) {
-            <tr>
-                <td>{{form.controls.id.value }}</td>
-                <td>{{getPair(form.controls.id.value).threeObj.name}} </td>
-                <td><input (keyup)="updateYMesh(form)" [formControl]="form.controls.startValue"></td>
-                <td><input (keyup)="updateYMesh(form)" [formControl]="form.controls.endValue"></td>
-                <td>{{getPair(form.controls.id.value).threeObj.position.y | number : '1.2-2'}} </td>
-            </tr>
-        }
-    </table>
+
 }

@@ -11,11 +11,18 @@
             <td>{{pair.item.id}}</td>
             <td>{{pair.item.name}}</td>
             <td>
-                <div (keyup)="updateStart(pair.item.id, $event)">hello</div>
-                <input (keyup)="updateStart(pair.item.id, $event)" type="text" value="{{getStart(pair.item.id)}}">
+                <input 
+                    (keyup)="updateStart(pair.item.id, $event)" 
+                    type="text" 
+                    value="{{getStart(pair.item.id)}}"
+                    >
             </td>
             <td>
-                <input type="text" value="{{getEnd(pair.item.id)}}">
+                <input 
+                    (keyup)="updateEnd(pair.item.id, $event)"
+                    type="text" 
+                    value="{{getEnd(pair.item.id)}}"
+                    >
             </td>
             <td>{{getCurrent(pair.item.id)}}</td>
         </tr>

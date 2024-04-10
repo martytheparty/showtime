@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { 
   AnimationInterfaceProperties,
   AnimationPair,
@@ -20,6 +20,9 @@ export class AnimationPropertyComponent {
   animationPairs = input.required<AnimationPair[]>();
   threePropertyName = input.required<ThreeObjProperties>();
   threeSubPropertyName = input.required<ThreeObjSubProperties>();
+
+  startValueChange = output<AnimationPair>();
+  endValueChange = output<AnimationPair>();
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
@@ -49,10 +52,28 @@ export class AnimationPropertyComponent {
 
   updateStart(id: number, event: KeyboardEvent): void
   {
-    console.log(id);
-
     const target = event.target as HTMLInputElement;
-    console.log(target.value);
+    const pair = this.getPair(id);
+
+    let value = parseFloat(target.value);
+
+    if (!Number.isNaN(value)) {
+      pair.item[this.propertyName()].startValue = value;
+      this.startValueChange.emit(pair);
+    }
+  }
+
+  updateEnd(id: number, event: KeyboardEvent): void
+  {
+    const target = event.target as HTMLInputElement;
+    const pair = this.getPair(id);
+
+    let value = parseFloat(target.value);
+
+    if (!Number.isNaN(value)) {
+      pair.item[this.propertyName()].endValue = value;
+      this.endValueChange.emit(pair);
+    }
   }
 
 }

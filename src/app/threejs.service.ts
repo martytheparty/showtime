@@ -288,7 +288,6 @@ export class ThreejsService {
 
   updateMesh(meshItem: MeshInterface): void
   {
-    console.log('mesh item',meshItem);
     const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
 
     if (updateMesh?.geometry.type !== meshItem.shape) {
@@ -511,19 +510,15 @@ export class ThreejsService {
   {
     if (meshItem)
     {
-      let xSpeed = 2; // 2 units per second
+      let xSpeed = 0; // 2 units per second
       let ySpeed = 0; // 1 unit per second
 
       if (meshItem.xPos.animated) {
         xSpeed = (meshItem.xPos.endValue*1 - meshItem.xPos.startValue*1)/this.animationItem.time;
-      } else { // not animated so speed is 0
-        xSpeed = 0;
       }
 
       if (meshItem.yPos.animated) {
         ySpeed = (meshItem.yPos.endValue*1 - meshItem.yPos.startValue*1)/this.animationItem.time;
-      } else { // not animated so speed is 0
-        ySpeed = 0;
       }
 
       const zSpeed = 0; // 30 units per second
