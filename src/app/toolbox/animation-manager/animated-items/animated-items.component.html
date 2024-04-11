@@ -1,23 +1,20 @@
 @if(this.animationPairs.length > 0)
 {
-    <app-animation-property
-        displayName="x"
-        propertyName="xPos"
-        [animationPairs]="animationPairs"
-        threePropertyName="position"
-        threeSubPropertyName="x"
-        (startValueChange)="valueChange($event)"
-        (endValueChange)="valueChange($event)"
-        ></app-animation-property>
+    <mat-form-field>
+        <mat-label>Animation Property</mat-label>
+        <mat-select [(value)]="selectedProperty">
+          @for (menu of menuItems; track $index) {
+            <mat-option [value]="menu">{{menu.name}}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
 
     <app-animation-property
-        displayName="y"
-        propertyName="yPos"
+        [displayName]="selectedProperty.name"
+        [propertyName]="selectedProperty.itemValue"
         [animationPairs]="animationPairs"
-        threePropertyName="position"
-        threeSubPropertyName="y"
-        (startValueChange)="valueChange($event)"
-        (endValueChange)="valueChange($event)"
+        [threePropertyName]="selectedProperty.threeProperty"
+        [threeSubPropertyName]="selectedProperty.threeSubProperty"
+        (valueChange)="valueChange($event)"
         ></app-animation-property>
-
 }

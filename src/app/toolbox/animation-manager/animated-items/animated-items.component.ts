@@ -1,10 +1,19 @@
 import { Component, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../../threejs.service';
-import { AnimationPair } from '../../../interfaces/animations-interfaces';
-import { FormControl, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AnimationInterfaceProperties, AnimationPair, ThreeObjProperties, ThreeObjSubProperties } from '../../../interfaces/animations-interfaces';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MeshInterface } from '../../../interfaces/mesh-interface';
 import { AnimationPropertyComponent } from './animation-property/animation-property.component';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
+interface PropertyMenuItem {
+  name: string
+  itemValue: AnimationInterfaceProperties,
+  threeProperty: ThreeObjProperties,
+  threeSubProperty: ThreeObjSubProperties
+}
 
 @Component({
   selector: 'app-animated-items',
@@ -12,7 +21,10 @@ import { AnimationPropertyComponent } from './animation-property/animation-prope
   imports: [
     CommonModule, 
     ReactiveFormsModule,
-    AnimationPropertyComponent
+    AnimationPropertyComponent,
+    FormsModule,
+    MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './animated-items.component.html',
   styleUrl: './animated-items.component.scss'
@@ -20,6 +32,11 @@ import { AnimationPropertyComponent } from './animation-property/animation-prope
 export class AnimatedItemsComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
   animationPairs: AnimationPair[] = [];
+  menuItems: PropertyMenuItem[] = [
+    { name: 'X Position', itemValue: 'xPos', threeProperty: 'position', threeSubProperty: 'x'},
+    { name: 'Y Position', itemValue: 'yPos', threeProperty: 'position', threeSubProperty: 'y'}
+  ];
+  selectedProperty: PropertyMenuItem = this.menuItems[0];
 
   constructor(){
     effect(() => {

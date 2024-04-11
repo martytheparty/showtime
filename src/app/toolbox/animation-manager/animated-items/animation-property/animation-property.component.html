@@ -1,10 +1,10 @@
 <table>
     <tr>
-        <td>id</td>
-        <td>name</td>
-        <td>start {{displayName()}}</td>
-        <td>end {{displayName()}}</td>
-        <td>current {{displayName()}}</td>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Start {{displayName()}}</td>
+        <td>End {{displayName()}}</td>
+        <td>Current {{displayName()}}</td>
     </tr>
     @for(pair of animationPairs(); track $index) {
         <tr>
@@ -12,14 +12,14 @@
             <td>{{pair.item.name}}</td>
             <td>
                 <input 
-                    (keyup)="updateStart(pair.item.id, $event)" 
+                    (keyup)="update(pair.item.id, $event, 'startValue')" 
                     type="text" 
                     value="{{getStart(pair.item.id)}}"
                     >
             </td>
             <td>
                 <input 
-                    (keyup)="updateEnd(pair.item.id, $event)"
+                (keyup)="update(pair.item.id, $event, 'endValue')" 
                     type="text" 
                     value="{{getEnd(pair.item.id)}}"
                     >
