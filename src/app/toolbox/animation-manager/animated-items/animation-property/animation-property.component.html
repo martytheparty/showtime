@@ -1,30 +1,37 @@
-<table>
-    <tr>
-        <td>ID</td>
-        <td>Name</td>
-        <td>Start {{displayName()}}</td>
-        <td>End {{displayName()}}</td>
-        <td>Current {{displayName()}}</td>
-    </tr>
-    @for(pair of animationPairs(); track $index) {
-        <tr>
-            <td>{{pair.item.id}}</td>
-            <td>{{pair.item.name}}</td>
-            <td>
-                <input 
-                    (keyup)="update(pair.item.id, $event, 'startValue')" 
-                    type="text" 
-                    value="{{getStart(pair.item.id)}}"
-                    >
-            </td>
-            <td>
-                <input 
-                (keyup)="update(pair.item.id, $event, 'endValue')" 
-                    type="text" 
-                    value="{{getEnd(pair.item.id)}}"
-                    >
-            </td>
-            <td>{{getCurrent(pair.item.id)}}</td>
-        </tr>
-    }
+<table mat-table [dataSource]="tableData">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let data"> {{data.id}} </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let data"> {{getName(data.id)}} </td>
+  </ng-container>
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef> Start {{displayName()}}</th>
+    <td mat-cell *matCellDef="let data">
+        <input 
+        (keyup)="update(data.id, $event, 'startValue')" 
+        type="text" 
+        value="{{getStart(data.id)}}"
+        >
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="end">
+    <th mat-header-cell *matHeaderCellDef> End {{displayName()}}</th>
+    <td mat-cell *matCellDef="let data"> 
+        <input 
+        (keyup)="update(data.id, $event, 'endValue')" 
+            type="text" 
+            value="{{getEnd(data.id)}}"
+            >
+     </td>
+  </ng-container>
+  <ng-container matColumnDef="current">
+    <th mat-header-cell *matHeaderCellDef> Current {{displayName()}}</th>
+    <td mat-cell *matCellDef="let data"> {{getCurrent(data.id)  | number : '1.2-2'}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>

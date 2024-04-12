@@ -1,15 +1,25 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, effect } from '@angular/core';
 import { 
   AnimationInterfaceProperties,
   AnimationPair,
   ThreeObjProperties,
   ThreeObjSubProperties
 } from '../../../../interfaces/animations-interfaces';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+
+interface TableInterface {
+  id: number
+  name: string
+  start: number
+  end: number
+  current: number
+}
 
 @Component({
   selector: 'app-animation-property',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './animation-property.component.html',
   styleUrl: './animation-property.component.scss'
 })
@@ -21,23 +31,67 @@ export class AnimationPropertyComponent {
   threePropertyName = input.required<ThreeObjProperties>();
   threeSubPropertyName = input.required<ThreeObjSubProperties>();
 
-  startValueChange = output<AnimationPair>();
-  endValueChange = output<AnimationPair>();
   valueChange = output<AnimationPair>();
+
+  displayedColumns: string[] = ['id', 'name', 'start', 'end', 'current'];
+  tableData: TableInterface[] = [];
+
+
+  constructor() {
+    effect( () => {
+
+      // checking for the same length prevents a redraw when the user
+      // modifies the input... without this the table redraws and the 
+      // focus is lost when the user changes a value
+      if (this.animationPairs().length !== this.tableData.length) {
+        this.tableData = this.animationPairs().map( (pair: AnimationPair) => {
+          return {
+            id: pair.item.id,
+            name: pair.item.name,
+            start: pair.item[this.propertyName()].startValue,
+            end: pair.item[this.propertyName()].endValue,
+            current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()]
+          };
+        } );
+      }
+
+    } );
+  }
+
+  getName(id: number): string {
+    const pair: AnimationPair = this.getPair(id);
+    if (pair){
+      return pair.item.name;
+    } else {
+      return '';
+    }
+  }
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    return pair.item[this.propertyName()].startValue;
+    if (pair){
+      return pair.item[this.propertyName()].startValue;
+    } else {
+      return 0;
+    }
   }
 
   getEnd(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    return pair.item[this.propertyName()].endValue
+    if (pair){
+      return pair.item[this.propertyName()].endValue;
+    } else {
+      return 0;
+    }
   }
 
   getCurrent(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    return pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()];
+    if (pair){
+      return pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()];
+    } else {
+      return 0;
+    }
   }
 
   getPair(id: number): AnimationPair {
