@@ -335,7 +335,7 @@ export class ThreejsService {
       updateMesh.name = meshItem.name;
       updateMesh.position.setX(meshItem.xPos.startValue);
       updateMesh.position.setY(meshItem.yPos.startValue);
-      updateMesh.position.setZ(meshItem.zPos);
+      updateMesh.position.setZ(meshItem.zPos.startValue);
       updateMesh.castShadow = meshItem.castShadow;
       updateMesh.receiveShadow = meshItem.receiveShadow;
     }
@@ -510,8 +510,9 @@ export class ThreejsService {
   {
     if (meshItem)
     {
-      let xSpeed = 0; // 2 units per second
-      let ySpeed = 0; // 1 unit per second
+      let xSpeed = 0; 
+      let ySpeed = 0; 
+      let zSpeed = 0; 
 
       if (meshItem.xPos.animated) {
         xSpeed = (meshItem.xPos.endValue*1 - meshItem.xPos.startValue*1)/this.animationItem.time;
@@ -521,10 +522,13 @@ export class ThreejsService {
         ySpeed = (meshItem.yPos.endValue*1 - meshItem.yPos.startValue*1)/this.animationItem.time;
       }
 
-      const zSpeed = 0; // 30 units per second
+      if (meshItem.zPos.animated) {
+        zSpeed = (meshItem.zPos.endValue*1 - meshItem.zPos.startValue*1)/this.animationItem.time;
+      }
+
       mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos.startValue*1 + ySpeed * time);
-      mesh.position.setZ(meshItem.zPos*1 - zSpeed * time);
+      mesh.position.setZ(meshItem.zPos.startValue*1 + zSpeed * time);
     }
   }
 

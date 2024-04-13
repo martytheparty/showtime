@@ -9,7 +9,7 @@ export interface MeshInterface {
     name: string
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
-    zPos: number
+    zPos: AnimationPropertyDescriptor
     form?: FormGroup
     sub?: Subscription
     materialType: MaterialTypes
