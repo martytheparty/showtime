@@ -23,6 +23,7 @@ export interface MeshInterface {
     castShadow: boolean
     receiveShadow: boolean
     animated: boolean
+    type: 'mesh'
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'

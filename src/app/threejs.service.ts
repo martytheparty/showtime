@@ -183,7 +183,7 @@ export class ThreejsService {
     const light = new THREE.PointLight();
     this.lights.push(light);
     light.intensity = lightItem.intensity;
-    light.position.setX(lightItem.xPos);
+    light.position.setX(lightItem.xPos.startValue);
     light.position.setY(lightItem.yPos);
     light.position.setZ(lightItem.zPos);
     lightItem.id = light.id;
@@ -202,7 +202,7 @@ export class ThreejsService {
 
     if (light)
     {
-      light.position.setX(lightItem.xPos);
+      light.position.setX(lightItem.xPos.startValue);
       light.position.setY(lightItem.yPos);
       light.position.setZ(lightItem.zPos);
       light.intensity = lightItem.intensity;

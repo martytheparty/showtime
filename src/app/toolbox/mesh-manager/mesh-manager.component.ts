@@ -100,7 +100,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       radius: 1,
       castShadow: true,
       receiveShadow: true,
-      animated: false
+      animated: false,
+      type: 'mesh'
     } 
      
     this.threejsService.addMesh(meshItem);

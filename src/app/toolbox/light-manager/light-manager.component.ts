@@ -69,14 +69,16 @@ export class LightManagerComponent implements OnDestroy {
   {
     const lightItem: LightInterface = {
       id: -1,
-      xPos: 0,
+      xPos: {startValue: 0, endValue: 0, animated: false},
       yPos: 0,
       zPos: 0,
       intensity: 1,
       castShadow: true,
       redColor: 255,
       greenColor: 255,
-      blueColor: 255
+      blueColor: 255,
+      animated: false,
+      type: 'light'
     };
 
     this.threejsService.addLight(lightItem);
@@ -85,7 +87,7 @@ export class LightManagerComponent implements OnDestroy {
       {
         id: new FormControl(lightItem.id),
         name: new FormControl(''),
-        xPos: new FormControl(lightItem.xPos),
+        xPos: new FormControl(lightItem.xPos.startValue),
         yPos: new FormControl(lightItem.yPos),
         zPos: new FormControl(lightItem.zPos),
         intensity: new FormControl(lightItem.intensity),
@@ -102,7 +104,7 @@ export class LightManagerComponent implements OnDestroy {
           const xPosition = parseFloat(lightItem.form.value.xPos);
           if (!isNaN(xPosition))
           {
-            lightItem.xPos = xPosition;
+            lightItem.xPos.startValue = xPosition;
           }
         }
 

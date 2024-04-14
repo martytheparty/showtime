@@ -47,7 +47,13 @@ export class AnimatedItemsComponent {
 
   valueChange(pair: AnimationPair): void
   {
-    this.threeJsService.updateMesh(pair.item);
+    if (pair.item.type === 'mesh')
+    {
+      this.threeJsService.updateMesh(pair.item);
+    } else {
+      console.log('handle light update');
+    }
+
   }
 
 }

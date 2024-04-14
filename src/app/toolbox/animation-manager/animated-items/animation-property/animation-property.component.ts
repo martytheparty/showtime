@@ -7,6 +7,7 @@ import {
 } from '../../../../interfaces/animations-interfaces';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { MeshInterface } from '../../../../interfaces/mesh-interface';
 
 interface TableInterface {
   id: number
@@ -44,15 +45,31 @@ export class AnimationPropertyComponent {
       // modifies the input... without this the table redraws and the 
       // focus is lost when the user changes a value
       if (this.animationPairs().length !== this.tableData.length) {
-        this.tableData = this.animationPairs().map( (pair: AnimationPair) => {
+        this.tableData = this.animationPairs()
+        .filter(
+          (pair) => {
+            if (pair.item.type === 'mesh')
+            {
+              return true;
+            } else {
+              console.log('add light support');
+              return false;
+            }
+
+          }
+        )
+        .map( (pair: AnimationPair) => {
+          const item: MeshInterface = pair.item as MeshInterface;
+          console.log('add light support');
           return {
             id: pair.item.id,
             name: pair.item.name,
-            start: pair.item[this.propertyName()].startValue,
-            end: pair.item[this.propertyName()].endValue,
+            start: item[this.propertyName()].startValue,
+            end: item[this.propertyName()].endValue,
             current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()]
           };
-        } );
+        } ) as TableInterface[];
+        console.log('Forcing table interface do to lack of light support');
       }
 
     } );
@@ -60,8 +77,10 @@ export class AnimationPropertyComponent {
 
   getName(id: number): string {
     const pair: AnimationPair = this.getPair(id);
+    const item: MeshInterface = pair.item as MeshInterface;
+    console.log('add light support');
     if (pair){
-      return pair.item.name;
+      return item.name;
     } else {
       return '';
     }
@@ -69,8 +88,10 @@ export class AnimationPropertyComponent {
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
+    const item: MeshInterface = pair.item as MeshInterface;
+    console.log('add light support');
     if (pair){
-      return pair.item[this.propertyName()].startValue;
+      return item[this.propertyName()].startValue;
     } else {
       return 0;
     }
@@ -78,8 +99,10 @@ export class AnimationPropertyComponent {
 
   getEnd(id: number): number {
     const pair: AnimationPair = this.getPair(id);
+    const item: MeshInterface = pair.item as MeshInterface;
+    console.log('add light support');
     if (pair){
-      return pair.item[this.propertyName()].endValue;
+      return item[this.propertyName()].endValue;
     } else {
       return 0;
     }
@@ -103,10 +126,12 @@ export class AnimationPropertyComponent {
   update(id: number, event: KeyboardEvent, property: 'startValue' | 'endValue'): void
   {
     const target = event.target as HTMLInputElement;
-    const pair = this.getPair(id);
+    const pair: AnimationPair = this.getPair(id);
+    const item: MeshInterface = pair.item as MeshInterface;
+    console.log('add light support');
     let value = parseFloat(target.value);
     if (!Number.isNaN(value)) {
-      pair.item[this.propertyName()][property] = value;
+      item[this.propertyName()][property] = value;
       this.valueChange.emit(pair);
     }
   }
