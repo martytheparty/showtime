@@ -1,10 +1,11 @@
 import { FormGroup } from "@angular/forms"
 import { Subscription } from "rxjs"
 import { AnimationPropertyDescriptor } from "./animations-interfaces"
+import { PointLight } from "three"
 
 export interface LightInterface {
     id: number
-    name?: string
+    name: string
     xPos: AnimationPropertyDescriptor
     yPos: number
     zPos: number
@@ -18,3 +19,5 @@ export interface LightInterface {
     animated: boolean
     type: 'light'
 }
+
+export type SupportedLights = PointLight;

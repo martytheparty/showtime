@@ -69,7 +69,8 @@ export class LightManagerComponent implements OnDestroy {
   {
     const lightItem: LightInterface = {
       id: -1,
-      xPos: {startValue: 0, endValue: 0, animated: false},
+      name: '',
+      xPos: {startValue: 0, endValue: 0, animated: true},
       yPos: 0,
       zPos: 0,
       intensity: 1,
@@ -91,7 +92,8 @@ export class LightManagerComponent implements OnDestroy {
         yPos: new FormControl(lightItem.yPos),
         zPos: new FormControl(lightItem.zPos),
         intensity: new FormControl(lightItem.intensity),
-        castShadow: new FormControl(lightItem.castShadow)
+        castShadow: new FormControl(lightItem.castShadow),
+        animated: new FormControl(lightItem.animated)
       }
     );
 
@@ -129,7 +131,7 @@ export class LightManagerComponent implements OnDestroy {
         lightItem.intensity = lightItem.form?.value.intensity;
         lightItem.name = lightItem.form?.value.name;
         lightItem.castShadow = lightItem.form?.value.castShadow;
-
+        lightItem.animated = lightItem.form?.value.animated;
         this.threejsService.updateLight(lightItem);
       }
     );

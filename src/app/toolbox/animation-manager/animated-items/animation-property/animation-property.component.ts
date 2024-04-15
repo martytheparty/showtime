@@ -2,6 +2,7 @@ import { Component, input, output, effect } from '@angular/core';
 import { 
   AnimationInterfaceProperties,
   AnimationPair,
+  AnimationPropertyDescriptor,
   ThreeObjProperties,
   ThreeObjSubProperties
 } from '../../../../interfaces/animations-interfaces';
@@ -46,30 +47,30 @@ export class AnimationPropertyComponent {
       // focus is lost when the user changes a value
       if (this.animationPairs().length !== this.tableData.length) {
         this.tableData = this.animationPairs()
-        .filter(
-          (pair) => {
-            if (pair.item.type === 'mesh')
-            {
-              return true;
-            } else {
-              console.log('add light support');
-              return false;
-            }
-
-          }
-        )
         .map( (pair: AnimationPair) => {
-          const item: MeshInterface = pair.item as MeshInterface;
-          console.log('add light support');
+          const item = pair.item;
+
+          let start = 0;
+          let end = 0;
+          const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+
+          if (prop.startValue && prop.endValue) {
+            // technically a property for a type for mesh
+            // may exist on lights but the poperty on one
+            // is animated and the property on the other
+            // may not be animated
+            start = prop.startValue;
+            end = prop.endValue;
+          }
+
           return {
             id: pair.item.id,
             name: pair.item.name,
-            start: item[this.propertyName()].startValue,
-            end: item[this.propertyName()].endValue,
+            start,
+            end,
             current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()]
           };
         } ) as TableInterface[];
-        console.log('Forcing table interface do to lack of light support');
       }
 
     } );
@@ -77,8 +78,8 @@ export class AnimationPropertyComponent {
 
   getName(id: number): string {
     const pair: AnimationPair = this.getPair(id);
-    const item: MeshInterface = pair.item as MeshInterface;
-    console.log('add light support');
+    const item = pair.item;
+
     if (pair){
       return item.name;
     } else {
@@ -88,10 +89,11 @@ export class AnimationPropertyComponent {
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const item: MeshInterface = pair.item as MeshInterface;
-    console.log('add light support');
-    if (pair){
-      return item[this.propertyName()].startValue;
+    const item = pair.item;
+    const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+
+    if (pair && prop.startValue){
+      return prop.startValue;
     } else {
       return 0;
     }
@@ -100,9 +102,10 @@ export class AnimationPropertyComponent {
   getEnd(id: number): number {
     const pair: AnimationPair = this.getPair(id);
     const item: MeshInterface = pair.item as MeshInterface;
-    console.log('add light support');
-    if (pair){
-      return item[this.propertyName()].endValue;
+    const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+
+    if (pair && prop.endValue){
+      return prop.endValue;
     } else {
       return 0;
     }
@@ -127,11 +130,12 @@ export class AnimationPropertyComponent {
   {
     const target = event.target as HTMLInputElement;
     const pair: AnimationPair = this.getPair(id);
-    const item: MeshInterface = pair.item as MeshInterface;
-    console.log('add light support');
+    const item = pair.item;
     let value = parseFloat(target.value);
+    const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+
     if (!Number.isNaN(value)) {
-      item[this.propertyName()][property] = value;
+      prop[property] = value;
       this.valueChange.emit(pair);
     }
   }

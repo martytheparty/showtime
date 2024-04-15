@@ -1,4 +1,4 @@
-import { LightInterface } from "./light-interface"
+import { LightInterface, SupportedLights } from "./light-interface"
 import { MeshInterface, SupportedMeshes } from "./mesh-interface"
 
 export interface AnimationInterface {
@@ -17,7 +17,7 @@ export interface AnimationPropertyDescriptor {
 
 export interface AnimationPair {
     item: MeshInterface | LightInterface,
-    threeObj: SupportedMeshes
+    threeObj: SupportedMeshes | SupportedLights
 }
 
 export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos';

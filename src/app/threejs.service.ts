@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
-import { LightInterface } from './interfaces/light-interface';
+import { LightInterface, SupportedLights } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
 import { RendererInterface } from './interfaces/renderer-interface';
 import { AnimationInterface, AnimationPair } from './interfaces/animations-interfaces';
@@ -56,7 +56,7 @@ export class ThreejsService {
   };
   rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
-  lights: PointLight[] = [];
+  lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scene: Scene = new THREE.Scene();
   sceneItem: SceneInterface = {
@@ -212,6 +212,14 @@ export class ThreejsService {
       }
       light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
       light.castShadow = lightItem.castShadow;
+
+      if (lightItem.animated && light) {
+        this.setAnimationPairs(lightItem, light);
+      } else {
+        this.pruneAnimationPairs();
+      }
+      this.animationsPairs = [... this.animationsPairs];
+      this.animationPairSignal.set(this.animationsPairs);
     }
   }
 
@@ -231,6 +239,16 @@ export class ThreejsService {
       this.lightItems = this.lightItems.filter((light) => light.id !== id);
 
       this.lightListSignal.set(this.lightItems);
+
+      // delete any animation pairs that have been deleted
+      // huge risk of a memory leak if stale pairs are not
+      // deleted
+
+      this.animationsPairs = this.animationsPairs
+            .filter( (pair: AnimationPair) => pair.item.id !== id );
+
+      this.pruneAnimationPairs();
+
     }
 
   }
@@ -273,13 +291,13 @@ export class ThreejsService {
     return meshItem;
   }
 
-  setAnimationPairs(meshItem: MeshInterface, mesh: SupportedMeshes): void
+  setAnimationPairs(item: MeshInterface | LightInterface, threeObj: SupportedMeshes | SupportedLights): void
   {
     const pair = this.animationsPairs
-                  .find( (pair) => pair.item.id === meshItem.id );
-    if (meshItem.animated && !pair)
+                  .find( (pair) => pair.item.id === item.id );
+    if (item.animated && !pair)
     {
-      const animationPair: AnimationPair = { item: meshItem, threeObj: mesh };
+      const animationPair: AnimationPair = { item, threeObj };
       this.animationsPairs.push(animationPair);
       this.animationsPairs = [... this.animationsPairs];
       this.animationPairSignal.set(this.animationsPairs);
