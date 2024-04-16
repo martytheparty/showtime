@@ -218,6 +218,10 @@ export class ThreejsService {
       } else {
         this.pruneAnimationPairs();
       }
+
+      this.lightItems = [... this.lightItems];
+      this.lightListSignal.set(this.lightItems);
+
       this.animationsPairs = [... this.animationsPairs];
       this.animationPairSignal.set(this.animationsPairs);
     }

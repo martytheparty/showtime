@@ -3,6 +3,8 @@ import {
   AnimationInterfaceProperties,
   AnimationPair,
   AnimationPropertyDescriptor,
+  MappedSupportedPropertyTypes,
+  SuportedPropertyTypes,
   ThreeObjProperties,
   ThreeObjSubProperties
 } from '../../../../interfaces/animations-interfaces';
@@ -16,6 +18,7 @@ interface TableInterface {
   start: number
   end: number
   current: number
+  type: SuportedPropertyTypes
 }
 
 @Component({
@@ -37,6 +40,13 @@ export class AnimationPropertyComponent {
 
   displayedColumns: string[] = ['id', 'name', 'start', 'end', 'current'];
   tableData: TableInterface[] = [];
+  filteredTableData: TableInterface[] = [];
+  supportedPropsDictionary: MappedSupportedPropertyTypes = {
+    xPos: ['light', 'mesh'],
+    yPos: ['mesh'],
+    zPos: ['mesh']
+  };
+
 
 
   constructor() {
@@ -68,10 +78,21 @@ export class AnimationPropertyComponent {
             name: pair.item.name,
             start,
             end,
-            current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()]
+            current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()],
+            type: item.type
           };
         } ) as TableInterface[];
       }
+
+      // filter by propertyName
+
+      const filteredProperty = this.propertyName();
+      this.filteredTableData = this.tableData.filter(
+        (row: TableInterface) => {
+          return this.supportedPropsDictionary[filteredProperty].includes(row.type);
+        }
+      );
+
 
     } );
   }

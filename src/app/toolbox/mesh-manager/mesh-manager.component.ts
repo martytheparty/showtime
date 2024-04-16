@@ -167,7 +167,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   updateForm(meshItem: MeshInterface): void
   { 
     if(meshItem.form) {
-      meshItem.form.setValue(
+      meshItem.form.patchValue(
         {
           id: meshItem.id,
           name: meshItem.name,

@@ -51,7 +51,10 @@ export class LightManagerComponent implements OnDestroy {
   constructor(){
     effect(
       () => {
+
         this.lightsList = this.threejsService.lightListValues();
+        this.updateForms();
+
         if(this.filterValue === '') {
           this.filteredLightsList = this.lightsList;
         } else  {
@@ -133,6 +136,32 @@ export class LightManagerComponent implements OnDestroy {
         lightItem.castShadow = lightItem.form?.value.castShadow;
         lightItem.animated = lightItem.form?.value.animated;
         this.threejsService.updateLight(lightItem);
+      }
+    );
+  }
+
+  updateForms(): void
+  {
+    this.lightsList.forEach(
+      (lightItem: LightInterface) => {
+        if (lightItem.form) {
+          lightItem.form.patchValue(
+            {
+              id: lightItem.id,
+              name: lightItem.name,
+              xPos: lightItem.xPos.startValue,
+              yPos: lightItem.yPos,
+              zPos: lightItem.zPos,
+              redColor: lightItem.redColor,
+              greenColor: lightItem.greenColor,
+              blueColor: lightItem.blueColor,
+              castShadow: lightItem.castShadow,
+              animated: lightItem.animated
+            }, { emitEvent: false}
+          )
+        } else {
+          console.log('forms and subs need to be refactored off of the light item for export/import reasons');
+        }
       }
     );
   }

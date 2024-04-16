@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../../threejs.service';
-import { AnimationInterfaceProperties, AnimationPair, ThreeObjProperties, ThreeObjSubProperties } from '../../../interfaces/animations-interfaces';
+import { AnimationInterfaceProperties, AnimationPair, SuportedPropertyTypes, ThreeObjProperties, ThreeObjSubProperties } from '../../../interfaces/animations-interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AnimationPropertyComponent } from './animation-property/animation-property.component';
@@ -50,8 +50,8 @@ export class AnimatedItemsComponent {
     if (pair.item.type === 'mesh')
     {
       this.threeJsService.updateMesh(pair.item);
-    } else {
-      console.log('handle light update');
+    } else if (pair.item.type === 'light') {
+      this.threeJsService.updateLight(pair.item);
     }
 
   }
