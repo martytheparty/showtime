@@ -23,5 +23,5 @@ export interface AnimationPair {
 export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos';
 export type ThreeObjProperties = 'position';
 export type ThreeObjSubProperties = 'x' | 'y' | 'z';
-export type SuportedPropertyTypes = 'light' | 'mesh';
-export type MappedSupportedPropertyTypes = { [key: string] : SuportedPropertyTypes[] };
+export type SuportedThreeObjTypes = 'light' | 'mesh';
+export type MappedSupportedPropertyTypes = { [key: string] : SuportedThreeObjTypes[] };

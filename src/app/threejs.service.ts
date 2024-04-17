@@ -469,6 +469,20 @@ export class ThreejsService {
       
       if (this.animationItem.running)
       {
+        this.lights.forEach(
+          (light) => {
+            const lightItem: LightInterface | undefined = this.getLightItemForId(light.id);
+
+            if (lightItem && lightItem.animated){
+              if (this.animationItem.pause) {
+                this.updateLightForTime(light, lightItem, this.animationItem.pauseTime);
+              } else {
+                this.updateLightForTime(light, lightItem, this.clock.elapsedTime);
+              }
+            }
+
+          }
+        );
         this.meshes.forEach(
           (mesh) => {
             const meshItem: MeshInterface | undefined = this.getMeshItemForId(mesh.id);
@@ -524,6 +538,13 @@ export class ThreejsService {
 
   }
 
+  getLightItemForId(lightId: number): LightInterface | undefined
+  {
+    return this.lightItems.find(
+      (li: LightInterface) => li.id === lightId
+    );
+  }
+
   updateMeshForTime(
     mesh: SupportedMeshes,
     meshItem: MeshInterface | undefined,
@@ -554,6 +575,24 @@ export class ThreejsService {
     }
   }
 
+  updateLightForTime(
+    light: SupportedLights,
+    lightItem: LightInterface | undefined,
+    time: number
+  ): void
+  {
+    if (lightItem)
+    {
+      let xSpeed = 0; 
+
+      if (lightItem.xPos.animated) {
+        xSpeed = (lightItem.xPos.endValue*1 - lightItem.xPos.startValue*1)/this.animationItem.time;
+      }
+
+      light.position.setX(lightItem.xPos.startValue*1 + xSpeed * time);
+    }
+  }
+
   attachDom(vizDiv: HTMLDivElement): void
   {
     vizDiv.appendChild( this.renderer.domElement );
@@ -565,6 +604,12 @@ export class ThreejsService {
     this.meshes.forEach(
       (mesh) => {
         this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime);
+      }
+    );
+
+    this.lights.forEach(
+      (light) => {
+        this.updateLightForTime(light, this.getLightItemForId(light.id), this.clock.elapsedTime);
       }
     );
   }

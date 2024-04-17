@@ -4,7 +4,7 @@ import {
   AnimationPair,
   AnimationPropertyDescriptor,
   MappedSupportedPropertyTypes,
-  SuportedPropertyTypes,
+  SuportedThreeObjTypes,
   ThreeObjProperties,
   ThreeObjSubProperties
 } from '../../../../interfaces/animations-interfaces';
@@ -18,7 +18,7 @@ interface TableInterface {
   start: number
   end: number
   current: number
-  type: SuportedPropertyTypes
+  type: SuportedThreeObjTypes
 }
 
 @Component({
