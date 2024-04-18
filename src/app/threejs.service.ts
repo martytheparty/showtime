@@ -184,7 +184,7 @@ export class ThreejsService {
     this.lights.push(light);
     light.intensity = lightItem.intensity;
     light.position.setX(lightItem.xPos.startValue);
-    light.position.setY(lightItem.yPos);
+    light.position.setY(lightItem.yPos.startValue);
     light.position.setZ(lightItem.zPos);
     lightItem.id = light.id;
     light.castShadow = lightItem.castShadow;
@@ -203,7 +203,7 @@ export class ThreejsService {
     if (light)
     {
       light.position.setX(lightItem.xPos.startValue);
-      light.position.setY(lightItem.yPos);
+      light.position.setY(lightItem.yPos.startValue);
       light.position.setZ(lightItem.zPos);
       light.intensity = lightItem.intensity;
       if (lightItem.name)
@@ -584,12 +584,18 @@ export class ThreejsService {
     if (lightItem)
     {
       let xSpeed = 0; 
+      let ySpeed = 0; 
 
       if (lightItem.xPos.animated) {
         xSpeed = (lightItem.xPos.endValue*1 - lightItem.xPos.startValue*1)/this.animationItem.time;
       }
 
+      if (lightItem.yPos.animated) {
+        ySpeed = (lightItem.yPos.endValue*1 - lightItem.yPos.startValue*1)/this.animationItem.time;
+      }
+
       light.position.setX(lightItem.xPos.startValue*1 + xSpeed * time);
+      light.position.setY(lightItem.yPos.startValue*1 + ySpeed * time);
     }
   }
 

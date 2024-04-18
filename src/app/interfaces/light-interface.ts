@@ -7,7 +7,7 @@ export interface LightInterface {
     id: number
     name: string
     xPos: AnimationPropertyDescriptor
-    yPos: number
+    yPos: AnimationPropertyDescriptor
     zPos: number
     redColor: number
     greenColor: number
