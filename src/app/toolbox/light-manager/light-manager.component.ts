@@ -75,7 +75,7 @@ export class LightManagerComponent implements OnDestroy {
       name: '',
       xPos: {startValue: 0, endValue: 0, animated: true},
       yPos: {startValue: 0, endValue: 0, animated: true},
-      zPos: 0,
+      zPos: {startValue: 0, endValue: 0, animated: true},
       intensity: 1,
       castShadow: true,
       redColor: 255,
@@ -93,7 +93,7 @@ export class LightManagerComponent implements OnDestroy {
         name: new FormControl(''),
         xPos: new FormControl(lightItem.xPos.startValue),
         yPos: new FormControl(lightItem.yPos.startValue),
-        zPos: new FormControl(lightItem.zPos),
+        zPos: new FormControl(lightItem.zPos.startValue),
         intensity: new FormControl(lightItem.intensity),
         castShadow: new FormControl(lightItem.castShadow),
         animated: new FormControl(lightItem.animated)
@@ -125,7 +125,7 @@ export class LightManagerComponent implements OnDestroy {
           const zPosition = parseFloat(lightItem.form.value.zPos);
           if (!isNaN(zPosition))
           {
-            lightItem.zPos = zPosition;
+            lightItem.zPos.startValue = zPosition;
           }
         }
 
@@ -151,7 +151,7 @@ export class LightManagerComponent implements OnDestroy {
               name: lightItem.name,
               xPos: lightItem.xPos.startValue,
               yPos: lightItem.yPos.startValue,
-              zPos: lightItem.zPos,
+              zPos: lightItem.zPos.startValue,
               redColor: lightItem.redColor,
               greenColor: lightItem.greenColor,
               blueColor: lightItem.blueColor,

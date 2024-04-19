@@ -44,7 +44,7 @@ export class AnimationPropertyComponent {
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
     xPos: ['light', 'mesh'],
     yPos: ['light', 'mesh'],
-    zPos: ['mesh']
+    zPos: ['light', 'mesh']
   };
 
 

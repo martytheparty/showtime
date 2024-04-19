@@ -185,7 +185,7 @@ export class ThreejsService {
     light.intensity = lightItem.intensity;
     light.position.setX(lightItem.xPos.startValue);
     light.position.setY(lightItem.yPos.startValue);
-    light.position.setZ(lightItem.zPos);
+    light.position.setZ(lightItem.zPos.startValue);
     lightItem.id = light.id;
     light.castShadow = lightItem.castShadow;
     this.lightListSignal.set(this.lightItems);
@@ -204,7 +204,7 @@ export class ThreejsService {
     {
       light.position.setX(lightItem.xPos.startValue);
       light.position.setY(lightItem.yPos.startValue);
-      light.position.setZ(lightItem.zPos);
+      light.position.setZ(lightItem.zPos.startValue);
       light.intensity = lightItem.intensity;
       if (lightItem.name)
       {
@@ -585,6 +585,7 @@ export class ThreejsService {
     {
       let xSpeed = 0; 
       let ySpeed = 0; 
+      let zSpeed = 0; 
 
       if (lightItem.xPos.animated) {
         xSpeed = (lightItem.xPos.endValue*1 - lightItem.xPos.startValue*1)/this.animationItem.time;
@@ -594,8 +595,13 @@ export class ThreejsService {
         ySpeed = (lightItem.yPos.endValue*1 - lightItem.yPos.startValue*1)/this.animationItem.time;
       }
 
+      if (lightItem.zPos.animated) {
+        zSpeed = (lightItem.zPos.endValue*1 - lightItem.zPos.startValue*1)/this.animationItem.time;
+      }
+
       light.position.setX(lightItem.xPos.startValue*1 + xSpeed * time);
       light.position.setY(lightItem.yPos.startValue*1 + ySpeed * time);
+      light.position.setZ(lightItem.zPos.startValue*1 + zSpeed * time);
     }
   }
 
