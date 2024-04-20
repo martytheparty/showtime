@@ -1,3 +1,5 @@
+import { OrthographicCamera, PerspectiveCamera } from "three"
+
 export interface PerspectiveCameraInterface {
     fov: number
     aspect: number
@@ -9,6 +11,7 @@ export interface PerspectiveCameraInterface {
     xLookat: number
     yLookat: number
     zLookat: number
+    type: 'perspective-camera'
 }
 
 export interface OrthographicCameraInterface {
@@ -24,6 +27,9 @@ export interface OrthographicCameraInterface {
     xLookat: number
     yLookat: number
     zLookat: number
+    type: 'orthographic-camera'
 }
 
 export type CameraType = 'perspective' | 'orthographic';
+
+export type SupportedCameras = PerspectiveCamera | OrthographicCamera;

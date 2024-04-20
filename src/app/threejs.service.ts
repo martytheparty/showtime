@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
-import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType } from './interfaces/camera-interfaces';
+import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras } from './interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
 import { RendererInterface } from './interfaces/renderer-interface';
@@ -39,9 +39,10 @@ export class ThreejsService {
     zPos: 5,
     xLookat: 0,
     yLookat: 0,
-    zLookat: 0
+    zLookat: 0,
+    type: 'orthographic-camera'
   };
-  camera: PerspectiveCamera | OrthographicCamera = new THREE.PerspectiveCamera();
+  camera: SupportedCameras[] = [new THREE.PerspectiveCamera()];
   cameraItem: PerspectiveCameraInterface = {
     fov: 70,
     aspect: 1,
@@ -52,7 +53,8 @@ export class ThreejsService {
     zPos: 5,
     xLookat: 0,
     yLookat: 0,
-    zLookat: 0
+    zLookat: 0,
+    type: 'perspective-camera'
   };
   rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
@@ -135,28 +137,28 @@ export class ThreejsService {
   {
     if (this.cameraType === 'perspective')
     {
-      this.camera = new THREE.PerspectiveCamera( 
+      this.camera = [new THREE.PerspectiveCamera( 
         this.cameraItem.fov, 
         this.cameraItem.aspect, 
         this.cameraItem.near, 
-        this.cameraItem.far);
-        this.camera.position.z = this.cameraItem.zPos;
-        this.camera.position.x = this.cameraItem.xPos;
-        this.camera.position.y = this.cameraItem.yPos;
-        this.camera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
+        this.cameraItem.far)];
+        this.camera[0].position.z = this.cameraItem.zPos;
+        this.camera[0].position.x = this.cameraItem.xPos;
+        this.camera[0].position.y = this.cameraItem.yPos;
+        this.camera[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
     } else {
-      this.camera = new THREE.OrthographicCamera(
+      this.camera = [new THREE.OrthographicCamera(
         this.orthographicCameraItem.left,
         this.orthographicCameraItem.right,
         this.orthographicCameraItem.top,
         this.orthographicCameraItem.bottom,
         this.orthographicCameraItem.near,
         this.orthographicCameraItem.far
-      );
-      this.camera.position.z = this.orthographicCameraItem.zPos;
-      this.camera.position.x = this.orthographicCameraItem.xPos;
-      this.camera.position.y = this.orthographicCameraItem.yPos;
-      this.camera.lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
+      )];
+      this.camera[0].position.z = this.orthographicCameraItem.zPos;
+      this.camera[0].position.x = this.orthographicCameraItem.xPos;
+      this.camera[0].position.y = this.orthographicCameraItem.yPos;
+      this.camera[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
     }
   }
 
@@ -524,7 +526,7 @@ export class ThreejsService {
         );
       }
 
-      this.renderer.render( this.scene, this.camera );
+      this.renderer.render( this.scene, this.camera[0] );
     }
 
     return animation;
