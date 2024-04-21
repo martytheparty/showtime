@@ -1,6 +1,8 @@
 import { OrthographicCamera, PerspectiveCamera } from "three"
 
 export interface PerspectiveCameraInterface {
+    id: number
+    name: string
     fov: number
     aspect: number
     near: number
@@ -11,10 +13,13 @@ export interface PerspectiveCameraInterface {
     xLookat: number
     yLookat: number
     zLookat: number
+    animated: boolean
     type: 'perspective-camera'
 }
 
 export interface OrthographicCameraInterface {
+    id: number
+    name: string
     left: number
     right: number
     top: number
@@ -27,6 +32,7 @@ export interface OrthographicCameraInterface {
     xLookat: number
     yLookat: number
     zLookat: number
+    animated: boolean
     type: 'orthographic-camera'
 }
 

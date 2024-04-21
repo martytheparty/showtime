@@ -28,6 +28,8 @@ export class ThreejsService {
   height = 0;
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
   orthographicCameraItem: OrthographicCameraInterface = {
+    id: -1,
+    name: 'orthographicCamera',
     left: -6,
     right: 6,
     top: 5,
@@ -40,10 +42,13 @@ export class ThreejsService {
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
-    type: 'orthographic-camera'
+    type: 'orthographic-camera',
+    animated: false
   };
   camera: SupportedCameras[] = [new THREE.PerspectiveCamera()];
   cameraItem: PerspectiveCameraInterface = {
+    id: this.camera[0].id,
+    name: 'Perspective Camera', 
     fov: 70,
     aspect: 1,
     near: .01,
@@ -54,7 +59,8 @@ export class ThreejsService {
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
-    type: 'perspective-camera'
+    type: 'perspective-camera',
+    animated: false
   };
   rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
@@ -142,6 +148,7 @@ export class ThreejsService {
         this.cameraItem.aspect, 
         this.cameraItem.near, 
         this.cameraItem.far)];
+        this.cameraItem.id =  this.camera[0].id;
         this.camera[0].position.z = this.cameraItem.zPos;
         this.camera[0].position.x = this.cameraItem.xPos;
         this.camera[0].position.y = this.cameraItem.yPos;
@@ -155,6 +162,7 @@ export class ThreejsService {
         this.orthographicCameraItem.near,
         this.orthographicCameraItem.far
       )];
+      this.orthographicCameraItem.id =  this.camera[0].id;
       this.camera[0].position.z = this.orthographicCameraItem.zPos;
       this.camera[0].position.x = this.orthographicCameraItem.xPos;
       this.camera[0].position.y = this.orthographicCameraItem.yPos;

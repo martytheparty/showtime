@@ -1,3 +1,4 @@
+import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameras } from "./camera-interfaces"
 import { LightInterface, SupportedLights } from "./light-interface"
 import { MeshInterface, SupportedMeshes } from "./mesh-interface"
 
@@ -16,8 +17,8 @@ export interface AnimationPropertyDescriptor {
 }
 
 export interface AnimationPair {
-    item: MeshInterface | LightInterface,
-    threeObj: SupportedMeshes | SupportedLights
+    item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface,
+    threeObj: SupportedMeshes | SupportedLights | SupportedCameras
 }
 
 export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos';
