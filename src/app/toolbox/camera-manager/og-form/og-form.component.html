@@ -58,5 +58,11 @@
             <mat-hint>The position on the z axis that the camera is pointed at.</mat-hint>
           </mat-form-field>
 
+          <!-- Note the checkbox does NOT work inside of a <mat-form-field> -->
+            <div  [formGroup]="form" appearance="fill">
+                <mat-checkbox formControlName="animated"></mat-checkbox>
+                <mat-label class="checkbox-label">animated</mat-label>
+            </div>
+
     </form>
 </div>

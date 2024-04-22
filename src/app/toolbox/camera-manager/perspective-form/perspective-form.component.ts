@@ -6,13 +6,16 @@ import { Subscription } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 @Component({
   selector: 'app-perspective-form',
   standalone: true,
   imports: [
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   templateUrl: './perspective-form.component.html',
   styleUrl: './perspective-form.component.scss'
@@ -32,7 +35,8 @@ export class PerspectiveFormComponent implements OnDestroy {
     zPos: new FormControl(0), 
     xLookat: new FormControl(0),
     yLookat: new FormControl(0),
-    zLookat: new FormControl(0)
+    zLookat: new FormControl(0),
+    animated: new FormControl(false)
   });
 
   subs: Subscription[] = [];
@@ -95,6 +99,8 @@ export class PerspectiveFormComponent implements OnDestroy {
             }
           }
 
+        this.cameraItem.animated = this.form.value.animated;
+
           this.threeJsService.updateCamera();
         }
       }
@@ -108,7 +114,7 @@ export class PerspectiveFormComponent implements OnDestroy {
 
         if (this.cameraItem)
         {
-          this.form.setValue({
+          this.form.patchValue({
             fov: this.cameraItem.fov,
             aspect: this.cameraItem.aspect,
             near: this.cameraItem.near,
@@ -118,7 +124,8 @@ export class PerspectiveFormComponent implements OnDestroy {
             zPos: this.cameraItem.zPos,
             xLookat: this.cameraItem.xLookat,
             yLookat: this.cameraItem.yLookat,
-            zLookat: this.cameraItem.zLookat
+            zLookat: this.cameraItem.zLookat,
+            animated: this.cameraItem.animated
           });
         }
         

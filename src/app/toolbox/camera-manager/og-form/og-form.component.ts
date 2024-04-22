@@ -5,6 +5,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-og-form',
@@ -12,7 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   imports: [
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   templateUrl: './og-form.component.html',
   styleUrl: './og-form.component.scss'
@@ -32,7 +34,8 @@ export class OgFormComponent implements OnDestroy {
     zPos: new FormControl(0),
     xLookat: new FormControl(0),
     yLookat: new FormControl(0),
-    zLookat: new FormControl(0)
+    zLookat: new FormControl(0),
+    animated: new FormControl(false)
   });
 
   subs: Subscription[] = [];
@@ -53,7 +56,8 @@ export class OgFormComponent implements OnDestroy {
           zPos: this.cameraItem.zPos,
           xLookat: this.cameraItem.xLookat,
           yLookat: this.cameraItem.yLookat,
-          zLookat: this.cameraItem.zLookat
+          zLookat: this.cameraItem.zLookat,
+          animated: this.cameraItem.animated
         });
 
       const sub = this.form.valueChanges.subscribe(
@@ -148,6 +152,8 @@ export class OgFormComponent implements OnDestroy {
                 this.cameraItem.zLookat = zLookat;
               }
             }
+
+            this.cameraItem.animated = this.form.value.animated;
   
             this.threeJsService.updateCamera();
           }
