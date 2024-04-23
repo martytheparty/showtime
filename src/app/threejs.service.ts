@@ -36,7 +36,7 @@ export class ThreejsService {
     bottom: -5,
     near: .01,
     far: 2000,
-    xPos: 0,
+    xPos: {startValue: 0, endValue: 0, animated: true},
     yPos: 0,
     zPos: 5,
     xLookat: 0,
@@ -53,7 +53,7 @@ export class ThreejsService {
     aspect: 1,
     near: .01,
     far: 2000,
-    xPos: 0,
+    xPos: {startValue: 0, endValue: 0, animated: true},
     yPos: 0,
     zPos: 5,
     xLookat: 0,
@@ -150,7 +150,7 @@ export class ThreejsService {
         this.cameraItem.far)];
         this.cameraItem.id =  this.camera[0].id;
         this.camera[0].position.z = this.cameraItem.zPos;
-        this.camera[0].position.x = this.cameraItem.xPos;
+        this.camera[0].position.x = this.cameraItem.xPos.startValue;
         this.camera[0].position.y = this.cameraItem.yPos;
         this.camera[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
     } else {
@@ -164,7 +164,7 @@ export class ThreejsService {
       )];
       this.orthographicCameraItem.id =  this.camera[0].id;
       this.camera[0].position.z = this.orthographicCameraItem.zPos;
-      this.camera[0].position.x = this.orthographicCameraItem.xPos;
+      this.camera[0].position.x = this.orthographicCameraItem.xPos.startValue;
       this.camera[0].position.y = this.orthographicCameraItem.yPos;
       this.camera[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
     }

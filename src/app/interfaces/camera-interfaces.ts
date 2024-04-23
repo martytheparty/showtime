@@ -1,4 +1,5 @@
 import { OrthographicCamera, PerspectiveCamera } from "three"
+import { AnimationPropertyDescriptor } from "./animations-interfaces"
 
 export interface PerspectiveCameraInterface {
     id: number
@@ -7,7 +8,7 @@ export interface PerspectiveCameraInterface {
     aspect: number
     near: number
     far: number
-    xPos: number
+    xPos: AnimationPropertyDescriptor
     yPos: number
     zPos: number
     xLookat: number
@@ -26,7 +27,7 @@ export interface OrthographicCameraInterface {
     bottom: number
     near: number
     far: number
-    xPos: number
+    xPos: AnimationPropertyDescriptor
     yPos: number
     zPos: number
     xLookat: number
