@@ -153,6 +153,12 @@ export class ThreejsService {
         this.camera[0].position.x = this.cameraItem.xPos.startValue;
         this.camera[0].position.y = this.cameraItem.yPos;
         this.camera[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
+
+        if (this.cameraItem.animated) {
+          this.setAnimationPairs(this.cameraItem, this.camera[0]);
+        } else {
+          this.pruneAnimationPairs();
+        }
     } else {
       this.camera = [new THREE.OrthographicCamera(
         this.orthographicCameraItem.left,
@@ -167,6 +173,12 @@ export class ThreejsService {
       this.camera[0].position.x = this.orthographicCameraItem.xPos.startValue;
       this.camera[0].position.y = this.orthographicCameraItem.yPos;
       this.camera[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
+
+      if (this.cameraItem.animated) {
+        this.setAnimationPairs(this.orthographicCameraItem, this.camera[0]);
+      } else {
+        this.pruneAnimationPairs();
+      }
     }
   }
 
@@ -305,7 +317,7 @@ export class ThreejsService {
     return meshItem;
   }
 
-  setAnimationPairs(item: MeshInterface | LightInterface, threeObj: SupportedMeshes | SupportedLights): void
+  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras): void
   {
     const pair = this.animationsPairs
                   .find( (pair) => pair.item.id === item.id );
