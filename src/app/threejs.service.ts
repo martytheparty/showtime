@@ -462,12 +462,14 @@ export class ThreejsService {
 
   pruneAnimationPairs(): void
   {
-    // basically deleted any pairs that are not animated
-    const pairs: AnimationPair[] = this.animationsPairs
-    .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
+    if (this.animationsPairs.length > 0) {
+      // basically deleted any pairs that are not animated
+      const pairs: AnimationPair[] = this.animationsPairs
+      .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
 
-    this.animationsPairs = pairs;
-    this.animationPairSignal.set(this.animationsPairs);
+      this.animationsPairs = pairs;
+      this.animationPairSignal.set(this.animationsPairs);
+    }
   }
 
   setupRenderer(): void
