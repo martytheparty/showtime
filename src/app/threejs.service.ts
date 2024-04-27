@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
-import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras } from './interfaces/camera-interfaces';
+import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from './interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from './interfaces/light-interface';
 import { SceneInterface } from './interfaces/scene-interface';
 import { RendererInterface } from './interfaces/renderer-interface';
@@ -45,9 +45,10 @@ export class ThreejsService {
     type: 'orthographic-camera',
     animated: false
   };
-  camera: SupportedCameras[] = [new THREE.PerspectiveCamera()];
+  cameras: SupportedCameras[] = [new THREE.PerspectiveCamera()];
+  cameraItems: SupportedCameraItems[] = [];  
   cameraItem: PerspectiveCameraInterface = {
-    id: this.camera[0].id,
+    id: this.cameras[0].id,
     name: 'Perspective Camera', 
     fov: 70,
     aspect: 1,
@@ -143,24 +144,25 @@ export class ThreejsService {
   {
     if (this.cameraType === 'perspective')
     {
-      this.camera = [new THREE.PerspectiveCamera( 
+      this.cameras = [new THREE.PerspectiveCamera( 
         this.cameraItem.fov, 
         this.cameraItem.aspect, 
         this.cameraItem.near, 
         this.cameraItem.far)];
-        this.cameraItem.id =  this.camera[0].id;
-        this.camera[0].position.z = this.cameraItem.zPos;
-        this.camera[0].position.x = this.cameraItem.xPos.startValue;
-        this.camera[0].position.y = this.cameraItem.yPos;
-        this.camera[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
+        this.cameraItem.id =  this.cameras[0].id;
+        this.cameras[0].position.z = this.cameraItem.zPos;
+        this.cameras[0].position.x = this.cameraItem.xPos.startValue;
+        this.cameras[0].position.y = this.cameraItem.yPos;
+        this.cameras[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
 
         if (this.cameraItem.animated) {
-          this.setAnimationPairs(this.cameraItem, this.camera[0]);
+          this.setAnimationPairs(this.cameraItem, this.cameras[0]);
         } else {
           this.pruneAnimationPairs();
         }
+        this.cameraItems = [this.cameraItem];
     } else {
-      this.camera = [new THREE.OrthographicCamera(
+      this.cameras = [new THREE.OrthographicCamera(
         this.orthographicCameraItem.left,
         this.orthographicCameraItem.right,
         this.orthographicCameraItem.top,
@@ -168,17 +170,19 @@ export class ThreejsService {
         this.orthographicCameraItem.near,
         this.orthographicCameraItem.far
       )];
-      this.orthographicCameraItem.id =  this.camera[0].id;
-      this.camera[0].position.z = this.orthographicCameraItem.zPos;
-      this.camera[0].position.x = this.orthographicCameraItem.xPos.startValue;
-      this.camera[0].position.y = this.orthographicCameraItem.yPos;
-      this.camera[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
+      this.orthographicCameraItem.id =  this.cameras[0].id;
+      this.cameras[0].position.z = this.orthographicCameraItem.zPos;
+      this.cameras[0].position.x = this.orthographicCameraItem.xPos.startValue;
+      this.cameras[0].position.y = this.orthographicCameraItem.yPos;
+      this.cameras[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
 
-      if (this.cameraItem.animated) {
-        this.setAnimationPairs(this.orthographicCameraItem, this.camera[0]);
+      if (this.orthographicCameraItem.animated) {
+        this.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
       } else {
         this.pruneAnimationPairs();
       }
+
+      this.cameraItems = [this.orthographicCameraItem];
     }
   }
 
@@ -493,6 +497,19 @@ export class ThreejsService {
       
       if (this.animationItem.running)
       {
+        this.cameras.forEach(
+          (camera) => {
+            const cameraItem:  PerspectiveCameraInterface | OrthographicCameraInterface | undefined = this.getCameraItemForId(camera.id);
+            
+            if (cameraItem && cameraItem.animated){
+              if (this.animationItem.pause) {
+                this.updateCameraForTime(camera, cameraItem, this.animationItem.pauseTime);
+              } else {
+                this.updateCameraForTime(camera, cameraItem, this.clock.elapsedTime);
+              }
+            }
+          }
+        );
         this.lights.forEach(
           (light) => {
             const lightItem: LightInterface | undefined = this.getLightItemForId(light.id);
@@ -548,7 +565,7 @@ export class ThreejsService {
         );
       }
 
-      this.renderer.render( this.scene, this.camera[0] );
+      this.renderer.render( this.scene, this.cameras[0] );
     }
 
     return animation;
@@ -566,6 +583,13 @@ export class ThreejsService {
   {
     return this.lightItems.find(
       (li: LightInterface) => li.id === lightId
+    );
+  }
+
+  getCameraItemForId(cameraId: number): PerspectiveCameraInterface | OrthographicCameraInterface | undefined
+  {
+    return this.cameraItems.find(
+      (camera: SupportedCameraItems) => camera.id === cameraId
     );
   }
 
@@ -596,6 +620,26 @@ export class ThreejsService {
       mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos.startValue*1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos.startValue*1 + zSpeed * time);
+    }
+  }
+
+  updateCameraForTime(
+    camera: SupportedCameras,
+    cameraItem: SupportedCameraItems | undefined,
+    time: number
+  ): void
+  {
+    if (cameraItem)
+    {
+      let xSpeed = 0; 
+
+      if (cameraItem.xPos.animated) {
+        xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
+      }
+
+
+      camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
+
     }
   }
 
