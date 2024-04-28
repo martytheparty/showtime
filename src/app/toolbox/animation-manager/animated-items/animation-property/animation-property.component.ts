@@ -55,6 +55,10 @@ export class AnimationPropertyComponent {
       // checking for the same length prevents a redraw when the user
       // modifies the input... without this the table redraws and the 
       // focus is lost when the user changes a value
+      // there is an issue here... I need to check to see if the camera 
+      // has changed because if the user changes the from perspective to
+      // orthagraphic the id will change; but the length may stay the same
+      // but the table needs to be refreshed to accomodate the new id
       if (this.animationPairs().length !== this.tableData.length) {
         this.tableData = this.animationPairs()
         .map( (pair: AnimationPair) => {
@@ -99,9 +103,9 @@ export class AnimationPropertyComponent {
 
   getName(id: number): string {
     const pair: AnimationPair = this.getPair(id);
-    const item = pair.item;
 
     if (pair){
+      const item = pair.item;
       return item.name;
     } else {
       return '';
@@ -110,26 +114,31 @@ export class AnimationPropertyComponent {
 
   getStart(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const item = pair.item;
-    const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
-    if (pair && prop.startValue){
-      return prop.startValue;
-    } else {
-      return 0;
-    }
+    if (pair){
+      const item = pair.item;
+      const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+      if (prop.startValue)
+      {
+        return prop.startValue;
+      }
+    } 
+    return 0;
+    
   }
 
   getEnd(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    const item: MeshInterface = pair.item as MeshInterface;
-    const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
-    if (pair && prop.endValue){
-      return prop.endValue;
-    } else {
-      return 0;
+    if (pair){
+      const item: MeshInterface = pair.item as MeshInterface;
+      const prop = item[this.propertyName()] as AnimationPropertyDescriptor;      
+      if (prop.endValue) {
+        return prop.endValue;
+      }
     }
+
+    return 0;
   }
 
   getCurrent(id: number): number {

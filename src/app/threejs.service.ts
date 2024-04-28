@@ -46,7 +46,7 @@ export class ThreejsService {
     animated: false
   };
   cameras: SupportedCameras[] = [new THREE.PerspectiveCamera()];
-  cameraItems: SupportedCameraItems[] = [];  
+
   cameraItem: PerspectiveCameraInterface = {
     id: this.cameras[0].id,
     name: 'Perspective Camera', 
@@ -63,6 +63,7 @@ export class ThreejsService {
     type: 'perspective-camera',
     animated: false
   };
+  cameraItems: SupportedCameraItems[] = [this.cameraItem];  
   rendererItem: RendererInterface = { castShadows: true };
   meshes: SupportedMeshes[] = [];
   lights: SupportedLights[] = [];
@@ -88,8 +89,8 @@ export class ThreejsService {
   private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightItems);
   lightListValues: Signal<LightInterface[]> = computed( () => this.lightListSignal() );
 
-  private cameraItemSignal: WritableSignal<PerspectiveCameraInterface> = signal(this.cameraItem);
-  cameraItemValues: Signal<PerspectiveCameraInterface> = computed( () => this.cameraItemSignal() );
+  private cameraItemSignal: WritableSignal<SupportedCameraItems[]> = signal(this.cameraItems);
+  cameraItemValues: Signal<SupportedCameraItems[]> = computed( () => this.cameraItemSignal() );
 
   private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
   orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
@@ -184,11 +185,21 @@ export class ThreejsService {
 
       this.cameraItems = [this.orthographicCameraItem];
     }
+    // setting the camearItemsSignal here caused an error\
+    // since this method is called from an effect
+    // this.cameraItemSignal.set(this.cameraItems);
   }
 
   updateCamera(): void
   {
     this.setupCamera();
+    // there is an issue here... setup blows away the 
+    // old camera an creates a new camera... this leads
+    // to a huge (not size, but likelihood) memory leak risk
+    // and just seems like bad idea... need to refactor
+    // so a new camera is created only if the type of camera
+    // changes.
+    this.cameraItemSignal.set(this.cameraItems);
   }
 
   updateCameraType(cameraType: CameraType): void

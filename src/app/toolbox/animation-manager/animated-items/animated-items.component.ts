@@ -52,6 +52,9 @@ export class AnimatedItemsComponent {
       this.threeJsService.updateMesh(pair.item);
     } else if (pair.item.type === 'light') {
       this.threeJsService.updateLight(pair.item);
+    }  else if (pair.item.type === 'perspective-camera' ||
+                pair.item.type === 'orthographic-camera') {
+      this.threeJsService.updateCamera();
     }
 
   }

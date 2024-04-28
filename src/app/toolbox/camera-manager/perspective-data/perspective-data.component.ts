@@ -16,7 +16,12 @@ export class PerspectiveDataComponent {
   constructor() {
     effect(
       () => {
-        this.cameraItem = this.threeJsService.cameraItemValues();        
+        if (
+          this.threeJsService.cameraItemValues().length > 0 &&
+          this.threeJsService.cameraItemValues()[0].type === 'perspective-camera')
+        {
+            this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;        
+        }
       }
     ); 
   }

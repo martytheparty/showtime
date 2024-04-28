@@ -110,23 +110,25 @@ export class PerspectiveFormComponent implements OnDestroy {
 
     effect(
       () => {
-        this.cameraItem = this.threeJsService.cameraItemValues();
-
-        if (this.cameraItem)
+        if (this.threeJsService.cameraItemValues()[0].type === 'perspective-camera')
         {
-          this.form.patchValue({
-            fov: this.cameraItem.fov,
-            aspect: this.cameraItem.aspect,
-            near: this.cameraItem.near,
-            far: this.cameraItem.far,
-            xPos: this.cameraItem.xPos.startValue,
-            yPos: this.cameraItem.yPos,
-            zPos: this.cameraItem.zPos,
-            xLookat: this.cameraItem.xLookat,
-            yLookat: this.cameraItem.yLookat,
-            zLookat: this.cameraItem.zLookat,
-            animated: this.cameraItem.animated
-          });
+          this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;
+          if (this.cameraItem)
+          {
+            this.form.patchValue({
+              fov: this.cameraItem.fov,
+              aspect: this.cameraItem.aspect,
+              near: this.cameraItem.near,
+              far: this.cameraItem.far,
+              xPos: this.cameraItem.xPos.startValue,
+              yPos: this.cameraItem.yPos,
+              zPos: this.cameraItem.zPos,
+              xLookat: this.cameraItem.xLookat,
+              yLookat: this.cameraItem.yLookat,
+              zLookat: this.cameraItem.zLookat,
+              animated: this.cameraItem.animated
+            }, {emitEvent: false});
+          }
         }
         
       }
