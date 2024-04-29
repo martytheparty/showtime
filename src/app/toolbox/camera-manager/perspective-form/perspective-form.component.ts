@@ -110,7 +110,7 @@ export class PerspectiveFormComponent implements OnDestroy {
 
     effect(
       () => {
-        if (this.threeJsService.cameraItemValues()[0].type === 'perspective-camera')
+        if (this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
           this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;
           if (this.cameraItem)

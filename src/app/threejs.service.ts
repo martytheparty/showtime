@@ -23,7 +23,7 @@ export class ThreejsService {
     pause: false,
     pauseTime: 0
   };
-  cameraType: CameraType = 'perspective';
+  cameraType: CameraType = 'PerspectiveCamera';
   width = 0;
   height = 0;
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
@@ -42,7 +42,7 @@ export class ThreejsService {
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
-    type: 'orthographic-camera',
+    type: 'OrthographicCamera',
     animated: false
   };
   cameras: SupportedCameras[] = [new THREE.PerspectiveCamera()];
@@ -60,7 +60,7 @@ export class ThreejsService {
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
-    type: 'perspective-camera',
+    type: 'PerspectiveCamera',
     animated: false
   };
   cameraItems: SupportedCameraItems[] = [this.cameraItem];  
@@ -143,7 +143,7 @@ export class ThreejsService {
 
   setupCamera(): void
   {
-    if (this.cameraType === 'perspective')
+    if (this.cameraType === 'PerspectiveCamera')
     {
       this.cameras = [new THREE.PerspectiveCamera( 
         this.cameraItem.fov, 
@@ -192,20 +192,80 @@ export class ThreejsService {
 
   updateCamera(): void
   {
-    this.setupCamera();
+    
     // there is an issue here... setup blows away the 
     // old camera an creates a new camera... this leads
     // to a huge (not size, but likelihood) memory leak risk
     // and just seems like bad idea... need to refactor
     // so a new camera is created only if the type of camera
     // changes.
+    // #1 determine if the current camera type has changed
+    if (this.cameraType === this.cameras[0].type)
+    {
+      const currentCamera = this.cameras[0];
+      let isAnimated = false;
+      let xPos = 0;
+      let yPos = 0;
+      let zPos = 0;
+      let far = 0;
+      let near = 0;
+      if (this.cameraType === 'PerspectiveCamera')
+        {
+          const camera: PerspectiveCamera = this.cameras[0] as PerspectiveCamera;
+          // orthagraphic camera does not have these four that's why they need to be separate.
+          camera.fov = this.cameraItem.fov;
+          camera.aspect = this.cameraItem.aspect;
+          near = this.cameraItem.near;
+          far = this.cameraItem.far;
+          xPos = this.cameraItem.xPos.startValue;
+          yPos = this.cameraItem.yPos;
+          zPos = this.cameraItem.zPos;
+          isAnimated = this.cameraItem.animated;
+          this.cameraItems = [this.cameraItem];
+        } else {
+          const camera: OrthographicCamera = this.cameras[0] as OrthographicCamera;
+          camera.left = this.orthographicCameraItem.left;
+          camera.right = this.orthographicCameraItem.right;
+          camera.top = this.orthographicCameraItem.top;
+          camera.bottom = this.orthographicCameraItem.bottom;
+          near = this.orthographicCameraItem.near;
+          far = this.orthographicCameraItem.far;
+          xPos = this.orthographicCameraItem.xPos.startValue;
+          yPos = this.orthographicCameraItem.yPos;
+          zPos = this.orthographicCameraItem.zPos;
+          isAnimated = this.orthographicCameraItem.animated;    
+          this.cameraItems = [this.orthographicCameraItem];
+        }
+
+        currentCamera.position.x = xPos;
+        currentCamera.position.y = yPos;
+        currentCamera.position.z = zPos;
+        currentCamera.near = near;
+        currentCamera.far = far;
+        currentCamera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
+
+        if (isAnimated) {
+          this.setAnimationPairs(this.cameraItem, this.cameras[0]);
+        } else {
+          this.pruneAnimationPairs();
+        }
+
+      } else {
+      this.setupCamera();
+    }
     this.cameraItemSignal.set(this.cameraItems);
   }
 
   updateCameraType(cameraType: CameraType): void
   {
     this.cameraType = cameraType;
-    this.updateCamera();
+
+    // delete the old camera from the pairs list if it exists
+    this.animationsPairs = this.animationsPairs
+            .filter( (pair: AnimationPair) => pair.item.id !== this.cameras[0].id );
+    // creates a new camera
+    this.setupCamera();
+
   }
 
   updateRenderer(renderItem: RendererInterface): void
@@ -650,6 +710,7 @@ export class ThreejsService {
 
 
       camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
+      camera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
 
     }
   }

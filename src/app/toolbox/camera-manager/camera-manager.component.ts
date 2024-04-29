@@ -26,7 +26,7 @@ import { PerspectiveFormComponent } from './perspective-form/perspective-form.co
 export class CameraManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
   editing = false;
-  cameraType: CameraType = 'perspective';
+  cameraType: CameraType = 'PerspectiveCamera';
 
   toggleEdit(): void
   {
@@ -35,7 +35,7 @@ export class CameraManagerComponent {
 
   updateCameraType(event: MatCheckboxChange): void
   {
-    this.cameraType = event.checked ? 'orthographic' : 'perspective';
+    this.cameraType = event.checked ? 'OrthographicCamera' : 'PerspectiveCamera';
     this.threeJsService.updateCameraType(this.cameraType);
   }
 }

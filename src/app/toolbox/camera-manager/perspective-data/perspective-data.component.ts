@@ -18,7 +18,7 @@ export class PerspectiveDataComponent {
       () => {
         if (
           this.threeJsService.cameraItemValues().length > 0 &&
-          this.threeJsService.cameraItemValues()[0].type === 'perspective-camera')
+          this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
             this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;        
         }

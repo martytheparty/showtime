@@ -42,7 +42,7 @@ export class AnimationPropertyComponent {
   tableData: TableInterface[] = [];
   filteredTableData: TableInterface[] = [];
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
-    xPos: ['light', 'mesh', 'perspective-camera', 'orthographic-camera'],
+    xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     yPos: ['light', 'mesh'],
     zPos: ['light', 'mesh']
   };

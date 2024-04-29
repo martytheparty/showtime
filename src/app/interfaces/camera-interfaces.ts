@@ -15,7 +15,7 @@ export interface PerspectiveCameraInterface {
     yLookat: number
     zLookat: number
     animated: boolean
-    type: 'perspective-camera'
+    type: 'PerspectiveCamera'
 }
 
 export interface OrthographicCameraInterface {
@@ -34,10 +34,10 @@ export interface OrthographicCameraInterface {
     yLookat: number
     zLookat: number
     animated: boolean
-    type: 'orthographic-camera'
+    type: 'OrthographicCamera'
 }
 
-export type CameraType = 'perspective' | 'orthographic';
+export type CameraType = 'PerspectiveCamera' | 'OrthographicCamera';
 
 export type SupportedCameras = PerspectiveCamera | OrthographicCamera;
 export type SupportedCameraItems = PerspectiveCameraInterface | OrthographicCameraInterface;
