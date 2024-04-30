@@ -29,7 +29,7 @@ export class ThreejsService {
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
   orthographicCameraItem: OrthographicCameraInterface = {
     id: -1,
-    name: 'orthographicCamera',
+    name: 'orthographic Camera',
     left: -6,
     right: 6,
     top: 5,
@@ -143,6 +143,10 @@ export class ThreejsService {
 
   setupCamera(): void
   {
+    // delete any camera animated pairs
+    console.log(this.animationsPairs);
+    // this.animationsPairs = this.animationsPairs
+    // .filter( (pair: AnimationPair) => pair.item.id !== id );
     if (this.cameraType === 'PerspectiveCamera')
     {
       this.cameras = [new THREE.PerspectiveCamera( 
@@ -222,6 +226,13 @@ export class ThreejsService {
           zPos = this.cameraItem.zPos;
           isAnimated = this.cameraItem.animated;
           this.cameraItems = [this.cameraItem];
+
+          if (isAnimated) {
+            this.setAnimationPairs(this.cameraItem, this.cameras[0]);
+          } else {
+            this.pruneAnimationPairs();
+          }
+
         } else {
           const camera: OrthographicCamera = this.cameras[0] as OrthographicCamera;
           camera.left = this.orthographicCameraItem.left;
@@ -235,6 +246,13 @@ export class ThreejsService {
           zPos = this.orthographicCameraItem.zPos;
           isAnimated = this.orthographicCameraItem.animated;    
           this.cameraItems = [this.orthographicCameraItem];
+
+          if (isAnimated) {
+            this.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
+          } else {
+            this.pruneAnimationPairs();
+          }
+
         }
 
         currentCamera.position.x = xPos;
@@ -243,12 +261,6 @@ export class ThreejsService {
         currentCamera.near = near;
         currentCamera.far = far;
         currentCamera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
-
-        if (isAnimated) {
-          this.setAnimationPairs(this.cameraItem, this.cameras[0]);
-        } else {
-          this.pruneAnimationPairs();
-        }
 
       } else {
       this.setupCamera();
@@ -263,6 +275,7 @@ export class ThreejsService {
     // delete the old camera from the pairs list if it exists
     this.animationsPairs = this.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== this.cameras[0].id );
+    this.animationPairSignal.set(this.animationsPairs);
     // creates a new camera
     this.setupCamera();
 

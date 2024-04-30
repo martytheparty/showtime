@@ -46,6 +46,7 @@ export class AnimationPropertyComponent {
     yPos: ['light', 'mesh'],
     zPos: ['light', 'mesh']
   };
+  previousData: AnimationPair[] = [];
 
 
 
@@ -59,7 +60,9 @@ export class AnimationPropertyComponent {
       // has changed because if the user changes the from perspective to
       // orthagraphic the id will change; but the length may stay the same
       // but the table needs to be refreshed to accomodate the new id
-      if (this.animationPairs().length !== this.tableData.length) {
+      
+      if (!this.dataMatch(this.animationPairs())) {
+        this.previousData = this.animationPairs();
         this.tableData = this.animationPairs()
         .map( (pair: AnimationPair) => {
           const item = pair.item;
@@ -101,9 +104,12 @@ export class AnimationPropertyComponent {
     } );
   }
 
+  dataMatch(newData: AnimationPair[]): boolean {
+    return JSON.stringify(newData) === JSON.stringify(this.previousData);
+  }
+
   getName(id: number): string {
     const pair: AnimationPair = this.getPair(id);
-
     if (pair){
       const item = pair.item;
       return item.name;
