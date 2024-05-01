@@ -143,10 +143,6 @@ export class ThreejsService {
 
   setupCamera(): void
   {
-    // delete any camera animated pairs
-    console.log(this.animationsPairs);
-    // this.animationsPairs = this.animationsPairs
-    // .filter( (pair: AnimationPair) => pair.item.id !== id );
     if (this.cameraType === 'PerspectiveCamera')
     {
       this.cameras = [new THREE.PerspectiveCamera( 

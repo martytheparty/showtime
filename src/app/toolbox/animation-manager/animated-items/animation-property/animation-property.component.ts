@@ -62,7 +62,7 @@ export class AnimationPropertyComponent {
       // but the table needs to be refreshed to accomodate the new id
       
       if (!this.dataMatch(this.animationPairs())) {
-        this.previousData = this.animationPairs();
+        this.previousData = [...this.animationPairs()];
         this.tableData = this.animationPairs()
         .map( (pair: AnimationPair) => {
           const item = pair.item;
@@ -105,7 +105,10 @@ export class AnimationPropertyComponent {
   }
 
   dataMatch(newData: AnimationPair[]): boolean {
-    return JSON.stringify(newData) === JSON.stringify(this.previousData);
+    const oldIds = this.previousData.map( (pair) => pair.item.id );
+    const newIds = newData.map( (pair) => pair.item.id );
+
+    return JSON.stringify(oldIds) === JSON.stringify(newIds);
   }
 
   getName(id: number): string {
