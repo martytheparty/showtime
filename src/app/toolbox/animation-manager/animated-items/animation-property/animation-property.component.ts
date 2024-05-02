@@ -43,7 +43,7 @@ export class AnimationPropertyComponent {
   filteredTableData: TableInterface[] = [];
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
     xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    yPos: ['light', 'mesh'],
+    yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     zPos: ['light', 'mesh']
   };
   previousData: AnimationPair[] = [];

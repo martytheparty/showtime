@@ -68,7 +68,7 @@ export class PerspectiveFormComponent implements OnDestroy {
           }        
 
           if (this.form.value.yPos || this.form.value.yPos === 0) {          
-            this.cameraItem.yPos = this.form.value.yPos;
+            this.cameraItem.yPos.startValue = this.form.value.yPos;
           }        
 
           if (this.form.value.zPos || this.form.value.zPos === 0) {          
@@ -121,7 +121,7 @@ export class PerspectiveFormComponent implements OnDestroy {
               near: this.cameraItem.near,
               far: this.cameraItem.far,
               xPos: this.cameraItem.xPos.startValue,
-              yPos: this.cameraItem.yPos,
+              yPos: this.cameraItem.yPos.startValue,
               zPos: this.cameraItem.zPos,
               xLookat: this.cameraItem.xLookat,
               yLookat: this.cameraItem.yLookat,

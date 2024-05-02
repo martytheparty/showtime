@@ -37,7 +37,7 @@ export class ThreejsService {
     near: .01,
     far: 2000,
     xPos: {startValue: 0, endValue: 0, animated: true},
-    yPos: 0,
+    yPos: {startValue: 0, endValue: 0, animated: true},
     zPos: 5,
     xLookat: 0,
     yLookat: 0,
@@ -55,7 +55,7 @@ export class ThreejsService {
     near: .01,
     far: 2000,
     xPos: {startValue: 0, endValue: 0, animated: true},
-    yPos: 0,
+    yPos: {startValue: 0, endValue: 0, animated: true},
     zPos: 5,
     xLookat: 0,
     yLookat: 0,
@@ -153,7 +153,7 @@ export class ThreejsService {
         this.cameraItem.id =  this.cameras[0].id;
         this.cameras[0].position.z = this.cameraItem.zPos;
         this.cameras[0].position.x = this.cameraItem.xPos.startValue;
-        this.cameras[0].position.y = this.cameraItem.yPos;
+        this.cameras[0].position.y = this.cameraItem.yPos.startValue;
         this.cameras[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
 
         if (this.cameraItem.animated) {
@@ -174,7 +174,7 @@ export class ThreejsService {
       this.orthographicCameraItem.id =  this.cameras[0].id;
       this.cameras[0].position.z = this.orthographicCameraItem.zPos;
       this.cameras[0].position.x = this.orthographicCameraItem.xPos.startValue;
-      this.cameras[0].position.y = this.orthographicCameraItem.yPos;
+      this.cameras[0].position.y = this.orthographicCameraItem.yPos.startValue;
       this.cameras[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
 
       if (this.orthographicCameraItem.animated) {
@@ -218,7 +218,7 @@ export class ThreejsService {
           near = this.cameraItem.near;
           far = this.cameraItem.far;
           xPos = this.cameraItem.xPos.startValue;
-          yPos = this.cameraItem.yPos;
+          yPos = this.cameraItem.yPos.startValue;
           zPos = this.cameraItem.zPos;
           isAnimated = this.cameraItem.animated;
           this.cameraItems = [this.cameraItem];
@@ -238,7 +238,7 @@ export class ThreejsService {
           near = this.orthographicCameraItem.near;
           far = this.orthographicCameraItem.far;
           xPos = this.orthographicCameraItem.xPos.startValue;
-          yPos = this.orthographicCameraItem.yPos;
+          yPos = this.orthographicCameraItem.yPos.startValue;
           zPos = this.orthographicCameraItem.zPos;
           isAnimated = this.orthographicCameraItem.animated;    
           this.cameraItems = [this.orthographicCameraItem];
@@ -712,13 +712,18 @@ export class ThreejsService {
     if (cameraItem)
     {
       let xSpeed = 0; 
+      let ySpeed = 0;
 
       if (cameraItem.xPos.animated) {
         xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
       }
 
+      if (cameraItem.yPos.animated) {
+        ySpeed = (cameraItem.yPos.endValue*1 - cameraItem.yPos.startValue*1)/this.animationItem.time;
+      }
 
       camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
+      camera.position.setY(cameraItem.yPos.startValue*1 + ySpeed * time);
       camera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
 
     }
