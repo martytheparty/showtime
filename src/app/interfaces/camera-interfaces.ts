@@ -10,7 +10,7 @@ export interface PerspectiveCameraInterface {
     far: number
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
-    zPos: number
+    zPos: AnimationPropertyDescriptor
     xLookat: number
     yLookat: number
     zLookat: number
@@ -29,7 +29,7 @@ export interface OrthographicCameraInterface {
     far: number
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
-    zPos: number
+    zPos: AnimationPropertyDescriptor
     xLookat: number
     yLookat: number
     zLookat: number

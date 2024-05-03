@@ -38,7 +38,7 @@ export class ThreejsService {
     far: 2000,
     xPos: {startValue: 0, endValue: 0, animated: true},
     yPos: {startValue: 0, endValue: 0, animated: true},
-    zPos: 5,
+    zPos: {startValue: 5, endValue: 5, animated: true},
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
@@ -56,7 +56,7 @@ export class ThreejsService {
     far: 2000,
     xPos: {startValue: 0, endValue: 0, animated: true},
     yPos: {startValue: 0, endValue: 0, animated: true},
-    zPos: 5,
+    zPos: {startValue: 5, endValue: 5, animated: true},
     xLookat: 0,
     yLookat: 0,
     zLookat: 0,
@@ -151,7 +151,7 @@ export class ThreejsService {
         this.cameraItem.near, 
         this.cameraItem.far)];
         this.cameraItem.id =  this.cameras[0].id;
-        this.cameras[0].position.z = this.cameraItem.zPos;
+        this.cameras[0].position.z = this.cameraItem.zPos.startValue;
         this.cameras[0].position.x = this.cameraItem.xPos.startValue;
         this.cameras[0].position.y = this.cameraItem.yPos.startValue;
         this.cameras[0].lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
@@ -172,7 +172,7 @@ export class ThreejsService {
         this.orthographicCameraItem.far
       )];
       this.orthographicCameraItem.id =  this.cameras[0].id;
-      this.cameras[0].position.z = this.orthographicCameraItem.zPos;
+      this.cameras[0].position.z = this.orthographicCameraItem.zPos.startValue;
       this.cameras[0].position.x = this.orthographicCameraItem.xPos.startValue;
       this.cameras[0].position.y = this.orthographicCameraItem.yPos.startValue;
       this.cameras[0].lookAt(this.orthographicCameraItem.xLookat, this.orthographicCameraItem.yLookat, this.orthographicCameraItem.zLookat);
@@ -192,7 +192,7 @@ export class ThreejsService {
 
   updateCamera(): void
   {
-    
+
     // there is an issue here... setup blows away the 
     // old camera an creates a new camera... this leads
     // to a huge (not size, but likelihood) memory leak risk
@@ -219,7 +219,7 @@ export class ThreejsService {
           far = this.cameraItem.far;
           xPos = this.cameraItem.xPos.startValue;
           yPos = this.cameraItem.yPos.startValue;
-          zPos = this.cameraItem.zPos;
+          zPos = this.cameraItem.zPos.startValue;
           isAnimated = this.cameraItem.animated;
           this.cameraItems = [this.cameraItem];
 
@@ -239,7 +239,7 @@ export class ThreejsService {
           far = this.orthographicCameraItem.far;
           xPos = this.orthographicCameraItem.xPos.startValue;
           yPos = this.orthographicCameraItem.yPos.startValue;
-          zPos = this.orthographicCameraItem.zPos;
+          zPos = this.orthographicCameraItem.zPos.startValue;
           isAnimated = this.orthographicCameraItem.animated;    
           this.cameraItems = [this.orthographicCameraItem];
 
@@ -274,6 +274,7 @@ export class ThreejsService {
     this.animationPairSignal.set(this.animationsPairs);
     // creates a new camera
     this.setupCamera();
+    this.cameraItemSignal.set(this.cameraItems);
 
   }
 
@@ -713,6 +714,7 @@ export class ThreejsService {
     {
       let xSpeed = 0; 
       let ySpeed = 0;
+      let zSpeed = 0;
 
       if (cameraItem.xPos.animated) {
         xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
@@ -722,8 +724,13 @@ export class ThreejsService {
         ySpeed = (cameraItem.yPos.endValue*1 - cameraItem.yPos.startValue*1)/this.animationItem.time;
       }
 
+      if (cameraItem.zPos.animated) {
+        zSpeed = (cameraItem.zPos.endValue*1 - cameraItem.zPos.startValue*1)/this.animationItem.time;
+      }
+
       camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
       camera.position.setY(cameraItem.yPos.startValue*1 + ySpeed * time);
+      camera.position.setZ(cameraItem.zPos.startValue*1 + zSpeed * time);
       camera.lookAt(this.cameraItem.xLookat, this.cameraItem.yLookat, this.cameraItem.zLookat);
 
     }

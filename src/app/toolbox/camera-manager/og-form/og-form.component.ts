@@ -53,7 +53,7 @@ export class OgFormComponent implements OnDestroy {
           near: this.cameraItem.near,
           xPos: this.cameraItem.xPos.startValue,
           yPos: this.cameraItem.yPos.startValue,
-          zPos: this.cameraItem.zPos,
+          zPos: this.cameraItem.zPos.startValue,
           xLookat: this.cameraItem.xLookat,
           yLookat: this.cameraItem.yLookat,
           zLookat: this.cameraItem.zLookat,
@@ -125,7 +125,7 @@ export class OgFormComponent implements OnDestroy {
               const zPos = parseFloat(this.form.value.zPos);
               if (!isNaN(zPos))
               {
-                this.cameraItem.zPos = zPos;
+                this.cameraItem.zPos.startValue = zPos;
               }
             }
 

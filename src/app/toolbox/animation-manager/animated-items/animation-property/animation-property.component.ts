@@ -44,7 +44,7 @@ export class AnimationPropertyComponent {
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
     xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    zPos: ['light', 'mesh']
+    zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera']
   };
   previousData: AnimationPair[] = [];
 
