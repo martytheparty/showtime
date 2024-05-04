@@ -79,7 +79,7 @@ export class PerspectiveFormComponent implements OnDestroy {
             const xLookat = parseFloat(this.form.value.xLookat);
             if (!isNaN(xLookat))
             {
-              this.cameraItem.xLookat = xLookat;
+              this.cameraItem.xLookat.startValue = xLookat;
             }
           }
 
