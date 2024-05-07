@@ -35,7 +35,8 @@ export class AnimatedItemsComponent {
   menuItems: PropertyMenuItem[] = [
     { name: 'X Position', itemValue: 'xPos', threeProperty: 'position', threeSubProperty: 'x'},
     { name: 'Y Position', itemValue: 'yPos', threeProperty: 'position', threeSubProperty: 'y'},
-    { name: 'Z Position', itemValue: 'zPos', threeProperty: 'position', threeSubProperty: 'z'}
+    { name: 'Z Position', itemValue: 'zPos', threeProperty: 'position', threeSubProperty: 'z'},
+    { name: 'X LookAt', itemValue: 'xLookat', threeProperty: 'lookAt', threeSubProperty: 'x'}
   ];
   selectedProperty: PropertyMenuItem = this.menuItems[0];
 

@@ -44,7 +44,8 @@ export class AnimationPropertyComponent {
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
     xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera']
+    zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
+    xLookat: ['PerspectiveCamera', 'OrthographicCamera']
   };
   previousData: AnimationPair[] = [];
 
@@ -65,13 +66,13 @@ export class AnimationPropertyComponent {
         this.previousData = [...this.animationPairs()];
         this.tableData = this.animationPairs()
         .map( (pair: AnimationPair) => {
-          const item = pair.item;
+          const item = pair.item as any;
 
           let start = 0;
           let end = 0;
           const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
-          if (prop.startValue && prop.endValue) {
+          if (prop?.startValue && prop?.endValue) {
             // technically a property for a type for mesh
             // may exist on lights but the poperty on one
             // is animated and the property on the other
@@ -80,13 +81,21 @@ export class AnimationPropertyComponent {
             end = prop.endValue;
           }
 
+          const threeObject = pair.threeObj as any;
+          const id = pair.item.id;
+          const name =  pair.item.name;
+          const propertyName = this.threePropertyName();
+          const subPropertyName = this.threeSubPropertyName();
+          const current = threeObject[propertyName][subPropertyName]
+          const type = item.type;
+
           return {
-            id: pair.item.id,
-            name: pair.item.name,
+            id,
+            name,
             start,
             end,
-            current: pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()],
-            type: item.type
+            current,
+            type
           };
         } ) as TableInterface[];
       }
@@ -125,9 +134,9 @@ export class AnimationPropertyComponent {
     const pair: AnimationPair = this.getPair(id);
 
     if (pair){
-      const item = pair.item;
+      const item = pair.item as any;
       const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
-      if (prop.startValue)
+      if (prop?.startValue)
       {
         return prop.startValue;
       }
@@ -140,9 +149,9 @@ export class AnimationPropertyComponent {
     const pair: AnimationPair = this.getPair(id);
 
     if (pair){
-      const item: MeshInterface = pair.item as MeshInterface;
+      const item = pair.item as any;
       const prop = item[this.propertyName()] as AnimationPropertyDescriptor;      
-      if (prop.endValue) {
+      if (prop?.endValue) {
         return prop.endValue;
       }
     }
@@ -153,7 +162,15 @@ export class AnimationPropertyComponent {
   getCurrent(id: number): number {
     const pair: AnimationPair = this.getPair(id);
     if (pair){
-      return pair.threeObj[this.threePropertyName()][this.threeSubPropertyName()];
+      const threeObj = pair.threeObj as any;
+      const item = pair.item as any;
+      let current = 0; 
+      if (this.threePropertyName() === 'lookAt' && this.threeSubPropertyName() === 'x') {
+        current = item.lastXLookat;
+      } else {
+        current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
+      }
+      return current;
     } else {
       return 0;
     }
@@ -169,7 +186,7 @@ export class AnimationPropertyComponent {
   {
     const target = event.target as HTMLInputElement;
     const pair: AnimationPair = this.getPair(id);
-    const item = pair.item;
+    const item = pair.item as any;
     let value = parseFloat(target.value);
     const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 

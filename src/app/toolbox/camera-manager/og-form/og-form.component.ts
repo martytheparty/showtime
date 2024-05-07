@@ -54,7 +54,7 @@ export class OgFormComponent implements OnDestroy {
           xPos: this.cameraItem.xPos.startValue,
           yPos: this.cameraItem.yPos.startValue,
           zPos: this.cameraItem.zPos.startValue,
-          xLookat: this.cameraItem.xLookat,
+          xLookat: this.cameraItem.xLookat.startValue,
           yLookat: this.cameraItem.yLookat,
           zLookat: this.cameraItem.zLookat,
           animated: this.cameraItem.animated

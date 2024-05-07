@@ -12,6 +12,7 @@ export interface PerspectiveCameraInterface {
     yPos: AnimationPropertyDescriptor
     zPos: AnimationPropertyDescriptor
     xLookat: AnimationPropertyDescriptor
+    lastXLookat?: number
     yLookat: number
     zLookat: number
     animated: boolean
@@ -31,6 +32,7 @@ export interface OrthographicCameraInterface {
     yPos: AnimationPropertyDescriptor
     zPos: AnimationPropertyDescriptor
     xLookat: AnimationPropertyDescriptor
+    lastXLookat?: number
     yLookat: number
     zLookat: number
     animated: boolean
