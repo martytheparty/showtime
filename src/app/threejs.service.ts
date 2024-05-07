@@ -716,7 +716,7 @@ export class ThreejsService {
       let ySpeed = 0;
       let zSpeed = 0;
       let xLaSpeed = 0;
-      let xPosition = this.cameraItem.xLookat.startValue;
+      let laXPosition = this.cameraItem.xLookat.startValue;
 
       if (cameraItem.xPos.animated) {
         xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
@@ -732,15 +732,15 @@ export class ThreejsService {
 
       if (cameraItem.xLookat.animated) {
         xLaSpeed = (cameraItem.xLookat.endValue*1 - cameraItem.xLookat.startValue*1)/this.animationItem.time;
-        xPosition = cameraItem.xLookat.startValue*1 + xLaSpeed * time
+        laXPosition = cameraItem.xLookat.startValue*1 + xLaSpeed * time
       }
 
       camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
       camera.position.setY(cameraItem.yPos.startValue*1 + ySpeed * time);
       camera.position.setZ(cameraItem.zPos.startValue*1 + zSpeed * time);
-      camera.lookAt(xPosition, this.cameraItem.yLookat, this.cameraItem.zLookat);
+      camera.lookAt(laXPosition, this.cameraItem.yLookat, this.cameraItem.zLookat);
       // when the current lookat is calculated this need to be updated
-      cameraItem.lastXLookat = xPosition;
+      cameraItem.lastXLookat = laXPosition;
 
     }
   }
