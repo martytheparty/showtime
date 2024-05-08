@@ -21,7 +21,7 @@ export interface AnimationPair {
     threeObj: SupportedMeshes | SupportedLights | SupportedCameras
 }
 
-export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat';
+export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat' | 'yLookat';
 export type ThreeObjProperties = 'position' | 'lookAt';
 export type ThreeObjSubProperties = 'x' | 'y' | 'z';
 export type SuportedThreeObjTypes = 'light' | 'mesh' | 'OrthographicCamera' | 'PerspectiveCamera';
