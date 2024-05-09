@@ -41,7 +41,7 @@ export class ThreejsService {
     zPos: {startValue: 5, endValue: 5, animated: true},
     xLookat: {startValue: 0, endValue: 0, animated: true},
     yLookat: {startValue: 0, endValue: 0, animated: true},
-    zLookat: 0,
+    zLookat: {startValue: 0, endValue: 0, animated: true},
     type: 'OrthographicCamera',
     animated: false
   };
@@ -59,7 +59,7 @@ export class ThreejsService {
     zPos: {startValue: 5, endValue: 5, animated: true},
     xLookat: {startValue: 0, endValue: 0, animated: true},
     yLookat: {startValue: 0, endValue: 0, animated: true},
-    zLookat: 0,
+    zLookat: {startValue: 0, endValue: 0, animated: true},
     type: 'PerspectiveCamera',
     animated: false
   };
@@ -154,7 +154,7 @@ export class ThreejsService {
         this.cameras[0].position.z = this.cameraItem.zPos.startValue;
         this.cameras[0].position.x = this.cameraItem.xPos.startValue;
         this.cameras[0].position.y = this.cameraItem.yPos.startValue;
-        this.cameras[0].lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat);
+        this.cameras[0].lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat.startValue);
 
         if (this.cameraItem.animated) {
           this.setAnimationPairs(this.cameraItem, this.cameras[0]);
@@ -175,7 +175,7 @@ export class ThreejsService {
       this.cameras[0].position.z = this.orthographicCameraItem.zPos.startValue;
       this.cameras[0].position.x = this.orthographicCameraItem.xPos.startValue;
       this.cameras[0].position.y = this.orthographicCameraItem.yPos.startValue;
-      this.cameras[0].lookAt(this.orthographicCameraItem.xLookat.startValue, this.orthographicCameraItem.yLookat.startValue, this.orthographicCameraItem.zLookat);
+      this.cameras[0].lookAt(this.orthographicCameraItem.xLookat.startValue, this.orthographicCameraItem.yLookat.startValue, this.orthographicCameraItem.zLookat.startValue);
 
       if (this.orthographicCameraItem.animated) {
         this.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
@@ -256,7 +256,7 @@ export class ThreejsService {
         currentCamera.position.z = zPos;
         currentCamera.near = near;
         currentCamera.far = far;
-        currentCamera.lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat);
+        currentCamera.lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat.startValue);
 
       } else {
       this.setupCamera();
@@ -719,6 +719,8 @@ export class ThreejsService {
       let laXPosition = this.cameraItem.xLookat.startValue;
       let yLaSpeed = 0;
       let laYPosition = this.cameraItem.xLookat.startValue;
+      let zLaSpeed = 0;
+      let laZPosition = this.cameraItem.xLookat.startValue;
 
       if (cameraItem.xPos.animated) {
         xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
@@ -742,13 +744,19 @@ export class ThreejsService {
         laYPosition = cameraItem.yLookat.startValue*1 + yLaSpeed * time
       }
 
+      if (cameraItem.zLookat.animated) {
+        zLaSpeed = (cameraItem.zLookat.endValue*1 - cameraItem.zLookat.startValue*1)/this.animationItem.time;
+        laZPosition = cameraItem.zLookat.startValue*1 + zLaSpeed * time
+      }
+
       camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
       camera.position.setY(cameraItem.yPos.startValue*1 + ySpeed * time);
       camera.position.setZ(cameraItem.zPos.startValue*1 + zSpeed * time);
-      camera.lookAt(laXPosition, laYPosition, this.cameraItem.zLookat);
+      camera.lookAt(laXPosition, laYPosition, laZPosition);
       // when the current lookat is calculated this need to be updated
       cameraItem.lastXLookat = laXPosition;
       cameraItem.lastYLookat = laYPosition;
+      cameraItem.lastZLookat = laZPosition;
 
     }
   }

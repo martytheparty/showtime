@@ -46,7 +46,8 @@ export class AnimationPropertyComponent {
     yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
     xLookat: ['PerspectiveCamera', 'OrthographicCamera'],
-    yLookat: ['PerspectiveCamera', 'OrthographicCamera']
+    yLookat: ['PerspectiveCamera', 'OrthographicCamera'],
+    zLookat: ['PerspectiveCamera', 'OrthographicCamera']
   };
   previousData: AnimationPair[] = [];
 
@@ -170,6 +171,8 @@ export class AnimationPropertyComponent {
         current = item.lastXLookat;
       } else if (this.threePropertyName() === 'lookAt' && this.threeSubPropertyName() === 'y') {
         current = item.lastYLookat;
+      } else if (this.threePropertyName() === 'lookAt' && this.threeSubPropertyName() === 'z') {
+        current = item.lastZLookat;
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
       }

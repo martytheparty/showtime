@@ -37,7 +37,8 @@ export class AnimatedItemsComponent {
     { name: 'Y Position', itemValue: 'yPos', threeProperty: 'position', threeSubProperty: 'y'},
     { name: 'Z Position', itemValue: 'zPos', threeProperty: 'position', threeSubProperty: 'z'},
     { name: 'X LookAt', itemValue: 'xLookat', threeProperty: 'lookAt', threeSubProperty: 'x'},
-    { name: 'Y LookAt', itemValue: 'yLookat', threeProperty: 'lookAt', threeSubProperty: 'y'}
+    { name: 'Y LookAt', itemValue: 'yLookat', threeProperty: 'lookAt', threeSubProperty: 'y'},
+    { name: 'Z LookAt', itemValue: 'zLookat', threeProperty: 'lookAt', threeSubProperty: 'z'}
   ];
   selectedProperty: PropertyMenuItem = this.menuItems[0];
 
