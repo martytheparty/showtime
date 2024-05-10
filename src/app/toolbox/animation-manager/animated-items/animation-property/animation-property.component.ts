@@ -11,6 +11,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MeshInterface } from '../../../../interfaces/mesh-interface';
+import { OrthographicCameraInterface, PerspectiveCameraInterface } from '../../../../interfaces/camera-interfaces';
+import { LightInterface } from '../../../../interfaces/light-interface';
 
 interface TableInterface {
   id: number
@@ -55,24 +57,26 @@ export class AnimationPropertyComponent {
 
   constructor() {
     effect( () => {
-
-      // checking for the same length prevents a redraw when the user
-      // modifies the input... without this the table redraws and the 
-      // focus is lost when the user changes a value
-      // there is an issue here... I need to check to see if the camera 
-      // has changed because if the user changes the from perspective to
-      // orthagraphic the id will change; but the length may stay the same
-      // but the table needs to be refreshed to accomodate the new id
       
       if (!this.dataMatch(this.animationPairs())) {
         this.previousData = [...this.animationPairs()];
         this.tableData = this.animationPairs()
         .map( (pair: AnimationPair) => {
-          const item = pair.item as any;
+          let item = pair.item as any;
+
+          // this code allows the transpiler to compile and 
+          // strongly types item.
+          if ('xLookat' in item)
+          {
+            item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+          } else {
+            item = item as MeshInterface | LightInterface;
+          }
 
           let start = 0;
           let end = 0;
-          const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
+
+          let prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
           if (prop?.startValue && prop?.endValue) {
             // technically a property for a type for mesh
@@ -83,12 +87,17 @@ export class AnimationPropertyComponent {
             end = prop.endValue;
           }
 
-          const threeObject = pair.threeObj as any;
+          let threeObject = pair.threeObj as any;
           const id = pair.item.id;
           const name =  pair.item.name;
           const propertyName = this.threePropertyName();
           const subPropertyName = this.threeSubPropertyName();
-          const current = threeObject[propertyName][subPropertyName]
+          let current = 0;
+          // threeObject[propertyName][subPropertyName] does not exist for lookAt default to 0
+          // this will resolve itself on update.
+          if(threeObject[propertyName][subPropertyName]) {
+            current = threeObject[propertyName][subPropertyName];
+          }
           const type = item.type;
 
           return {
@@ -136,7 +145,17 @@ export class AnimationPropertyComponent {
     const pair: AnimationPair = this.getPair(id);
 
     if (pair){
-      const item = pair.item as any;
+      let item = pair.item as any;
+
+      // this code allows the transpiler to compile and 
+      // strongly types item.
+      if ('xLookat' in item)
+      {
+        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+      } else {
+        item = item as MeshInterface | LightInterface;
+      }
+
       const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
       if (prop?.startValue)
       {
@@ -151,7 +170,16 @@ export class AnimationPropertyComponent {
     const pair: AnimationPair = this.getPair(id);
 
     if (pair){
-      const item = pair.item as any;
+      let item = pair.item as any;
+      // this code allows the transpiler to compile and 
+      // strongly types item.
+      if ('xLookat' in item)
+      {
+        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+      } else {
+        item = item as MeshInterface | LightInterface;
+      }
+
       const prop = item[this.propertyName()] as AnimationPropertyDescriptor;      
       if (prop?.endValue) {
         return prop.endValue;
@@ -165,7 +193,17 @@ export class AnimationPropertyComponent {
     const pair: AnimationPair = this.getPair(id);
     if (pair){
       const threeObj = pair.threeObj as any;
-      const item = pair.item as any;
+      let item = pair.item as any;
+
+      // this code allows the transpiler to compile and 
+      // strongly types item.
+      if ('xLookat' in item)
+      {
+        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+      } else {
+        item = item as MeshInterface | LightInterface;
+      }
+
       let current = 0; 
       if (this.threePropertyName() === 'lookAt' && this.threeSubPropertyName() === 'x') {
         current = item.lastXLookat;
@@ -192,7 +230,17 @@ export class AnimationPropertyComponent {
   {
     const target = event.target as HTMLInputElement;
     const pair: AnimationPair = this.getPair(id);
-    const item = pair.item as any;
+    let item = pair.item as any;
+
+    // this code allows the transpiler to compile and 
+    // strongly types item.
+    if ('xLookat' in item)
+    {
+      item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+    } else {
+      item = item as MeshInterface | LightInterface;
+    }
+
     let value = parseFloat(target.value);
     const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
