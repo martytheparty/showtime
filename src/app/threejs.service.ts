@@ -68,7 +68,7 @@ export class ThreejsService {
   meshes: SupportedMeshes[] = [];
   lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
-  scene: Scene = new THREE.Scene();
+  scenes: Scene[] = [new THREE.Scene()]
   sceneItem: SceneInterface = {
     bgRedColor: 0,
     bgGreenColor: 0,
@@ -126,7 +126,7 @@ export class ThreejsService {
 
   setUpScene(): void
   {
-    this.scene.background = new THREE.Color()
+    this.scenes[0].background = new THREE.Color()
                             .setRGB(
                               this.sceneItem.bgRedColor/255,
                               this.sceneItem.bgGreenColor/255,
@@ -296,7 +296,7 @@ export class ThreejsService {
     lightItem.id = light.id;
     light.castShadow = lightItem.castShadow;
     this.lightListSignal.set(this.lightItems);
-    this.scene.add( light );
+    this.scenes[0].add( light );
 
     return lightItem;
   }
@@ -344,7 +344,7 @@ export class ThreejsService {
 
     if(light)
     {
-      this.scene.remove(light);
+      this.scenes[0].remove(light);
       this.lights = this.lights.filter((light) => light.id !== id);
 
       this.lightItems = this.lightItems.filter((light) => light.id !== id);
@@ -395,7 +395,7 @@ export class ThreejsService {
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
-    this.scene.add( mesh );
+    this.scenes[0].add( mesh );
 
     this.setAnimationPairs(meshItem, mesh);
 
@@ -525,7 +525,7 @@ export class ThreejsService {
 
     if(mesh)
     {
-      this.scene.remove(mesh);
+      this.scenes[0].remove(mesh);
       this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
 
       this.meshItems = this.meshItems.filter((mesh) => mesh.id !== id);
@@ -646,7 +646,7 @@ export class ThreejsService {
         );
       }
 
-      this.renderer.render( this.scene, this.cameras[0] );
+      this.renderer.render( this.scenes[0], this.cameras[0] );
     }
 
     return animation;
