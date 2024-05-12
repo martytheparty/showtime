@@ -41,7 +41,7 @@ export class SceneManagerComponent implements OnDestroy {
       () => {
         this.scene  = this.threejsService.sceneItemValues();
         
-        this.red = this.scene.bgRedColor;
+        this.red = this.scene.bgRedColor.startValue;
         this.green = this.scene.bgGreenColor;
         this.blue = this.scene.bgBlueColor;
 
@@ -74,7 +74,7 @@ export class SceneManagerComponent implements OnDestroy {
   {
     if (this.scene)
     {
-      this.scene.bgRedColor = newColor;
+      this.scene.bgRedColor.startValue = newColor;
       this.threejsService.updateScene(this.scene);
     }
   }

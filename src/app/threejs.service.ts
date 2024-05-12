@@ -70,7 +70,7 @@ export class ThreejsService {
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scenes: Scene[] = [new THREE.Scene()]
   sceneItem: SceneInterface = {
-    bgRedColor: 0,
+    bgRedColor: {startValue: 0, endValue: 0, animated: true},
     bgGreenColor: 0,
     bgBlueColor: 0
   };
@@ -128,7 +128,7 @@ export class ThreejsService {
   {
     this.scenes[0].background = new THREE.Color()
                             .setRGB(
-                              this.sceneItem.bgRedColor/255,
+                              this.sceneItem.bgRedColor.startValue/255,
                               this.sceneItem.bgGreenColor/255,
                               this.sceneItem.bgBlueColor/255
                             );

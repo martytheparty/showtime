@@ -1,5 +1,7 @@
+import { AnimationPropertyDescriptor } from "./animations-interfaces"
+
 export interface SceneInterface {
-    bgRedColor: number
+    bgRedColor: AnimationPropertyDescriptor
     bgGreenColor: number
     bgBlueColor: number
 }
