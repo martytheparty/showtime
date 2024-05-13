@@ -70,9 +70,13 @@ export class ThreejsService {
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scenes: Scene[] = [new THREE.Scene()]
   sceneItem: SceneInterface = {
+    id: this.scenes[0].id,
+    name: 'Scene',
     bgRedColor: {startValue: 0, endValue: 0, animated: true},
     bgGreenColor: 0,
-    bgBlueColor: 0
+    bgBlueColor: 0,
+    type: 'Scene',
+    animated: false
   };
 
   meshItems: MeshInterface[] = [];
