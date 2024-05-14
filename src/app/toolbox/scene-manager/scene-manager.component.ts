@@ -27,12 +27,14 @@ export class SceneManagerComponent implements OnDestroy {
 
   formInitialized = false;
   form: FormGroup = new FormGroup({
-    castShadows: new FormControl(false)
+    castShadows: new FormControl(false),
+    animated: new FormControl(false)
   });
 
   red = 0;
   green = 0;
   blue = 0;
+  animated = false;
 
   subs: Subscription[] = [];
 
@@ -44,8 +46,10 @@ export class SceneManagerComponent implements OnDestroy {
         this.red = this.scene.bgRedColor.startValue;
         this.green = this.scene.bgGreenColor;
         this.blue = this.scene.bgBlueColor;
+        this.animated = this.scene.animated;
 
         this.renderer = this.threejsService.rendererItemValues();
+        this.form.controls['animated'].setValue(this.scene.animated);
 
         if (this.renderer) {
           this.form.controls['castShadows'].setValue(this.renderer.castShadows);
@@ -57,6 +61,11 @@ export class SceneManagerComponent implements OnDestroy {
 
     const sub: Subscription = this.form.valueChanges.subscribe(
       () => {
+        if (this.scene)
+        {
+          this.scene.animated = this.form.value.animated;
+        }
+
         if (this.formInitialized && this.renderer) {
           this.renderer.castShadows = this.form.value.castShadows;
         }
