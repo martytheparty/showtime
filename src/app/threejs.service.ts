@@ -143,6 +143,12 @@ export class ThreejsService {
     this.sceneItem = { ...sceneItem }; // shallow clone
     this.sceneSignal.set(this.sceneItem);
     this.setUpScene();
+
+    if (this.sceneItem.animated) {
+      this.setAnimationPairs(this.sceneItem, this.scenes[0]);
+    } else {
+      this.pruneAnimationPairs();
+    }
   }
 
   setupCamera(): void
@@ -406,7 +412,7 @@ export class ThreejsService {
     return meshItem;
   }
 
-  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras): void
+  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void
   {
     const pair = this.animationsPairs
                   .find( (pair) => pair.item.id === item.id );

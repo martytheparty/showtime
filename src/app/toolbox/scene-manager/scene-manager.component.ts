@@ -61,9 +61,10 @@ export class SceneManagerComponent implements OnDestroy {
 
     const sub: Subscription = this.form.valueChanges.subscribe(
       () => {
-        if (this.scene)
+        if (this.scene && this.scene.animated !== this.form.value.animated)
         {
           this.scene.animated = this.form.value.animated;
+          this.threejsService.updateScene(this.scene);
         }
 
         if (this.formInitialized && this.renderer) {
