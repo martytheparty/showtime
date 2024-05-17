@@ -72,7 +72,7 @@ export class ThreejsService {
   sceneItem: SceneInterface = {
     id: this.scenes[0].id,
     name: 'Scene',
-    bgRedColor: {startValue: 0, endValue: 0, animated: true},
+    redColor: {startValue: 0, endValue: 0, animated: true},
     bgGreenColor: 0,
     bgBlueColor: 0,
     type: 'Scene',
@@ -132,7 +132,7 @@ export class ThreejsService {
   {
     this.scenes[0].background = new THREE.Color()
                             .setRGB(
-                              this.sceneItem.bgRedColor.startValue/255,
+                              this.sceneItem.redColor.startValue/255,
                               this.sceneItem.bgGreenColor/255,
                               this.sceneItem.bgBlueColor/255
                             );

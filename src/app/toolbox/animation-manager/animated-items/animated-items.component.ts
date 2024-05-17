@@ -39,7 +39,7 @@ export class AnimatedItemsComponent {
     { name: 'X LookAt', itemValue: 'xLookat', threeProperty: 'lookAt', threeSubProperty: 'x'},
     { name: 'Y LookAt', itemValue: 'yLookat', threeProperty: 'lookAt', threeSubProperty: 'y'},
     { name: 'Z LookAt', itemValue: 'zLookat', threeProperty: 'lookAt', threeSubProperty: 'z'},
-    { name: 'BG Red', itemValue: 'bgRedColor', threeProperty: 'background', threeSubProperty: 'red'}
+    { name: 'Red', itemValue: 'redColor', threeProperty: 'background', threeSubProperty: 'red'}
   ];
   selectedProperty: PropertyMenuItem = this.menuItems[0];
 
