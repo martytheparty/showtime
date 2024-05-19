@@ -78,6 +78,7 @@ export class ThreejsService {
     type: 'Scene',
     animated: false
   };
+  sceneItems: SceneInterface[] = [this.sceneItem];
 
   meshItems: MeshInterface[] = [];
   lightItems: LightInterface[] = [];
@@ -632,6 +633,20 @@ export class ThreejsService {
             }
           }
         );
+        this.scenes.forEach(
+          (scene) => {
+            const sceneItem: SceneInterface | undefined = this.getSceneItemForId(scene.id);
+
+            if (sceneItem && sceneItem.animated)
+              {                 
+                if (this.animationItem.pause) {
+                  this.updateSceneForTime(scene, sceneItem, this.animationItem.pauseTime);
+                } else {
+                  this.updateSceneForTime(scene, sceneItem, this.clock.elapsedTime);
+                }
+              }
+            }          
+        );
         
       }
 
@@ -681,6 +696,13 @@ export class ThreejsService {
   {
     return this.cameraItems.find(
       (camera: SupportedCameraItems) => camera.id === cameraId
+    );
+  }
+
+  getSceneItemForId(sceneId: number): SceneInterface | undefined
+  {
+    return this.sceneItems.find(
+      (scene: SceneInterface) => scene.id === sceneId
     );
   }
 
@@ -798,6 +820,30 @@ export class ThreejsService {
       light.position.setX(lightItem.xPos.startValue*1 + xSpeed * time);
       light.position.setY(lightItem.yPos.startValue*1 + ySpeed * time);
       light.position.setZ(lightItem.zPos.startValue*1 + zSpeed * time);
+    }
+  }
+
+  updateSceneForTime(
+    scene: Scene,
+    sceneItem: SceneInterface | undefined,
+    time: number
+  ): void
+  {
+    if (sceneItem)
+    {
+      let redSpeed = 0; 
+
+      if (sceneItem.redColor.animated) {
+        redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
+      }
+
+      scene.background = new THREE.Color()
+      .setRGB(
+        (sceneItem.redColor.startValue*1 + redSpeed * time)/255,
+        this.sceneItem.bgGreenColor/255,
+        this.sceneItem.bgBlueColor/255
+      );
+
     }
   }
 

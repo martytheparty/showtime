@@ -59,6 +59,8 @@ export class AnimatedItemsComponent {
     }  else if (pair.item.type === 'PerspectiveCamera' ||
                 pair.item.type === 'OrthographicCamera') {
       this.threeJsService.updateCamera();
+    } else if (pair.item.type === 'Scene') {
+      this.threeJsService.updateScene(pair.item);
     }
 
   }

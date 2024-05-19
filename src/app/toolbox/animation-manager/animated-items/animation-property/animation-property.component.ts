@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MeshInterface } from '../../../../interfaces/mesh-interface';
 import { OrthographicCameraInterface, PerspectiveCameraInterface } from '../../../../interfaces/camera-interfaces';
 import { LightInterface } from '../../../../interfaces/light-interface';
+import { SceneInterface } from '../../../../interfaces/scene-interface';
 
 interface TableInterface {
   id: number
@@ -241,6 +242,8 @@ export class AnimationPropertyComponent {
     if ('xLookat' in item)
     {
       item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+    } else if ('background') {
+      item = item as SceneInterface;
     } else {
       item = item as MeshInterface | LightInterface;
     }
