@@ -14,6 +14,7 @@ import { MeshInterface } from '../../../../interfaces/mesh-interface';
 import { OrthographicCameraInterface, PerspectiveCameraInterface } from '../../../../interfaces/camera-interfaces';
 import { LightInterface } from '../../../../interfaces/light-interface';
 import { SceneInterface } from '../../../../interfaces/scene-interface';
+import { MatSliderModule } from '@angular/material/slider';
 
 interface TableInterface {
   id: number
@@ -27,7 +28,7 @@ interface TableInterface {
 @Component({
   selector: 'app-animation-property',
   standalone: true,
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, MatSliderModule],
   templateUrl: './animation-property.component.html',
   styleUrl: './animation-property.component.scss'
 })
@@ -231,7 +232,7 @@ export class AnimationPropertyComponent {
     return pair;
   }
 
-  update(id: number, event: KeyboardEvent, property: 'startValue' | 'endValue'): void
+  update(id: number, event: KeyboardEvent | Event, property: 'startValue' | 'endValue'): void
   {
     const target = event.target as HTMLInputElement;
     const pair: AnimationPair = this.getPair(id);

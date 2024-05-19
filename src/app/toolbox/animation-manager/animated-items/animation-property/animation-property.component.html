@@ -12,21 +12,43 @@
     <ng-container matColumnDef="start">
       <th mat-header-cell *matHeaderCellDef> Start {{displayName()}}</th>
       <td mat-cell *matCellDef="let data">
+        @if (data.type === 'Scene')
+        {
+          <mat-slider min="0" max="255" step="1">
+            <input 
+            (change)="update(data.id, $event, 'startValue')" 
+            matSliderThumb 
+            value="{{getStart(data.id)}}">
+          </mat-slider>{{getStart(data.id)}}
+        } @else {
           <input 
           (keyup)="update(data.id, $event, 'startValue')" 
           type="text" 
           value="{{getStart(data.id)}}"
           >
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="end">
       <th mat-header-cell *matHeaderCellDef> End {{displayName()}}</th>
       <td mat-cell *matCellDef="let data"> 
+        @if (data.type === 'Scene')
+        {
+          <mat-slider min="0" max="255" step="1" showTickMarks discrete>
+            <input 
+              matSliderThumb
+              (change)="update(data.id, $event, 'endValue')"  
+              value="{{getEnd(data.id)}}"
+              >
+          </mat-slider>{{getEnd(data.id)}}
+        } @else {
           <input 
           (keyup)="update(data.id, $event, 'endValue')" 
               type="text" 
               value="{{getEnd(data.id)}}"
               >
+        }
+
       </td>
     </ng-container>
     <ng-container matColumnDef="current">
