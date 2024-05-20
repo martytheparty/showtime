@@ -34,7 +34,7 @@
       <td mat-cell *matCellDef="let data"> 
         @if (data.type === 'Scene')
         {
-          <mat-slider min="0" max="255" step="1" showTickMarks discrete>
+          <mat-slider min="0" max="255" step="1">
             <input 
               matSliderThumb
               (change)="update(data.id, $event, 'endValue')"  

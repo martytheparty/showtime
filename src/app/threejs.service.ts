@@ -73,7 +73,7 @@ export class ThreejsService {
     id: this.scenes[0].id,
     name: 'Scene',
     redColor: {startValue: 0, endValue: 0, animated: true},
-    bgGreenColor: 0,
+    greenColor: {startValue: 0, endValue: 0, animated: true},
     bgBlueColor: 0,
     type: 'Scene',
     animated: false
@@ -134,7 +134,7 @@ export class ThreejsService {
     this.scenes[0].background = new THREE.Color()
                             .setRGB(
                               this.sceneItem.redColor.startValue/255,
-                              this.sceneItem.bgGreenColor/255,
+                              this.sceneItem.greenColor.startValue/255,
                               this.sceneItem.bgBlueColor/255
                             );
   }
@@ -832,15 +832,20 @@ export class ThreejsService {
     if (sceneItem)
     {
       let redSpeed = 0; 
+      let greenSpeed = 0;
 
       if (sceneItem.redColor.animated) {
+        redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
+      }
+
+      if (sceneItem.greenColor.animated) {
         redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
       }
 
       scene.background = new THREE.Color()
       .setRGB(
         (sceneItem.redColor.startValue*1 + redSpeed * time)/255,
-        this.sceneItem.bgGreenColor/255,
+        (this.sceneItem.greenColor.startValue + greenSpeed*time)/255,
         this.sceneItem.bgBlueColor/255
       );
 
