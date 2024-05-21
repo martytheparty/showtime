@@ -52,7 +52,8 @@ export class AnimationPropertyComponent {
     xLookat: ['PerspectiveCamera', 'OrthographicCamera'],
     yLookat: ['PerspectiveCamera', 'OrthographicCamera'],
     zLookat: ['PerspectiveCamera', 'OrthographicCamera'],
-    redColor: ['Scene']
+    redColor: ['Scene'],
+    greenColor: ['Scene']
   };
   previousData: AnimationPair[] = [];
 
@@ -216,6 +217,8 @@ export class AnimationPropertyComponent {
         current = item.lastZLookat;
       } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'red') {
         current = threeObj[this.threePropertyName()].r;
+      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'green') {
+        current = threeObj[this.threePropertyName()].g;
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
         console.log('current', current);

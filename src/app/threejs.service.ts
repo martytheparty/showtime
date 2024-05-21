@@ -142,6 +142,7 @@ export class ThreejsService {
   updateScene(sceneItem: SceneInterface): void
   {
     this.sceneItem = { ...sceneItem }; // shallow clone
+    this.sceneItems = [ this.sceneItem ];
     this.sceneSignal.set(this.sceneItem);
     this.setUpScene();
 
@@ -638,7 +639,7 @@ export class ThreejsService {
             const sceneItem: SceneInterface | undefined = this.getSceneItemForId(scene.id);
 
             if (sceneItem && sceneItem.animated)
-              {                 
+              {
                 if (this.animationItem.pause) {
                   this.updateSceneForTime(scene, sceneItem, this.animationItem.pauseTime);
                 } else {
@@ -839,7 +840,7 @@ export class ThreejsService {
       }
 
       if (sceneItem.greenColor.animated) {
-        redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
+        greenSpeed = (sceneItem.greenColor.endValue*1 - sceneItem.greenColor.startValue*1)/this.animationItem.time;
       }
 
       scene.background = new THREE.Color()
