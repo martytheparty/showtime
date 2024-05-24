@@ -5,7 +5,7 @@ export interface SceneInterface {
     name: string;
     redColor: AnimationPropertyDescriptor;
     greenColor: AnimationPropertyDescriptor;
-    bgBlueColor: number;
+    blueColor: AnimationPropertyDescriptor;
     type: 'Scene';
     animated: boolean;
 }

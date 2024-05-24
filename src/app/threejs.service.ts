@@ -74,7 +74,7 @@ export class ThreejsService {
     name: 'Scene',
     redColor: {startValue: 0, endValue: 0, animated: true},
     greenColor: {startValue: 0, endValue: 0, animated: true},
-    bgBlueColor: 0,
+    blueColor: {startValue: 0, endValue: 0, animated: true},
     type: 'Scene',
     animated: false
   };
@@ -135,7 +135,7 @@ export class ThreejsService {
                             .setRGB(
                               this.sceneItem.redColor.startValue/255,
                               this.sceneItem.greenColor.startValue/255,
-                              this.sceneItem.bgBlueColor/255
+                              this.sceneItem.blueColor.startValue/255
                             );
   }
 
@@ -197,7 +197,7 @@ export class ThreejsService {
 
       this.cameraItems = [this.orthographicCameraItem];
     }
-    // setting the camearItemsSignal here caused an error\
+    // setting the camearItemsSignal here caused an error
     // since this method is called from an effect
     // this.cameraItemSignal.set(this.cameraItems);
   }
@@ -834,6 +834,7 @@ export class ThreejsService {
     {
       let redSpeed = 0; 
       let greenSpeed = 0;
+      let blueSpeed = 0;
 
       if (sceneItem.redColor.animated) {
         redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
@@ -843,11 +844,15 @@ export class ThreejsService {
         greenSpeed = (sceneItem.greenColor.endValue*1 - sceneItem.greenColor.startValue*1)/this.animationItem.time;
       }
 
+      if (sceneItem.blueColor.animated) {
+        blueSpeed = (sceneItem.blueColor.endValue*1 - sceneItem.blueColor.startValue*1)/this.animationItem.time;
+      }
+
       scene.background = new THREE.Color()
       .setRGB(
         (sceneItem.redColor.startValue*1 + redSpeed * time)/255,
         (this.sceneItem.greenColor.startValue + greenSpeed*time)/255,
-        this.sceneItem.bgBlueColor/255
+        (this.sceneItem.blueColor.startValue + blueSpeed*time)/255
       );
 
     }

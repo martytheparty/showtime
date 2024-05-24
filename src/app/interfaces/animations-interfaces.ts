@@ -23,8 +23,8 @@ export interface AnimationPair {
     threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene
 }
 
-export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat' | 'yLookat' | 'zLookat' | 'redColor' | 'greenColor';
+export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat' | 'yLookat' | 'zLookat' | 'redColor' | 'greenColor' | 'blueColor';
 export type ThreeObjProperties = 'position' | 'lookAt' | 'background';
-export type ThreeObjSubProperties = 'x' | 'y' | 'z' | 'red' | 'green';
+export type ThreeObjSubProperties = 'x' | 'y' | 'z' | 'red' | 'green' | 'blue';
 export type SuportedThreeObjTypes = 'light' | 'mesh' | 'OrthographicCamera' | 'PerspectiveCamera' | 'Scene';
 export type MappedSupportedPropertyTypes = { [key: string] : SuportedThreeObjTypes[] };
