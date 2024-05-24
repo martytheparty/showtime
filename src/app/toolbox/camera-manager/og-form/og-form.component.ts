@@ -1,5 +1,5 @@
 import { Component, OnDestroy, effect, inject } from '@angular/core';
-import { ThreejsService } from '../../../threejs.service';
+import { ThreejsService } from '../../../services/threejs.service';
 import { OrthographicCameraInterface } from '../../../interfaces/camera-interfaces';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';

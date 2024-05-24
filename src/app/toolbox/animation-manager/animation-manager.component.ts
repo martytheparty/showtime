@@ -1,7 +1,7 @@
 import { Component, effect, inject } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
-import { ThreejsService } from '../../threejs.service';
+import { ThreejsService } from '../../services/threejs.service';
 import { AnimationInterface, AnimationPair } from '../../interfaces/animations-interfaces';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

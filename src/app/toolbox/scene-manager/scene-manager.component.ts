@@ -1,6 +1,6 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
-import { ThreejsService } from '../../threejs.service';
+import { ThreejsService } from '../../services/threejs.service';
 import { SceneInterface } from '../../interfaces/scene-interface';
 import { RendererInterface } from '../../interfaces/renderer-interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';

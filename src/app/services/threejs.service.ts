@@ -2,12 +2,12 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
-import { MeshInterface, SupportedMeshes } from './interfaces/mesh-interface';
-import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from './interfaces/camera-interfaces';
-import { LightInterface, SupportedLights } from './interfaces/light-interface';
-import { SceneInterface } from './interfaces/scene-interface';
-import { RendererInterface } from './interfaces/renderer-interface';
-import { AnimationInterface, AnimationPair } from './interfaces/animations-interfaces';
+import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
+import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
+import { LightInterface, SupportedLights } from '../interfaces/light-interface';
+import { SceneInterface } from '../interfaces/scene-interface';
+import { RendererInterface } from '../interfaces/renderer-interface';
+import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
 
 @Injectable({
   providedIn: 'root'

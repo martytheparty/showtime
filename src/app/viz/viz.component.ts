@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
-import { ThreejsService } from '../threejs.service';
+import { ThreejsService } from '../services/threejs.service';
 
 
 

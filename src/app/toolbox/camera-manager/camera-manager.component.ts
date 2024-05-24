@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ThreejsService } from '../../threejs.service';
+import { ThreejsService } from '../../services/threejs.service';
 import { CameraType } from '../../interfaces/camera-interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';

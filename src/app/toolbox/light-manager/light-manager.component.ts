@@ -1,5 +1,5 @@
 import { Component, OnDestroy, effect, inject } from '@angular/core';
-import { ThreejsService } from '../../threejs.service';
+import { ThreejsService } from '../../services/threejs.service';
 import { LightInterface } from '../../interfaces/light-interface';
 import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';

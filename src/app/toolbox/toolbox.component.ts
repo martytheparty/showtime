@@ -1,5 +1,5 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
-import { ThreejsService } from '../threejs.service';
+import { ThreejsService } from '../services/threejs.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MeshManagerComponent } from './mesh-manager/mesh-manager.component';

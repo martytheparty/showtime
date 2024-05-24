@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { ThreejsService } from '../../../threejs.service';
+import { ThreejsService } from '../../../services/threejs.service';
 import { AnimationInterfaceProperties, AnimationPair, ThreeObjProperties, ThreeObjSubProperties } from '../../../interfaces/animations-interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

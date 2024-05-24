@@ -2,7 +2,7 @@ import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ThreejsService } from '../../threejs.service';
+import { ThreejsService } from '../../services/threejs.service';
 import { MeshInterface } from '../../interfaces/mesh-interface';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';

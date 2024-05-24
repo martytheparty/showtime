@@ -1,5 +1,5 @@
 import { Component, inject, effect } from '@angular/core';
-import { ThreejsService } from '../../../threejs.service';
+import { ThreejsService } from '../../../services/threejs.service';
 import { PerspectiveCameraInterface } from '../../../interfaces/camera-interfaces';
 
 @Component({
