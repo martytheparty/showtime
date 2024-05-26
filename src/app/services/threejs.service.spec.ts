@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ThreejsService } from './services/threejs.service';
+import { ThreejsService } from './threejs.service';
 
 describe('ThreejsService', () => {
   let service: ThreejsService;

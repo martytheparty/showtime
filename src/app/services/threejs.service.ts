@@ -1,4 +1,4 @@
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
@@ -8,11 +8,14 @@ import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
 import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
+import { AnimationService } from './animation-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThreejsService {
+
+  animationService: AnimationService = inject(AnimationService);
 
   clock = new THREE.Clock();
 
@@ -596,9 +599,9 @@ export class ThreejsService {
             
             if (cameraItem && cameraItem.animated){
               if (this.animationItem.pause) {
-                this.updateCameraForTime(camera, cameraItem, this.animationItem.pauseTime);
+                this.animationService.updateCameraForTime(camera, cameraItem, this.animationItem.pauseTime, this.animationItem.time);
               } else {
-                this.updateCameraForTime(camera, cameraItem, this.clock.elapsedTime);
+                this.animationService.updateCameraForTime(camera, cameraItem, this.clock.elapsedTime, this.animationItem.time);
               }
             }
           }
@@ -609,9 +612,9 @@ export class ThreejsService {
 
             if (lightItem && lightItem.animated){
               if (this.animationItem.pause) {
-                this.updateLightForTime(light, lightItem, this.animationItem.pauseTime);
+                this.animationService.updateLightForTime(light, lightItem, this.animationItem.pauseTime, this.animationItem.time);
               } else {
-                this.updateLightForTime(light, lightItem, this.clock.elapsedTime);
+                this.animationService.updateLightForTime(light, lightItem, this.clock.elapsedTime, this.animationItem.time);
               }
             }
 
@@ -627,9 +630,9 @@ export class ThreejsService {
               mesh.rotation.y = time / 1000;
   
               if (this.animationItem.pause) {
-                this.updateMeshForTime(mesh, meshItem, this.animationItem.pauseTime);
+                this.animationService.updateMeshForTime(mesh, meshItem, this.animationItem.pauseTime, this.animationItem.time);
               } else {
-                this.updateMeshForTime(mesh, meshItem, this.clock.elapsedTime);
+                this.animationService.updateMeshForTime(mesh, meshItem, this.clock.elapsedTime, this.animationItem.time);
               }
             }
           }
@@ -641,9 +644,9 @@ export class ThreejsService {
             if (sceneItem && sceneItem.animated)
               {
                 if (this.animationItem.pause) {
-                  this.updateSceneForTime(scene, sceneItem, this.animationItem.pauseTime);
+                  this.animationService.updateSceneForTime(scene, sceneItem, this.animationItem.pauseTime, this.animationItem.time);
                 } else {
-                  this.updateSceneForTime(scene, sceneItem, this.clock.elapsedTime);
+                  this.animationService.updateSceneForTime(scene, sceneItem, this.clock.elapsedTime, this.animationItem.time);
                 }
               }
             }          
@@ -707,157 +710,6 @@ export class ThreejsService {
     );
   }
 
-  updateMeshForTime(
-    mesh: SupportedMeshes,
-    meshItem: MeshInterface | undefined,
-    time: number
-  ): void
-  {
-    if (meshItem)
-    {
-      let xSpeed = 0; 
-      let ySpeed = 0; 
-      let zSpeed = 0; 
-
-      if (meshItem.xPos.animated) {
-        xSpeed = (meshItem.xPos.endValue*1 - meshItem.xPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (meshItem.yPos.animated) {
-        ySpeed = (meshItem.yPos.endValue*1 - meshItem.yPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (meshItem.zPos.animated) {
-        zSpeed = (meshItem.zPos.endValue*1 - meshItem.zPos.startValue*1)/this.animationItem.time;
-      }
-
-      mesh.position.setX(meshItem.xPos.startValue*1 + xSpeed * time);
-      mesh.position.setY(meshItem.yPos.startValue*1 + ySpeed * time);
-      mesh.position.setZ(meshItem.zPos.startValue*1 + zSpeed * time);
-    }
-  }
-
-  updateCameraForTime(
-    camera: SupportedCameras,
-    cameraItem: SupportedCameraItems | undefined,
-    time: number
-  ): void
-  {
-    if (cameraItem)
-    {
-      let xSpeed = 0; 
-      let ySpeed = 0;
-      let zSpeed = 0;
-      let xLaSpeed = 0;
-      let laXPosition = this.cameraItem.xLookat.startValue;
-      let yLaSpeed = 0;
-      let laYPosition = this.cameraItem.xLookat.startValue;
-      let zLaSpeed = 0;
-      let laZPosition = this.cameraItem.xLookat.startValue;
-
-      if (cameraItem.xPos.animated) {
-        xSpeed = (cameraItem.xPos.endValue*1 - cameraItem.xPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (cameraItem.yPos.animated) {
-        ySpeed = (cameraItem.yPos.endValue*1 - cameraItem.yPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (cameraItem.zPos.animated) {
-        zSpeed = (cameraItem.zPos.endValue*1 - cameraItem.zPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (cameraItem.xLookat.animated) {
-        xLaSpeed = (cameraItem.xLookat.endValue*1 - cameraItem.xLookat.startValue*1)/this.animationItem.time;
-        laXPosition = cameraItem.xLookat.startValue*1 + xLaSpeed * time
-      }
-
-      if (cameraItem.yLookat.animated) {
-        yLaSpeed = (cameraItem.yLookat.endValue*1 - cameraItem.yLookat.startValue*1)/this.animationItem.time;
-        laYPosition = cameraItem.yLookat.startValue*1 + yLaSpeed * time
-      }
-
-      if (cameraItem.zLookat.animated) {
-        zLaSpeed = (cameraItem.zLookat.endValue*1 - cameraItem.zLookat.startValue*1)/this.animationItem.time;
-        laZPosition = cameraItem.zLookat.startValue*1 + zLaSpeed * time
-      }
-
-      camera.position.setX(cameraItem.xPos.startValue*1 + xSpeed * time);
-      camera.position.setY(cameraItem.yPos.startValue*1 + ySpeed * time);
-      camera.position.setZ(cameraItem.zPos.startValue*1 + zSpeed * time);
-      camera.lookAt(laXPosition, laYPosition, laZPosition);
-      // when the current lookat is calculated this need to be updated
-      cameraItem.lastXLookat = laXPosition;
-      cameraItem.lastYLookat = laYPosition;
-      cameraItem.lastZLookat = laZPosition;
-
-    }
-  }
-
-  updateLightForTime(
-    light: SupportedLights,
-    lightItem: LightInterface | undefined,
-    time: number
-  ): void
-  {
-    if (lightItem)
-    {
-      let xSpeed = 0; 
-      let ySpeed = 0; 
-      let zSpeed = 0; 
-
-      if (lightItem.xPos.animated) {
-        xSpeed = (lightItem.xPos.endValue*1 - lightItem.xPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (lightItem.yPos.animated) {
-        ySpeed = (lightItem.yPos.endValue*1 - lightItem.yPos.startValue*1)/this.animationItem.time;
-      }
-
-      if (lightItem.zPos.animated) {
-        zSpeed = (lightItem.zPos.endValue*1 - lightItem.zPos.startValue*1)/this.animationItem.time;
-      }
-
-      light.position.setX(lightItem.xPos.startValue*1 + xSpeed * time);
-      light.position.setY(lightItem.yPos.startValue*1 + ySpeed * time);
-      light.position.setZ(lightItem.zPos.startValue*1 + zSpeed * time);
-    }
-  }
-
-  updateSceneForTime(
-    scene: Scene,
-    sceneItem: SceneInterface | undefined,
-    time: number
-  ): void
-  {
-    if (sceneItem)
-    {
-      let redSpeed = 0; 
-      let greenSpeed = 0;
-      let blueSpeed = 0;
-
-      if (sceneItem.redColor.animated) {
-        redSpeed = (sceneItem.redColor.endValue*1 - sceneItem.redColor.startValue*1)/this.animationItem.time;
-      }
-
-      if (sceneItem.greenColor.animated) {
-        greenSpeed = (sceneItem.greenColor.endValue*1 - sceneItem.greenColor.startValue*1)/this.animationItem.time;
-      }
-
-      if (sceneItem.blueColor.animated) {
-        blueSpeed = (sceneItem.blueColor.endValue*1 - sceneItem.blueColor.startValue*1)/this.animationItem.time;
-      }
-
-      scene.background = new THREE.Color()
-      .setRGB(
-        (sceneItem.redColor.startValue*1 + redSpeed * time)/255,
-        (this.sceneItem.greenColor.startValue + greenSpeed*time)/255,
-        (this.sceneItem.blueColor.startValue + blueSpeed*time)/255
-      );
-
-    }
-  }
-
   attachDom(vizDiv: HTMLDivElement): void
   {
     vizDiv.appendChild( this.renderer.domElement );
@@ -868,13 +720,25 @@ export class ThreejsService {
 
     this.meshes.forEach(
       (mesh) => {
-        this.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime);
+        this.animationService.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime, this.animationItem.time);
       }
     );
 
     this.lights.forEach(
       (light) => {
-        this.updateLightForTime(light, this.getLightItemForId(light.id), this.clock.elapsedTime);
+        this.animationService.updateLightForTime(light, this.getLightItemForId(light.id), this.clock.elapsedTime, this.animationItem.time);
+      }
+    );
+
+    this.cameras.forEach(
+      (camera) => {
+        this.animationService.updateCameraForTime(camera, this.getCameraItemForId(camera.id), this.clock.elapsedTime, this.animationItem.time);
+      }
+    );
+
+    this.cameras.forEach(
+      (camera) => {
+        this.animationService.updateCameraForTime(camera, this.getCameraItemForId(camera.id), this.clock.elapsedTime, this.animationItem.time);
       }
     );
   }
