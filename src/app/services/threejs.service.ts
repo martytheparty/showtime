@@ -15,7 +15,7 @@ import { AnimationService } from './animation-service.service';
 })
 export class ThreejsService {
 
-  animationService: AnimationService = inject(AnimationService);
+  private animationService: AnimationService = inject(AnimationService);
 
   clock = new THREE.Clock();
 
@@ -79,7 +79,6 @@ export class ThreejsService {
   meshItems: MeshInterface[] = [];
   lightItems: LightInterface[] = [];
   
-  animationsPairs: AnimationPair[] = [];
 
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
@@ -99,7 +98,7 @@ export class ThreejsService {
   private animationSignal: WritableSignal<AnimationInterface> = signal(this.animationService.animationItem);
   animationValue: Signal<AnimationInterface> = computed( () => this.animationSignal());
 
-  private animationPairSignal: WritableSignal<AnimationPair[]> = signal(this.animationsPairs);
+  private animationPairSignal: WritableSignal<AnimationPair[]> = signal(this.animationService.animationsPairs);
   animationPairValues: Signal<AnimationPair[]> = computed( () => this.animationPairSignal());
 
   private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneItem);
@@ -277,9 +276,9 @@ export class ThreejsService {
     this.cameraType = cameraType;
 
     // delete the old camera from the pairs list if it exists
-    this.animationsPairs = this.animationsPairs
+    this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== this.cameras[0].id );
-    this.animationPairSignal.set(this.animationsPairs);
+    this.animationPairSignal.set(this.animationService.animationsPairs);
     // creates a new camera
     this.setupCamera();
     this.cameraItemSignal.set(this.cameraItems);
@@ -337,8 +336,8 @@ export class ThreejsService {
       this.lightItems = [... this.lightItems];
       this.lightListSignal.set(this.lightItems);
 
-      this.animationsPairs = [... this.animationsPairs];
-      this.animationPairSignal.set(this.animationsPairs);
+      this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
   }
 
@@ -363,7 +362,7 @@ export class ThreejsService {
       // huge risk of a memory leak if stale pairs are not
       // deleted
 
-      this.animationsPairs = this.animationsPairs
+      this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== id );
 
       this.pruneAnimationPairs();
@@ -412,14 +411,14 @@ export class ThreejsService {
 
   setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void
   {
-    const pair = this.animationsPairs
+    const pair = this.animationService.animationsPairs
                   .find( (pair) => pair.item.id === item.id );
     if (item.animated && !pair)
     {
       const animationPair: AnimationPair = { item, threeObj };
-      this.animationsPairs.push(animationPair);
-      this.animationsPairs = [... this.animationsPairs];
-      this.animationPairSignal.set(this.animationsPairs);
+      this.animationService.animationsPairs.push(animationPair);
+      this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
   } 
 
@@ -521,8 +520,8 @@ export class ThreejsService {
     } else {
       this.pruneAnimationPairs();
     }
-    this.animationsPairs = [... this.animationsPairs];
-    this.animationPairSignal.set(this.animationsPairs);
+    this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+    this.animationPairSignal.set(this.animationService.animationsPairs);
 
     this.clock.start();
   }
@@ -544,7 +543,7 @@ export class ThreejsService {
       // huge risk of a memory leak if stale pairs are not
       // deleted
 
-      this.animationsPairs = this.animationsPairs
+      this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== id );
 
       this.pruneAnimationPairs();
@@ -555,13 +554,13 @@ export class ThreejsService {
 
   pruneAnimationPairs(): void
   {
-    if (this.animationsPairs.length > 0) {
+    if (this.animationService.animationsPairs.length > 0) {
       // basically deleted any pairs that are not animated
-      const pairs: AnimationPair[] = this.animationsPairs
+      const pairs: AnimationPair[] = this.animationService.animationsPairs
       .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
 
-      this.animationsPairs = pairs;
-      this.animationPairSignal.set(this.animationsPairs);
+      this.animationService.animationsPairs = pairs;
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
   }
 

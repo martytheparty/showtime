@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { Scene } from 'three';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
-import { AnimationInterface } from '../interfaces/animations-interfaces';
+import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,8 @@ export class AnimationService {
     pause: false,
     pauseTime: 0
   };
+
+  animationsPairs: AnimationPair[] = [];
 
   constructor() { }
 
