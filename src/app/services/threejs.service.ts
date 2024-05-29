@@ -17,8 +17,6 @@ export class ThreejsService {
 
   private animationService: AnimationService = inject(AnimationService);
 
-  clock = new THREE.Clock();
-
   cameraType: CameraType = 'PerspectiveCamera';
   width = 0;
   height = 0;
@@ -409,6 +407,7 @@ export class ThreejsService {
     return meshItem;
   }
 
+  // move to animation service next
   setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void
   {
     const pair = this.animationService.animationsPairs
@@ -523,7 +522,7 @@ export class ThreejsService {
     this.animationService.animationsPairs = [... this.animationService.animationsPairs];
     this.animationPairSignal.set(this.animationService.animationsPairs);
 
-    this.clock.start();
+    this.animationService.clock.start();
   }
 
   deleteMesh(id: number): void
@@ -552,6 +551,7 @@ export class ThreejsService {
 
   }
 
+  // move to animation service next
   pruneAnimationPairs(): void
   {
     if (this.animationService.animationsPairs.length > 0) {
@@ -574,7 +574,7 @@ export class ThreejsService {
   {
     const animation: XRFrameRequestCallback = ( time: number ) => {
 
-      const currentLoopTime = this.clock.getElapsedTime();
+      const currentLoopTime = this.animationService.clock.getElapsedTime();
 
       if(
         this.animationService.animationItem.looping
@@ -593,7 +593,7 @@ export class ThreejsService {
               if (this.animationService.animationItem.pause) {
                 this.animationService.updateCameraForTime(camera, cameraItem, this.animationService.animationItem.pauseTime, this.animationService.animationItem.time);
               } else {
-                this.animationService.updateCameraForTime(camera, cameraItem, this.clock.elapsedTime, this.animationService.animationItem.time);
+                this.animationService.updateCameraForTime(camera, cameraItem, this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
               }
             }
           }
@@ -606,7 +606,7 @@ export class ThreejsService {
               if (this.animationService.animationItem.pause) {
                 this.animationService.updateLightForTime(light, lightItem, this.animationService.animationItem.pauseTime, this.animationService.animationItem.time);
               } else {
-                this.animationService.updateLightForTime(light, lightItem, this.clock.elapsedTime, this.animationService.animationItem.time);
+                this.animationService.updateLightForTime(light, lightItem, this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
               }
             }
 
@@ -624,7 +624,7 @@ export class ThreejsService {
               if (this.animationService.animationItem.pause) {
                 this.animationService.updateMeshForTime(mesh, meshItem, this.animationService.animationItem.pauseTime, this.animationService.animationItem.time);
               } else {
-                this.animationService.updateMeshForTime(mesh, meshItem, this.clock.elapsedTime, this.animationService.animationItem.time);
+                this.animationService.updateMeshForTime(mesh, meshItem, this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
               }
             }
           }
@@ -638,7 +638,7 @@ export class ThreejsService {
                 if (this.animationService.animationItem.pause) {
                   this.animationService.updateSceneForTime(scene, sceneItem, this.animationService.animationItem.pauseTime, this.animationService.animationItem.time);
                 } else {
-                  this.animationService.updateSceneForTime(scene, sceneItem, this.clock.elapsedTime, this.animationService.animationItem.time);
+                  this.animationService.updateSceneForTime(scene, sceneItem, this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
                 }
               }
             }          
@@ -708,29 +708,29 @@ export class ThreejsService {
   }
 
   resetClock(): void {
-    this.clock.start();
+    this.animationService.clock.start();
 
     this.meshes.forEach(
       (mesh) => {
-        this.animationService.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.clock.elapsedTime, this.animationService.animationItem.time);
+        this.animationService.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
     );
 
     this.lights.forEach(
       (light) => {
-        this.animationService.updateLightForTime(light, this.getLightItemForId(light.id), this.clock.elapsedTime, this.animationService.animationItem.time);
+        this.animationService.updateLightForTime(light, this.getLightItemForId(light.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
     );
 
     this.cameras.forEach(
       (camera) => {
-        this.animationService.updateCameraForTime(camera, this.getCameraItemForId(camera.id), this.clock.elapsedTime, this.animationService.animationItem.time);
+        this.animationService.updateCameraForTime(camera, this.getCameraItemForId(camera.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
     );
 
-    this.cameras.forEach(
-      (camera) => {
-        this.animationService.updateCameraForTime(camera, this.getCameraItemForId(camera.id), this.clock.elapsedTime, this.animationService.animationItem.time);
+    this.scenes.forEach(
+      (scene) => {
+        this.animationService.updateSceneForTime(scene, this.getSceneItemForId(scene.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
     );
   }

@@ -21,6 +21,8 @@ export class AnimationService {
   };
 
   animationsPairs: AnimationPair[] = [];
+  clock = new THREE.Clock();
+
 
   constructor() { }
 
