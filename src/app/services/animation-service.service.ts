@@ -4,8 +4,20 @@ import { SupportedLights, LightInterface } from '../interfaces/light-interface';
 import * as THREE from 'three';
 import { Scene } from 'three';
 import { SceneInterface } from '../interfaces/scene-interface';
-import { SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
+import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
 import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
+
+/*
+Strange bug to work on...
+
+1. Animate the scene
+2. Select Red from Animation Drop Down
+3. Add a mesh
+4. Animate the msh
+5. Goto Animation tab and select X Position 
+6. Observe that the mesh is not available...
+*/
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +37,29 @@ export class AnimationService {
 
 
   constructor() { }
+
+  pruneAnimationPairs(): void
+  {
+    if (this.animationsPairs.length > 0) {
+      // basically deleted any pairs that are not animated
+      const pairs: AnimationPair[] = this.animationsPairs
+      .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
+
+      this.animationsPairs = pairs;
+    }
+  }
+
+  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void
+  {
+    const pair = this.animationsPairs
+                  .find( (pair) => pair.item.id === item.id );
+    if (item.animated && !pair)
+    {
+      const animationPair: AnimationPair = { item, threeObj };
+      this.animationsPairs.push(animationPair);
+      this.animationsPairs = [... this.animationsPairs];
+    }
+  }
 
   updateMeshForTime(
     mesh: SupportedMeshes,

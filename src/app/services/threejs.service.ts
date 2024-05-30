@@ -140,9 +140,11 @@ export class ThreejsService {
     this.setUpScene();
 
     if (this.sceneItem.animated) {
-      this.setAnimationPairs(this.sceneItem, this.scenes[0]);
+      this.animationService.setAnimationPairs(this.sceneItem, this.scenes[0]);
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     } else {
-      this.pruneAnimationPairs();
+      this.animationService.pruneAnimationPairs();
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
   }
 
@@ -162,9 +164,11 @@ export class ThreejsService {
         this.cameras[0].lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat.startValue);
 
         if (this.cameraItem.animated) {
-          this.setAnimationPairs(this.cameraItem, this.cameras[0]);
+          this.animationService.setAnimationPairs(this.cameraItem, this.cameras[0]);
+          this.animationPairSignal.set(this.animationService.animationsPairs);
         } else {
-          this.pruneAnimationPairs();
+          this.animationService.pruneAnimationPairs();
+          this.animationPairSignal.set(this.animationService.animationsPairs);
         }
         this.cameraItems = [this.cameraItem];
     } else {
@@ -183,9 +187,11 @@ export class ThreejsService {
       this.cameras[0].lookAt(this.orthographicCameraItem.xLookat.startValue, this.orthographicCameraItem.yLookat.startValue, this.orthographicCameraItem.zLookat.startValue);
 
       if (this.orthographicCameraItem.animated) {
-        this.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
+        this.animationService.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
+        this.animationPairSignal.set(this.animationService.animationsPairs);
       } else {
-        this.pruneAnimationPairs();
+        this.animationService.pruneAnimationPairs();
+        this.animationPairSignal.set(this.animationService.animationsPairs);
       }
 
       this.cameraItems = [this.orthographicCameraItem];
@@ -229,9 +235,11 @@ export class ThreejsService {
           this.cameraItems = [this.cameraItem];
 
           if (isAnimated) {
-            this.setAnimationPairs(this.cameraItem, this.cameras[0]);
+            this.animationService.setAnimationPairs(this.cameraItem, this.cameras[0]);
+            this.animationPairSignal.set(this.animationService.animationsPairs);
           } else {
-            this.pruneAnimationPairs();
+            this.animationService.pruneAnimationPairs();
+            this.animationPairSignal.set(this.animationService.animationsPairs);
           }
 
         } else {
@@ -249,9 +257,11 @@ export class ThreejsService {
           this.cameraItems = [this.orthographicCameraItem];
 
           if (isAnimated) {
-            this.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
+            this.animationService.setAnimationPairs(this.orthographicCameraItem, this.cameras[0]);
+            this.animationPairSignal.set(this.animationService.animationsPairs);
           } else {
-            this.pruneAnimationPairs();
+            this.animationService.pruneAnimationPairs();
+            this.animationPairSignal.set(this.animationService.animationsPairs);
           }
 
         }
@@ -326,9 +336,11 @@ export class ThreejsService {
       light.castShadow = lightItem.castShadow;
 
       if (lightItem.animated && light) {
-        this.setAnimationPairs(lightItem, light);
+        this.animationService.setAnimationPairs(lightItem, light);
+        this.animationPairSignal.set(this.animationService.animationsPairs);
       } else {
-        this.pruneAnimationPairs();
+        this.animationService.pruneAnimationPairs();
+        this.animationPairSignal.set(this.animationService.animationsPairs);
       }
 
       this.lightItems = [... this.lightItems];
@@ -363,8 +375,8 @@ export class ThreejsService {
       this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== id );
 
-      this.pruneAnimationPairs();
-
+      this.animationService.pruneAnimationPairs();
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
 
   }
@@ -402,24 +414,11 @@ export class ThreejsService {
 
     this.scenes[0].add( mesh );
 
-    this.setAnimationPairs(meshItem, mesh);
+    this.animationService.setAnimationPairs(meshItem, mesh);
+    this.animationPairSignal.set(this.animationService.animationsPairs);
 
     return meshItem;
   }
-
-  // move to animation service next
-  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void
-  {
-    const pair = this.animationService.animationsPairs
-                  .find( (pair) => pair.item.id === item.id );
-    if (item.animated && !pair)
-    {
-      const animationPair: AnimationPair = { item, threeObj };
-      this.animationService.animationsPairs.push(animationPair);
-      this.animationService.animationsPairs = [... this.animationService.animationsPairs];
-      this.animationPairSignal.set(this.animationService.animationsPairs);
-    }
-  } 
 
   updateMesh(meshItem: MeshInterface): void
   {
@@ -515,9 +514,11 @@ export class ThreejsService {
     this.meshListSignal.set(this.meshItems);
 
     if (meshItem.animated && updateMesh) {
-      this.setAnimationPairs(meshItem, updateMesh);
+      this.animationService.setAnimationPairs(meshItem, updateMesh);
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     } else {
-      this.pruneAnimationPairs();
+      this.animationService.pruneAnimationPairs();
+      this.animationPairSignal.set(this.animationService.animationsPairs);
     }
     this.animationService.animationsPairs = [... this.animationService.animationsPairs];
     this.animationPairSignal.set(this.animationService.animationsPairs);
@@ -545,21 +546,7 @@ export class ThreejsService {
       this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== id );
 
-      this.pruneAnimationPairs();
-
-    }
-
-  }
-
-  // move to animation service next
-  pruneAnimationPairs(): void
-  {
-    if (this.animationService.animationsPairs.length > 0) {
-      // basically deleted any pairs that are not animated
-      const pairs: AnimationPair[] = this.animationService.animationsPairs
-      .filter( (pair: AnimationPair | undefined) => (pair && pair.item.animated) );
-
-      this.animationService.animationsPairs = pairs;
+      this.animationService.pruneAnimationPairs();
       this.animationPairSignal.set(this.animationService.animationsPairs);
     }
   }
