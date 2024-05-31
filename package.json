@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "animation-service": "ng g s services/animation-service"
+    "update": "ng update @angular/core@18 @angular/cli@18"
   },
   "private": true,
   "dependencies": {
