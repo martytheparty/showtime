@@ -100,7 +100,7 @@ export class AnimationPropertyComponent {
           let current = 0;
           // threeObject[propertyName][subPropertyName] does not exist for lookAt default to 0
           // this will resolve itself on update.
-          if(threeObject[propertyName][subPropertyName]) {
+          if(threeObject && threeObject[propertyName] && threeObject[propertyName][subPropertyName]) {
             current = threeObject[propertyName][subPropertyName];
           }
           const type = item.type;
@@ -216,11 +216,11 @@ export class AnimationPropertyComponent {
         current = item.lastYLookat;
       } else if (this.threePropertyName() === 'lookAt' && this.threeSubPropertyName() === 'z') {
         current = item.lastZLookat;
-      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'red') {
+      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'r') {
         current = threeObj[this.threePropertyName()].r;
-      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'green') {
+      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'g') {
         current = threeObj[this.threePropertyName()].g;
-      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'blue') {
+      } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'b') {
         current = threeObj[this.threePropertyName()].b;
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];

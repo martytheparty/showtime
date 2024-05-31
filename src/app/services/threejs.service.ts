@@ -148,7 +148,7 @@ export class ThreejsService {
     }
   }
 
-  setupCamera(): void
+  setupCamera(init = false): void
   {
     if (this.cameraType === 'PerspectiveCamera')
     {
@@ -168,7 +168,9 @@ export class ThreejsService {
           this.animationPairSignal.set(this.animationService.animationsPairs);
         } else {
           this.animationService.pruneAnimationPairs();
-          this.animationPairSignal.set(this.animationService.animationsPairs);
+          if (!init) { // this prevents a console error (Error: NG0600: Writing to signals is not allowed in a `computed` or an `effect` by default.)
+            this.animationPairSignal.set(this.animationService.animationsPairs);
+          }
         }
         this.cameraItems = [this.cameraItem];
     } else {
