@@ -472,6 +472,28 @@ export class ThreejsService {
       updateMesh.position.setX(meshItem.xPos.startValue);
       updateMesh.position.setY(meshItem.yPos.startValue);
       updateMesh.position.setZ(meshItem.zPos.startValue);
+      
+      let xRotation = updateMesh.rotation.x;
+      let yRotation = updateMesh.rotation.y;
+      let zRotation = updateMesh.rotation.z;
+
+      if (!isNaN(meshItem.xRotation*1))
+      {
+        xRotation = meshItem.xRotation * 1;
+      }
+
+      if (!isNaN(meshItem.yRotation*1))
+      {
+        yRotation = meshItem.yRotation * 1;
+      }
+      
+      if (!isNaN(meshItem.zRotation*1))
+      {
+        zRotation = meshItem.zRotation * 1;
+      }
+
+      updateMesh.rotation.set(xRotation, yRotation, zRotation);
+      
       updateMesh.castShadow = meshItem.castShadow;
       updateMesh.receiveShadow = meshItem.receiveShadow;
     }

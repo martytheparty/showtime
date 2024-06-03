@@ -101,7 +101,10 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       castShadow: true,
       receiveShadow: true,
       animated: false,
-      type: 'mesh'
+      type: 'mesh',
+      xRotation: 0,
+      yRotation: 0,
+      zRotation: 0
     } 
      
     this.threejsService.addMesh(meshItem);
@@ -129,6 +132,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.castShadow = form.value.castShadow;
           meshItem.receiveShadow = form.value.receiveShadow;
           meshItem.animated = form.value.animated;
+          meshItem.xRotation = form.value.xRotation;
+          meshItem.yRotation = form.value.yRotation;
+          meshItem.zRotation = form.value.zRotation;
           this.threejsService.updateMesh(meshItem);
       }
     );
@@ -156,7 +162,10 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         radius: new FormControl(meshItem.radius),
         castShadow: new FormControl(meshItem.castShadow),
         receiveShadow: new FormControl(meshItem.receiveShadow),
-        animated: new FormControl(meshItem.animated)
+        animated: new FormControl(meshItem.animated),
+        xRotation: new FormControl(meshItem.xRotation),
+        yRotation: new FormControl(meshItem.yRotation),
+        zRotation: new FormControl(meshItem.zRotation)
       }
     );
 
@@ -182,7 +191,10 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           radius: meshItem.radius,
           castShadow: meshItem.castShadow,
           receiveShadow: meshItem.receiveShadow,
-          animated: meshItem.animated
+          animated: meshItem.animated,
+          xRotation: meshItem.xRotation,
+          yRotation: meshItem.yRotation,
+          zRotation: meshItem.zRotation
         }, { emitEvent: false}
       );
     } else {

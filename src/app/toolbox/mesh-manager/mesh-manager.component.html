@@ -160,6 +160,24 @@ multiTemplateDataRows
          }
 
          <mat-form-field [formGroup]="mesh.form">
+            <mat-label>X Rotation</mat-label>
+            <input formControlName="xRotation" matInput >
+            <mat-hint>X Rotation</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="mesh.form">
+            <mat-label>Y Rotation</mat-label>
+            <input formControlName="yRotation" matInput >
+            <mat-hint>y Rotation</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="mesh.form">
+            <mat-label>Z Rotation</mat-label>
+            <input formControlName="zRotation" matInput >
+            <mat-hint>z Rotation</mat-hint>
+          </mat-form-field>
+
+         <mat-form-field [formGroup]="mesh.form">
             <mat-label>Choose Material</mat-label>
             <mat-select formControlName="materialType">
                <mat-option value="normal">normal</mat-option>
