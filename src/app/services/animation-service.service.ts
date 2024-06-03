@@ -7,18 +7,6 @@ import { SceneInterface } from '../interfaces/scene-interface';
 import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
 import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
 
-/*
-Strange bug to work on...
-
-1. Animate the scene
-2. Select Red from Animation Drop Down
-3. Add a mesh
-4. Animate the msh
-5. Goto Animation tab and select X Position 
-6. Observe that the mesh is not available...
-*/
-
-
 @Injectable({
   providedIn: 'root'
 })

@@ -87,9 +87,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       id: -1,
       name: '',
       shape: 'BoxGeometry',
-      xPos: { startValue: 0, endValue: 2, animated: true},
-      yPos: { startValue: 0, endValue: 2, animated: true},
-      zPos: { startValue: 0, endValue: 2, animated: true},
+      xPos: { startValue: 0, endValue: 0, animated: true},
+      yPos: { startValue: 0, endValue: 0, animated: true},
+      zPos: { startValue: 0, endValue: 0, animated: true},
       materialType: 'basic',
       redColor: 255,
       greenColor: 255,
@@ -102,9 +102,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       receiveShadow: true,
       animated: false,
       type: 'mesh',
-      xRotation: 0,
-      yRotation: 0,
-      zRotation: 0
+      xRotation: { startValue: 0, endValue: 0, animated: true},
+      yRotation: { startValue: 0, endValue: 0, animated: true},
+      zRotation: { startValue: 0, endValue: 0, animated: true}
     } 
      
     this.threejsService.addMesh(meshItem);
@@ -132,9 +132,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.castShadow = form.value.castShadow;
           meshItem.receiveShadow = form.value.receiveShadow;
           meshItem.animated = form.value.animated;
-          meshItem.xRotation = form.value.xRotation;
-          meshItem.yRotation = form.value.yRotation;
-          meshItem.zRotation = form.value.zRotation;
+          meshItem.xRotation.startValue = form.value.xRotation;
+          meshItem.yRotation.startValue = form.value.yRotation;
+          meshItem.zRotation.startValue = form.value.zRotation;
           this.threejsService.updateMesh(meshItem);
       }
     );
@@ -163,9 +163,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         castShadow: new FormControl(meshItem.castShadow),
         receiveShadow: new FormControl(meshItem.receiveShadow),
         animated: new FormControl(meshItem.animated),
-        xRotation: new FormControl(meshItem.xRotation),
-        yRotation: new FormControl(meshItem.yRotation),
-        zRotation: new FormControl(meshItem.zRotation)
+        xRotation: new FormControl(meshItem.xRotation.startValue),
+        yRotation: new FormControl(meshItem.yRotation.startValue),
+        zRotation: new FormControl(meshItem.zRotation.startValue)
       }
     );
 
@@ -192,9 +192,9 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           castShadow: meshItem.castShadow,
           receiveShadow: meshItem.receiveShadow,
           animated: meshItem.animated,
-          xRotation: meshItem.xRotation,
-          yRotation: meshItem.yRotation,
-          zRotation: meshItem.zRotation
+          xRotation: meshItem.xRotation.startValue,
+          yRotation: meshItem.yRotation.startValue,
+          zRotation: meshItem.zRotation.startValue
         }, { emitEvent: false}
       );
     } else {

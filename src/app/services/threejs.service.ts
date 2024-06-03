@@ -477,19 +477,19 @@ export class ThreejsService {
       let yRotation = updateMesh.rotation.y;
       let zRotation = updateMesh.rotation.z;
 
-      if (!isNaN(meshItem.xRotation*1))
+      if (!isNaN(meshItem.xRotation.startValue*1))
       {
-        xRotation = meshItem.xRotation * 1;
+        xRotation = meshItem.xRotation.startValue * 1;
       }
 
-      if (!isNaN(meshItem.yRotation*1))
+      if (!isNaN(meshItem.yRotation.startValue*1))
       {
-        yRotation = meshItem.yRotation * 1;
+        yRotation = meshItem.yRotation.startValue * 1;
       }
       
-      if (!isNaN(meshItem.zRotation*1))
+      if (!isNaN(meshItem.zRotation.startValue*1))
       {
-        zRotation = meshItem.zRotation * 1;
+        zRotation = meshItem.zRotation.startValue * 1;
       }
 
       updateMesh.rotation.set(xRotation, yRotation, zRotation);

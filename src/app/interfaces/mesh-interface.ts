@@ -24,9 +24,9 @@ export interface MeshInterface {
     receiveShadow: boolean
     animated: boolean
     type: 'mesh'
-    xRotation: number
-    yRotation: number
-    zRotation: number
+    xRotation: AnimationPropertyDescriptor
+    yRotation: AnimationPropertyDescriptor
+    zRotation: AnimationPropertyDescriptor
 }
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
