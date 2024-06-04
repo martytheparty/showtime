@@ -52,6 +52,9 @@ export class AnimationPropertyComponent {
     xLookat: ['PerspectiveCamera', 'OrthographicCamera'],
     yLookat: ['PerspectiveCamera', 'OrthographicCamera'],
     zLookat: ['PerspectiveCamera', 'OrthographicCamera'],
+    xRotation: ['mesh'],
+    yRotation: ['mesh'],
+    zRotation: ['mesh'],
     redColor: ['Scene'],
     greenColor: ['Scene'],
     blueColor: ['Scene']
@@ -224,7 +227,9 @@ export class AnimationPropertyComponent {
         current = threeObj[this.threePropertyName()].b;
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
+        console.log(threeObj, this.threePropertyName(), this.threeSubPropertyName())
       }
+      console.log(current);
       return current;
     } else {
       return 0;

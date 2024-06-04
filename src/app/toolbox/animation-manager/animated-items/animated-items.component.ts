@@ -1,19 +1,12 @@
 import { Component, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { AnimationInterfaceProperties, AnimationPair, ThreeObjProperties, ThreeObjSubProperties } from '../../../interfaces/animations-interfaces';
+import { AnimationPair, PropertyMenuItem } from '../../../interfaces/animations-interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AnimationPropertyComponent } from './animation-property/animation-property.component';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
-interface PropertyMenuItem {
-  name: string
-  itemValue: AnimationInterfaceProperties,
-  threeProperty: ThreeObjProperties,
-  threeSubProperty: ThreeObjSubProperties
-}
 
 @Component({
   selector: 'app-animated-items',
@@ -32,22 +25,17 @@ interface PropertyMenuItem {
 export class AnimatedItemsComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
   animationPairs: AnimationPair[] = [];
-  menuItems: PropertyMenuItem[] = [
-    { name: 'X Position', itemValue: 'xPos', threeProperty: 'position', threeSubProperty: 'x'},
-    { name: 'Y Position', itemValue: 'yPos', threeProperty: 'position', threeSubProperty: 'y'},
-    { name: 'Z Position', itemValue: 'zPos', threeProperty: 'position', threeSubProperty: 'z'},
-    { name: 'X LookAt', itemValue: 'xLookat', threeProperty: 'lookAt', threeSubProperty: 'x'},
-    { name: 'Y LookAt', itemValue: 'yLookat', threeProperty: 'lookAt', threeSubProperty: 'y'},
-    { name: 'Z LookAt', itemValue: 'zLookat', threeProperty: 'lookAt', threeSubProperty: 'z'},
-    { name: 'Red', itemValue: 'redColor', threeProperty: 'background', threeSubProperty: 'r'},
-    { name: 'Green', itemValue: 'greenColor', threeProperty: 'background', threeSubProperty: 'g'},
-    { name: 'Blue', itemValue: 'blueColor', threeProperty: 'background', threeSubProperty: 'b'}
-  ];
-  selectedProperty: PropertyMenuItem = this.menuItems[0];
+  menuItems: PropertyMenuItem[] = [];
+  selectedProperty: PropertyMenuItem | undefined;
 
   constructor(){
     effect(() => {
       this.animationPairs = this.threeJsService.animationPairValues();
+      this.menuItems = this.threeJsService.animationMenuItemValues();
+      if (this.selectedProperty === undefined && this.menuItems.length > 0) {
+        this.selectedProperty = this.menuItems[0];
+      }
+
     })
   }
 

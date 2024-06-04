@@ -7,8 +7,8 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, Su
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
-import { AnimationInterface, AnimationPair } from '../interfaces/animations-interfaces';
-import { AnimationService } from './animation-service.service';
+import { AnimationInterface, AnimationPair, PropertyMenuItem } from '../interfaces/animations-interfaces';
+import { AnimationService } from './AnimationService';
 
 @Injectable({
   providedIn: 'root'
@@ -105,7 +105,10 @@ export class ThreejsService {
   private rendererSignal: WritableSignal<RendererInterface> = signal(this.rendererItem);
   rendererItemValues: Signal<RendererInterface> = computed( () => this.rendererSignal());
 
-  updateAnimation(animation: AnimationInterface): void
+  private animationMenuItemSignal: WritableSignal<PropertyMenuItem[]> = signal(this.animationService.menuItems);
+  animationMenuItemValues: Signal<PropertyMenuItem[]> = computed( () => this.animationMenuItemSignal());
+  
+  updateAnimation(animation: AnimationInterface): void 
   {
     this.animationSignal.set(animation);
   }
