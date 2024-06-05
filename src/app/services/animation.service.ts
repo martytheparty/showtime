@@ -73,6 +73,10 @@ export class AnimationService {
       let ySpeed = 0;
       let zSpeed = 0;
 
+      let xRotationSpeed = 0;
+      let yRotationSpeed = 0;
+      let zRotationSpeed = 0;
+
       if (meshItem.xPos.animated) {
         xSpeed = (meshItem.xPos.endValue * 1 - meshItem.xPos.startValue * 1) / animationTime;
       }
@@ -85,9 +89,26 @@ export class AnimationService {
         zSpeed = (meshItem.zPos.endValue * 1 - meshItem.zPos.startValue * 1) / animationTime;
       }
 
+      if (meshItem.xRotation.animated) {
+        xRotationSpeed = (meshItem.xRotation.endValue * 1 - meshItem.xRotation.startValue * 1) / animationTime;
+      }
+
+      if (meshItem.yRotation.animated) {
+        yRotationSpeed = (meshItem.yRotation.endValue * 1 - meshItem.yRotation.startValue * 1) / animationTime;
+      }
+
+      if (meshItem.zRotation.animated) {
+        zRotationSpeed = (meshItem.zRotation.endValue * 1 - meshItem.zRotation.startValue * 1) / animationTime;
+      }
+
       mesh.position.setX(meshItem.xPos.startValue * 1 + xSpeed * time);
       mesh.position.setY(meshItem.yPos.startValue * 1 + ySpeed * time);
       mesh.position.setZ(meshItem.zPos.startValue * 1 + zSpeed * time);
+
+      mesh.rotation.x =  meshItem.xRotation.startValue * 1 + xRotationSpeed * time;
+      mesh.rotation.y =  meshItem.yRotation.startValue * 1 + yRotationSpeed * time;
+      mesh.rotation.z =  meshItem.zRotation.startValue * 1 + zRotationSpeed * time;
+
     }
   }
 

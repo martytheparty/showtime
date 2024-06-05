@@ -8,7 +8,7 @@ import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
 import { AnimationInterface, AnimationPair, PropertyMenuItem } from '../interfaces/animations-interfaces';
-import { AnimationService } from './AnimationService';
+import { AnimationService } from './animation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -631,10 +631,7 @@ export class ThreejsService {
             const meshItem: MeshInterface | undefined = this.getMeshItemForId(mesh.id);
 
             if (meshItem && meshItem.animated)
-            {
-              mesh.rotation.x = time / 2000;
-              mesh.rotation.y = time / 1000;
-  
+            {  
               if (this.animationService.animationItem.pause) {
                 this.animationService.updateMeshForTime(mesh, meshItem, this.animationService.animationItem.pauseTime, this.animationService.animationItem.time);
               } else {
