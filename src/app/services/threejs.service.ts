@@ -7,7 +7,7 @@ import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, Su
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
-import { AnimationInterface, AnimationPair, PropertyMenuItem } from '../interfaces/animations-interfaces';
+import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, PropertyMenuItem } from '../interfaces/animations-interfaces';
 import { AnimationService } from './animation.service';
 
 @Injectable({
@@ -108,6 +108,13 @@ export class ThreejsService {
   private animationMenuItemSignal: WritableSignal<PropertyMenuItem[]> = signal(this.animationService.menuItems);
   animationMenuItemValues: Signal<PropertyMenuItem[]> = computed( () => this.animationMenuItemSignal());
   
+  private mappedSupportedPropertyTypesSignal: WritableSignal<MappedSupportedPropertyTypesSignal> = signal(
+    {
+      supportedPropertyTypes: this.animationService.supportedPropsDictionary,
+      signalType: 'MappedSupportedPropertyTypes'
+    });
+  mappedSupportedPropertyTypesValues: Signal<MappedSupportedPropertyTypesSignal> = computed(() => this.mappedSupportedPropertyTypesSignal())
+
   updateAnimation(animation: AnimationInterface): void 
   {
     this.animationSignal.set(animation);

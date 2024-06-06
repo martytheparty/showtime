@@ -1,4 +1,4 @@
-import { Component, input, output, effect } from '@angular/core';
+import { Component, input, output, effect, inject } from '@angular/core';
 import { 
   AnimationInterfaceProperties,
   AnimationPair,
@@ -15,6 +15,7 @@ import { OrthographicCameraInterface, PerspectiveCameraInterface } from '../../.
 import { LightInterface } from '../../../../interfaces/light-interface';
 import { SceneInterface } from '../../../../interfaces/scene-interface';
 import { MatSliderModule } from '@angular/material/slider';
+import { ThreejsService } from '../../../../services/threejs.service';
 
 interface TableInterface {
   id: number
@@ -34,6 +35,8 @@ interface TableInterface {
 })
 export class AnimationPropertyComponent {
 
+  threeJsService: ThreejsService = inject(ThreejsService);
+
   displayName = input.required<string>();
   propertyName = input.required<AnimationInterfaceProperties>();
   animationPairs = input.required<AnimationPair[]>();
@@ -45,20 +48,7 @@ export class AnimationPropertyComponent {
   displayedColumns: string[] = ['id', 'name', 'start', 'end', 'current'];
   tableData: TableInterface[] = [];
   filteredTableData: TableInterface[] = [];
-  supportedPropsDictionary: MappedSupportedPropertyTypes = {
-    xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
-    xLookat: ['PerspectiveCamera', 'OrthographicCamera'],
-    yLookat: ['PerspectiveCamera', 'OrthographicCamera'],
-    zLookat: ['PerspectiveCamera', 'OrthographicCamera'],
-    xRotation: ['mesh'],
-    yRotation: ['mesh'],
-    zRotation: ['mesh'],
-    redColor: ['Scene'],
-    greenColor: ['Scene'],
-    blueColor: ['Scene']
-  };
+  supportedPropsDictionary: MappedSupportedPropertyTypes | undefined;
   previousData: AnimationPair[] = [];
 
 
@@ -119,14 +109,24 @@ export class AnimationPropertyComponent {
         } ) as TableInterface[];
       }
 
-      // filter by propertyName
+      // set property dictionary - from the threeJS Service
+      this.supportedPropsDictionary = this.threeJsService.mappedSupportedPropertyTypesValues().supportedPropertyTypes;    
 
-      const filteredProperty = this.propertyName();
-      this.filteredTableData = this.tableData.filter(
-        (row: TableInterface) => {
-          return this.supportedPropsDictionary[filteredProperty].includes(row.type);
-        }
-      );
+      // this would not work if the dictionary changed
+      if (this.supportedPropsDictionary !== undefined) {
+        const supportedDict = this.supportedPropsDictionary;
+
+        // this is from the input assuming that this get populated 
+        // before the supportedPropsDictionaly
+        const filteredProperty = this.propertyName();  
+
+        this.filteredTableData = this.tableData.filter(
+          (row: TableInterface) => {
+            return supportedDict[filteredProperty].includes(row.type);
+          }
+        );
+      }
+
 
 
     } );

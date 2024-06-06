@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { Scene } from 'three';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
-import { AnimationInterface, AnimationPair, PropertyMenuItem } from '../interfaces/animations-interfaces';
+import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypes, PropertyMenuItem } from '../interfaces/animations-interfaces';
 
 
 @Injectable({
@@ -39,6 +39,20 @@ export class AnimationService {
     { name: 'Blue', itemValue: 'blueColor', threeProperty: 'background', threeSubProperty: 'b' }
   ];
 
+  supportedPropsDictionary: MappedSupportedPropertyTypes = {
+    xPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
+    yPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
+    zPos: ['light', 'mesh', 'PerspectiveCamera', 'OrthographicCamera'],
+    xLookat: ['PerspectiveCamera', 'OrthographicCamera'],
+    yLookat: ['PerspectiveCamera', 'OrthographicCamera'],
+    zLookat: ['PerspectiveCamera', 'OrthographicCamera'],
+    xRotation: ['mesh'],
+    yRotation: ['mesh'],
+    zRotation: ['mesh'],
+    redColor: ['Scene'],
+    greenColor: ['Scene'],
+    blueColor: ['Scene']
+  };
 
   constructor() { }
 

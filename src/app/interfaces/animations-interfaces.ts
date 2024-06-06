@@ -29,6 +29,17 @@ export type ThreeObjSubProperties = 'x' | 'y' | 'z' | 'r' | 'g' | 'b';
 export type SuportedThreeObjTypes = 'light' | 'mesh' | 'OrthographicCamera' | 'PerspectiveCamera' | 'Scene';
 export type MappedSupportedPropertyTypes = { [key: string] : SuportedThreeObjTypes[] };
 
+/*
+this does not achieve the goal... the goal was to know 
+which signal caused the effect to get executed... but 
+knowing the signalType does not help... back to the drawing
+board :)
+*/
+export type MappedSupportedPropertyTypesSignal = {
+    supportedPropertyTypes: MappedSupportedPropertyTypes;
+    signalType: 'MappedSupportedPropertyTypes';
+};
+
 export interface PropertyMenuItem {
     name: string
     itemValue: AnimationInterfaceProperties,
