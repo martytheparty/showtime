@@ -1,6 +1,8 @@
 import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
@@ -114,6 +116,29 @@ export class ThreejsService {
       signalType: 'MappedSupportedPropertyTypes'
     });
   mappedSupportedPropertyTypesValues: Signal<MappedSupportedPropertyTypesSignal> = computed(() => this.mappedSupportedPropertyTypesSignal())
+  loader = new FontLoader();
+  constructor() {
+    
+    this.loader.load('assets/fonts/helvetiker_regular.typeface.json', (font) => {
+      const geometry = new TextGeometry('Crafty By Melissa', {
+        font: font,
+        size: 1,
+        height: 0.1,
+        curveSegments: 20,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelOffset: 0,
+        bevelSegments: 5
+      });
+
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const mesh = new THREE.Mesh(geometry, material);
+      this.scenes[0].add(mesh);
+
+
+    });
+  }
 
   updateAnimation(animation: AnimationInterface): void 
   {
