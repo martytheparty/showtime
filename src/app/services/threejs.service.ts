@@ -1,7 +1,7 @@
 import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
@@ -119,7 +119,7 @@ export class ThreejsService {
   loader = new FontLoader();
   constructor() {
     
-    this.loader.load('assets/fonts/helvetiker_regular.typeface.json', (font) => {
+    this.loader.load('assets/fonts/helvetiker_regular.typeface.json', (font: Font) => {
       const geometry = new TextGeometry('Crafty By Melissa', {
         font: font,
         size: 1,
