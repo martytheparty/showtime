@@ -81,7 +81,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     );
   }
 
-  addMesh(): MeshInterface
+  async addMesh(): Promise<MeshInterface>
   {
     const meshItem: MeshInterface = {
       id: -1,
@@ -107,7 +107,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       zRotation: { startValue: 0, endValue: 0, animated: true}
     } 
      
-    this.threejsService.addMesh(meshItem);
+    await this.threejsService.addMesh(meshItem);
 
     const form = this.setupForm(meshItem);
     this.setupSubs(meshItem, form);

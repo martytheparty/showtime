@@ -117,27 +117,14 @@ export class ThreejsService {
     });
   mappedSupportedPropertyTypesValues: Signal<MappedSupportedPropertyTypesSignal> = computed(() => this.mappedSupportedPropertyTypesSignal())
   loader = new FontLoader();
+
+ helvetikerRegularPromise: Promise<Font> = new Promise((resolve) => { 
+  this.loader.load('assets/fonts/helvetiker_regular.typeface.json', 
+    (font: Font) => { resolve(font); }
+  )}) ; 
+
   constructor() {
-    
-    this.loader.load('assets/fonts/helvetiker_regular.typeface.json', (font: Font) => {
-      const geometry = new TextGeometry('Crafty By Melissa', {
-        font: font,
-        size: 1,
-        height: 0.1,
-        curveSegments: 20,
-        bevelEnabled: true,
-        bevelThickness: 0.03,
-        bevelSize: 0.02,
-        bevelOffset: 0,
-        bevelSegments: 5
-      });
 
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      const mesh = new THREE.Mesh(geometry, material);
-      this.scenes[0].add(mesh);
-
-
-    });
   }
 
   updateAnimation(animation: AnimationInterface): void 
@@ -418,8 +405,25 @@ export class ThreejsService {
 
   }
 
-  addMesh(meshItem: MeshInterface): MeshInterface
+  async addMesh(meshItem: MeshInterface): Promise<MeshInterface>
   {
+    let font = await this.helvetikerRegularPromise;
+
+    const geo = new TextGeometry('Crafty By Melissa', {
+      font: font,
+      size: 1,
+      height: 0.1,
+      curveSegments: 20,
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset: 0,
+      bevelSegments: 5
+    });
+      const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const mes = new THREE.Mesh(geo, mat);
+      this.scenes[0].add(mes);
+
     let geometry: BoxGeometry | THREE.SphereGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 
     if (meshItem.shape === 'SphereGeometry') {
