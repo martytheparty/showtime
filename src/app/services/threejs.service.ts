@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@a
 import * as THREE from 'three';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
+import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
@@ -408,26 +408,22 @@ export class ThreejsService {
   async addMesh(meshItem: MeshInterface): Promise<MeshInterface>
   {
     let font = await this.helvetikerRegularPromise;
-
-    const geo = new TextGeometry('Crafty By Melissa', {
-      font: font,
-      size: 1,
-      height: 0.1,
-      curveSegments: 20,
-      bevelEnabled: true,
-      bevelThickness: 0.03,
-      bevelSize: 0.02,
-      bevelOffset: 0,
-      bevelSegments: 5
-    });
-      const mat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      const mes = new THREE.Mesh(geo, mat);
-      this.scenes[0].add(mes);
-
-    let geometry: BoxGeometry | THREE.SphereGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+    let geometry: BoxGeometry | SphereGeometry | TextGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 
     if (meshItem.shape === 'SphereGeometry') {
       geometry = new THREE.SphereGeometry(.5,32,32);
+    } else if (meshItem.shape === 'TextGeometry') {
+      geometry = new TextGeometry('text', {
+        font: font,
+        size: 1,
+        height: 0.1,
+        curveSegments: 20,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelOffset: 0,
+        bevelSegments: 5
+      });
     }
 
     let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
@@ -461,9 +457,10 @@ export class ThreejsService {
     return meshItem;
   }
 
-  updateMesh(meshItem: MeshInterface): void
+  async updateMesh(meshItem: MeshInterface): Promise<void>
   {
     const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
+    const font = await this.helvetikerRegularPromise;
 
     if (updateMesh?.geometry.type !== meshItem.shape) {
       // the mesh needs to be converted
@@ -474,14 +471,29 @@ export class ThreejsService {
         updateMesh.geometry = geometry;
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
-      } else if (updateMesh) {
+      } else if (updateMesh && meshItem.shape === 'BoxGeometry') {
         const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
         // the commented code was povided by chatGPT but does not seem to be necessary
         //updateMesh.geometry.dispose();
         updateMesh.geometry = geometry;
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
+      } else if (updateMesh && meshItem.shape === 'TextGeometry') {
+        const geometry: TextGeometry  = new TextGeometry('CraftyByMelissa.com', {
+          font: font,
+          size: 1,
+          height: 0.1,
+          curveSegments: 20,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5
+        });
+        updateMesh.geometry = geometry;
       }
+
+      
     }
     
     if (meshItem.shape === 'BoxGeometry' && updateMesh) {

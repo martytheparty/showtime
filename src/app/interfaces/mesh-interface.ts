@@ -2,10 +2,11 @@ import { FormGroup } from "@angular/forms"
 import { Subscription } from "rxjs"
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
 import { AnimationPropertyDescriptor } from "./animations-interfaces"
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry"
 
 export interface MeshInterface {
     id: number
-    shape: 'BoxGeometry' | 'SphereGeometry'
+    shape: 'BoxGeometry' | 'SphereGeometry' | 'TextGeometry'
     name: string
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
@@ -31,4 +32,4 @@ export interface MeshInterface {
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 
-export type SupportedMeshes = Mesh<BoxGeometry | SphereGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>
+export type SupportedMeshes = Mesh<BoxGeometry | SphereGeometry | TextGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>

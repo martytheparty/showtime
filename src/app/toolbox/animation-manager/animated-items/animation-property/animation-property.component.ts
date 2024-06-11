@@ -227,9 +227,7 @@ export class AnimationPropertyComponent {
         current = threeObj[this.threePropertyName()].b;
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
-        console.log(threeObj, this.threePropertyName(), this.threeSubPropertyName())
       }
-      console.log(current);
       return current;
     } else {
       return 0;
