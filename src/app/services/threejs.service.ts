@@ -518,6 +518,26 @@ export class ThreejsService {
       }
     }
 
+    if (meshItem.shape === 'TextGeometry' && updateMesh) {
+      const geo: TextGeometry = updateMesh.geometry as TextGeometry;
+      
+      if (geo.parameters.options.height !== meshItem.height)
+      {
+        const newGeometry: TextGeometry = new TextGeometry('CraftyByMelissa.com', {
+          font: font,
+          size: 1,
+          height: meshItem.height * 1,
+          curveSegments: 20,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5
+        });
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
     if (updateMesh) {
       updateMesh.name = meshItem.name;
       updateMesh.position.setX(meshItem.xPos.startValue);

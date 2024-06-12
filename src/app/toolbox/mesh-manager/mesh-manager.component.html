@@ -139,11 +139,19 @@ multiTemplateDataRows
                <input formControlName="width" matInput >
                <mat-hint>Cube Width (along x-axis)</mat-hint>
              </mat-form-field>
+         }
+
+         @if (mesh.shape === 'BoxGeometry' || mesh.shape === 'TextGeometry')
+         {
              <mat-form-field [formGroup]="mesh.form">
                <mat-label>Height</mat-label>
                <input formControlName="height" matInput >
                <mat-hint>Cube Height (along y-axis)</mat-hint>
              </mat-form-field>
+         }
+
+         @if (mesh.shape === 'BoxGeometry')
+         {
              <mat-form-field [formGroup]="mesh.form">
                <mat-label>Depth</mat-label>
                <input formControlName="depth" matInput >
