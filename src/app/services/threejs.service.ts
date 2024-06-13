@@ -481,9 +481,9 @@ export class ThreejsService {
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
         const geometry: TextGeometry  = new TextGeometry('CraftyByMelissa.com', {
           font: font,
-          size: 1,
-          height: 0.1,
-          curveSegments: 20,
+          size: meshItem.size * 1,
+          height: meshItem.height * 1,
+          curveSegments: meshItem.curveSegments * 1,
           bevelEnabled: true,
           bevelThickness: 0.03,
           bevelSize: 0.02,
@@ -521,13 +521,17 @@ export class ThreejsService {
     if (meshItem.shape === 'TextGeometry' && updateMesh) {
       const geo: TextGeometry = updateMesh.geometry as TextGeometry;
       
-      if (geo.parameters.options.height !== meshItem.height)
+      if (
+        geo.parameters.options.height !== meshItem.height
+        || geo.parameters.options.curveSegments !== meshItem.curveSegments
+        || geo.parameters.options.size !== meshItem.size
+      )
       {
         const newGeometry: TextGeometry = new TextGeometry('CraftyByMelissa.com', {
           font: font,
           size: meshItem.size * 1,
           height: meshItem.height * 1,
-          curveSegments: 20,
+          curveSegments: meshItem.curveSegments * 1,
           bevelEnabled: true,
           bevelThickness: 0.03,
           bevelSize: 0.02,

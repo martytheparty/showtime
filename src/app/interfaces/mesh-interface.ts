@@ -20,6 +20,7 @@ export interface MeshInterface {
     width: number
     height: number
     size: number
+    curveSegments: number
     depth: number
     radius: number
     castShadow: boolean

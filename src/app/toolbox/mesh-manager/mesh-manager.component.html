@@ -155,7 +155,13 @@ multiTemplateDataRows
              <mat-form-field [formGroup]="mesh.form">
                <mat-label>Size</mat-label>
                <input formControlName="size" matInput >
-               <mat-hint>???</mat-hint>
+               <mat-hint>Size & Width</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="mesh.form">
+               <mat-label>Curved Segments</mat-label>
+               <input formControlName="curveSegments" matInput >
+               <mat-hint>More segment result in smother renders</mat-hint>
              </mat-form-field>
          }
 
