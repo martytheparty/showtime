@@ -525,7 +525,7 @@ export class ThreejsService {
       {
         const newGeometry: TextGeometry = new TextGeometry('CraftyByMelissa.com', {
           font: font,
-          size: 1,
+          size: meshItem.size * 1,
           height: meshItem.height * 1,
           curveSegments: 20,
           bevelEnabled: true,

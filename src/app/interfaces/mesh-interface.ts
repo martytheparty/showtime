@@ -19,6 +19,7 @@ export interface MeshInterface {
     blueColor: number
     width: number
     height: number
+    size: number
     depth: number
     radius: number
     castShadow: boolean
