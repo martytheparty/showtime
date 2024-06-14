@@ -421,7 +421,7 @@ export class ThreejsService {
         bevelEnabled: true,
         bevelThickness: 0.03,
         bevelSize: 0.02,
-        bevelOffset: 0,
+        bevelOffset: 5,
         bevelSegments: 5
       });
     }
@@ -479,7 +479,7 @@ export class ThreejsService {
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
-        const geometry: TextGeometry  = new TextGeometry('CraftyByMelissa.com', {
+        const geometry: TextGeometry  = new TextGeometry('C', {
           font: font,
           size: meshItem.size * 1,
           height: meshItem.height * 1,
@@ -487,8 +487,8 @@ export class ThreejsService {
           bevelEnabled: true,
           bevelThickness: 0.03,
           bevelSize: 0.02,
-          bevelOffset: 0,
-          bevelSegments: 5
+          bevelOffset: 5,
+          bevelSegments: meshItem.bevelSegments * 1
         });
         updateMesh.geometry = geometry;
       }
@@ -527,7 +527,7 @@ export class ThreejsService {
         || geo.parameters.options.size !== meshItem.size
       )
       {
-        const newGeometry: TextGeometry = new TextGeometry('CraftyByMelissa.com', {
+        const newGeometry: TextGeometry = new TextGeometry('C', {
           font: font,
           size: meshItem.size * 1,
           height: meshItem.height * 1,
@@ -536,7 +536,7 @@ export class ThreejsService {
           bevelThickness: 0.03,
           bevelSize: 0.02,
           bevelOffset: 0,
-          bevelSegments: 5
+          bevelSegments: meshItem.bevelSegments * 1
         });
         updateMesh.geometry = newGeometry;
       }
