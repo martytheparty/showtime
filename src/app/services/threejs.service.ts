@@ -413,16 +413,16 @@ export class ThreejsService {
     if (meshItem.shape === 'SphereGeometry') {
       geometry = new THREE.SphereGeometry(.5,32,32);
     } else if (meshItem.shape === 'TextGeometry') {
-      geometry = new TextGeometry('text', {
+      geometry = new TextGeometry('.', {
         font: font,
         size: 1,
         height: 0.1,
-        curveSegments: 20,
+        curveSegments: meshItem.curveSegments * 1,
         bevelEnabled: true,
         bevelThickness: 0.03,
         bevelSize: 0.02,
-        bevelOffset: 5,
-        bevelSegments: 5
+        bevelOffset:  meshItem.bevelOffset * 1,
+        bevelSegments:  meshItem.bevelSegments * 1
       });
     }
 
@@ -479,7 +479,7 @@ export class ThreejsService {
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
-        const geometry: TextGeometry  = new TextGeometry('C', {
+        const geometry: TextGeometry  = new TextGeometry('.', {
           font: font,
           size: meshItem.size * 1,
           height: meshItem.height * 1,
@@ -487,7 +487,7 @@ export class ThreejsService {
           bevelEnabled: true,
           bevelThickness: 0.03,
           bevelSize: 0.02,
-          bevelOffset: 5,
+          bevelOffset:  meshItem.bevelOffset * 1,
           bevelSegments: meshItem.bevelSegments * 1
         });
         updateMesh.geometry = geometry;
@@ -525,9 +525,11 @@ export class ThreejsService {
         geo.parameters.options.height !== meshItem.height
         || geo.parameters.options.curveSegments !== meshItem.curveSegments
         || geo.parameters.options.size !== meshItem.size
+        || geo.parameters.options.bevelOffset !== meshItem.bevelOffset
+        || geo.parameters.options.bevelSegments !== meshItem.bevelSegments
       )
       {
-        const newGeometry: TextGeometry = new TextGeometry('C', {
+        const newGeometry: TextGeometry = new TextGeometry('.', {
           font: font,
           size: meshItem.size * 1,
           height: meshItem.height * 1,
@@ -535,7 +537,7 @@ export class ThreejsService {
           bevelEnabled: true,
           bevelThickness: 0.03,
           bevelSize: 0.02,
-          bevelOffset: 0,
+          bevelOffset:  meshItem.bevelOffset * 1,
           bevelSegments: meshItem.bevelSegments * 1
         });
         updateMesh.geometry = newGeometry;

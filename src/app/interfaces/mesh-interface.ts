@@ -21,6 +21,7 @@ export interface MeshInterface {
     height: number
     size: number
     curveSegments: number
+    bevelOffset: number
     bevelSegments: number
     depth: number
     radius: number

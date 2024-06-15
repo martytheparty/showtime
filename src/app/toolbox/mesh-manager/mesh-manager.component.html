@@ -165,6 +165,12 @@ multiTemplateDataRows
              </mat-form-field>
 
              <mat-form-field [formGroup]="mesh.form">
+               <mat-label>Bevel Offset</mat-label>
+               <input formControlName="bevelOffset" matInput >
+               <mat-hint>The distance between the start and end of the bevel.</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="mesh.form">
                <mat-label>Bevel Segments</mat-label>
                <input formControlName="bevelSegments" matInput >
                <mat-hint>The number of segments from the bottom to the top of segments</mat-hint>
