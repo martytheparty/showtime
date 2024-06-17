@@ -413,17 +413,7 @@ export class ThreejsService {
     if (meshItem.shape === 'SphereGeometry') {
       geometry = new THREE.SphereGeometry(.5,32,32);
     } else if (meshItem.shape === 'TextGeometry') {
-      geometry = new TextGeometry('.', {
-        font: font,
-        size: 1,
-        height: 0.1,
-        curveSegments: meshItem.curveSegments * 1,
-        bevelEnabled: true,
-        bevelThickness: 0.03,
-        bevelSize: 0.02,
-        bevelOffset:  meshItem.bevelOffset * 1,
-        bevelSegments:  meshItem.bevelSegments * 1
-      });
+      geometry = await this.getTextGeometry(meshItem);
     }
 
     let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
@@ -479,17 +469,7 @@ export class ThreejsService {
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
-        const geometry: TextGeometry  = new TextGeometry('.', {
-          font: font,
-          size: meshItem.size * 1,
-          height: meshItem.height * 1,
-          curveSegments: meshItem.curveSegments * 1,
-          bevelEnabled: true,
-          bevelThickness: 0.03,
-          bevelSize: 0.02,
-          bevelOffset:  meshItem.bevelOffset * 1,
-          bevelSegments: meshItem.bevelSegments * 1
-        });
+        const geometry: TextGeometry  = await this.getTextGeometry(meshItem);
         updateMesh.geometry = geometry;
       }
 
@@ -529,17 +509,7 @@ export class ThreejsService {
         || geo.parameters.options.bevelSegments !== meshItem.bevelSegments
       )
       {
-        const newGeometry: TextGeometry = new TextGeometry('.', {
-          font: font,
-          size: meshItem.size * 1,
-          height: meshItem.height * 1,
-          curveSegments: meshItem.curveSegments * 1,
-          bevelEnabled: true,
-          bevelThickness: 0.03,
-          bevelSize: 0.02,
-          bevelOffset:  meshItem.bevelOffset * 1,
-          bevelSegments: meshItem.bevelSegments * 1
-        });
+        const newGeometry: TextGeometry = await this.getTextGeometry(meshItem);
         updateMesh.geometry = newGeometry;
       }
     }
@@ -625,6 +595,22 @@ export class ThreejsService {
     this.animationPairSignal.set(this.animationService.animationsPairs);
 
     this.animationService.clock.start();
+  }
+
+  async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
+  {
+    const font = await this.helvetikerRegularPromise;
+    return new TextGeometry('.', {
+      font: font,
+      size: meshItem.size * 1,
+      height: meshItem.height * 1,
+      curveSegments: meshItem.curveSegments * 1,
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset:  meshItem.bevelOffset * 1,
+      bevelSegments:  meshItem.bevelSegments * 1
+    });
   }
 
   deleteMesh(id: number): void
