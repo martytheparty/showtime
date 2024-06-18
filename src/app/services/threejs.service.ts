@@ -507,6 +507,7 @@ export class ThreejsService {
         || geo.parameters.options.size !== meshItem.size
         || geo.parameters.options.bevelOffset !== meshItem.bevelOffset
         || geo.parameters.options.bevelSegments !== meshItem.bevelSegments
+        || geo.parameters.options.bevelSize !== meshItem.bevelSize
       )
       {
         const newGeometry: TextGeometry = await this.getTextGeometry(meshItem);
@@ -600,16 +601,17 @@ export class ThreejsService {
   async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
   {
     const font = await this.helvetikerRegularPromise;
-    return new TextGeometry('.', {
+    return new TextGeometry('i', {
       font: font,
       size: meshItem.size * 1,
       height: meshItem.height * 1,
       curveSegments: meshItem.curveSegments * 1,
       bevelEnabled: true,
       bevelThickness: 0.03,
-      bevelSize: 0.02,
+      bevelSize: meshItem.bevelSize * 1,
       bevelOffset:  meshItem.bevelOffset * 1,
-      bevelSegments:  meshItem.bevelSegments * 1
+      bevelSegments:  meshItem.bevelSegments * 1,
+      steps: 1
     });
   }
 

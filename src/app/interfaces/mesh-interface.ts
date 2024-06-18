@@ -23,6 +23,7 @@ export interface MeshInterface {
     curveSegments: number
     bevelOffset: number
     bevelSegments: number
+    bevelSize: number
     depth: number
     radius: number
     castShadow: boolean
