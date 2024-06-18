@@ -607,7 +607,7 @@ export class ThreejsService {
       height: meshItem.height * 1,
       curveSegments: meshItem.curveSegments * 1,
       bevelEnabled: true,
-      bevelThickness: 0.03,
+      bevelThickness: meshItem.bevelThickness * 1,
       bevelSize: meshItem.bevelSize * 1,
       bevelOffset:  meshItem.bevelOffset * 1,
       bevelSegments:  meshItem.bevelSegments * 1,

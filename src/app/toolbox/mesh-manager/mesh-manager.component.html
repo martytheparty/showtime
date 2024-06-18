@@ -177,6 +177,12 @@ multiTemplateDataRows
              </mat-form-field>
 
              <mat-form-field [formGroup]="mesh.form">
+               <mat-label>Bevel Thickenss</mat-label>
+               <input formControlName="bevelThickness" matInput >
+               <mat-hint>This parameter sets the depth or thickness of the bevel. </mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="mesh.form">
                <mat-label>Bevel Size</mat-label>
                <input formControlName="bevelSize" matInput >
                <mat-hint>This parameter sets the distance from the original shape's outline to the start of the bevel.</mat-hint>

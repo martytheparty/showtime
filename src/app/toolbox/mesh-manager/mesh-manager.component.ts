@@ -100,6 +100,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       curveSegments: 20,
       bevelSegments: 5,
       bevelOffset: 0,
+      bevelThickness: 0.03,
       bevelSize: .02,
       depth: 1,
       radius: 1,
@@ -135,6 +136,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.curveSegments = form.value.curveSegments;
           meshItem.bevelSegments = form.value.bevelSegments;
           meshItem.bevelOffset = form.value.bevelOffset;
+          meshItem.bevelThickness = form.value.bevelThickness;
           meshItem.bevelSize = form.value.bevelSize;
           meshItem.size = form.value.size;
           meshItem.depth = form.value.depth;
@@ -171,6 +173,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         curveSegments: new FormControl(meshItem.curveSegments),
         bevelSegments: new FormControl(meshItem.bevelSegments),
         bevelOffset: new FormControl(meshItem.bevelOffset),
+        bevelThickness: new FormControl(meshItem.bevelThickness),
         bevelSize: new FormControl(meshItem.bevelSize),
         size: new FormControl(meshItem.size),
         depth: new FormControl(meshItem.depth),
@@ -205,6 +208,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           curveSegments: meshItem.curveSegments,
           bevelSegments: meshItem.bevelSegments,
           bevelOffset: meshItem.bevelOffset,
+          bevelThickness: meshItem.bevelThickness,
           bevelSize: meshItem.bevelSize,
           size: meshItem.size,
           depth: meshItem.depth,
