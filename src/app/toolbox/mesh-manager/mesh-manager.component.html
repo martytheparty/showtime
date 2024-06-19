@@ -187,6 +187,12 @@ multiTemplateDataRows
                <input formControlName="bevelSize" matInput >
                <mat-hint>This parameter sets the distance from the original shape's outline to the start of the bevel.</mat-hint>
              </mat-form-field>
+
+             <mat-form-field [formGroup]="mesh.form">
+               <mat-label>Steps</mat-label>
+               <input formControlName="steps" matInput >
+               <mat-hint>Defines the number of segments along the bevel's depth.</mat-hint>
+             </mat-form-field>
          }
 
          @if (mesh.shape === 'BoxGeometry')

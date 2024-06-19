@@ -25,6 +25,7 @@ export interface MeshInterface {
     bevelSegments: number
     bevelThickness: number
     bevelSize: number
+    steps: number
     depth: number
     radius: number
     castShadow: boolean

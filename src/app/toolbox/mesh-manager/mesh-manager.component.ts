@@ -102,6 +102,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       bevelOffset: 0,
       bevelThickness: 0.03,
       bevelSize: .02,
+      steps: 1,
       depth: 1,
       radius: 1,
       castShadow: true,
@@ -138,6 +139,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.bevelOffset = form.value.bevelOffset;
           meshItem.bevelThickness = form.value.bevelThickness;
           meshItem.bevelSize = form.value.bevelSize;
+          meshItem.steps = form.value.steps;
           meshItem.size = form.value.size;
           meshItem.depth = form.value.depth;
           meshItem.radius = form.value.radius;
@@ -175,6 +177,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         bevelOffset: new FormControl(meshItem.bevelOffset),
         bevelThickness: new FormControl(meshItem.bevelThickness),
         bevelSize: new FormControl(meshItem.bevelSize),
+        steps: new FormControl(meshItem.steps),
         size: new FormControl(meshItem.size),
         depth: new FormControl(meshItem.depth),
         radius: new FormControl(meshItem.radius),
@@ -210,6 +213,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           bevelOffset: meshItem.bevelOffset,
           bevelThickness: meshItem.bevelThickness,
           bevelSize: meshItem.bevelSize,
+          steps: meshItem.steps,
           size: meshItem.size,
           depth: meshItem.depth,
           radius: meshItem.radius,
