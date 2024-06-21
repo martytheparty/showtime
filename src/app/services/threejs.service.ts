@@ -509,6 +509,7 @@ export class ThreejsService {
         || geo.parameters.options.bevelSegments !== meshItem.bevelSegments
         || geo.parameters.options.bevelSize !== meshItem.bevelSize
         || geo.parameters.options.steps !== meshItem.steps
+        || geo.parameters.options.bevelEnabled !== meshItem.bevelEnabled
       )
       {
         const newGeometry: TextGeometry = await this.getTextGeometry(meshItem);
@@ -607,7 +608,7 @@ export class ThreejsService {
       size: meshItem.size * 1,
       height: meshItem.height * 1,
       curveSegments: meshItem.curveSegments * 1,
-      bevelEnabled: true,
+      bevelEnabled: meshItem.bevelEnabled,
       bevelThickness: meshItem.bevelThickness * 1,
       bevelSize: meshItem.bevelSize * 1,
       bevelOffset:  meshItem.bevelOffset * 1,

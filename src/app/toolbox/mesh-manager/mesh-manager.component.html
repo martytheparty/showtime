@@ -152,6 +152,11 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'TextGeometry')
          {
+
+            <form [formGroup]="mesh.form">
+               <mat-checkbox formControlName="bevelEnabled">Bevel Enabled</mat-checkbox>
+           </form>
+
              <mat-form-field [formGroup]="mesh.form">
                <mat-label>Size</mat-label>
                <input formControlName="size" matInput >

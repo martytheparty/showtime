@@ -97,6 +97,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       width: 1,
       height: 1,
       size: 1,
+      bevelEnabled: true,
       curveSegments: 20,
       bevelSegments: 5,
       bevelOffset: 0,
@@ -134,6 +135,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.shape = form.value.shape;
           meshItem.width = form.value.width;
           meshItem.height = form.value.height;
+          meshItem.bevelEnabled = form.value.bevelEnabled;
           meshItem.curveSegments = form.value.curveSegments;
           meshItem.bevelSegments = form.value.bevelSegments;
           meshItem.bevelOffset = form.value.bevelOffset;
@@ -172,6 +174,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         materialType: new FormControl(meshItem.materialType),
         width: new FormControl(meshItem.width),
         height: new FormControl(meshItem.height),
+        bevelEnabled: new FormControl(meshItem.bevelEnabled),
         curveSegments: new FormControl(meshItem.curveSegments),
         bevelSegments: new FormControl(meshItem.bevelSegments),
         bevelOffset: new FormControl(meshItem.bevelOffset),
@@ -208,6 +211,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           materialType: meshItem.materialType,
           width: meshItem.width,
           height: meshItem.height,
+          bevelEnabled: meshItem.bevelEnabled,
           curveSegments: meshItem.curveSegments,
           bevelSegments: meshItem.bevelSegments,
           bevelOffset: meshItem.bevelOffset,

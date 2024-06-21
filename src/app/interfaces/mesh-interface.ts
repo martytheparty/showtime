@@ -20,6 +20,7 @@ export interface MeshInterface {
     width: number
     height: number
     size: number
+    bevelEnabled: boolean
     curveSegments: number
     bevelOffset: number
     bevelSegments: number
