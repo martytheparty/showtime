@@ -97,6 +97,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       width: 1,
       height: 1,
       size: 1,
+      text: 'Hello World!',
+      textOrig: 'Hello World!',
       bevelEnabled: true,
       curveSegments: 20,
       bevelSegments: 5,
@@ -135,6 +137,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           meshItem.shape = form.value.shape;
           meshItem.width = form.value.width;
           meshItem.height = form.value.height;
+          meshItem.text = form.value.text;
           meshItem.bevelEnabled = form.value.bevelEnabled;
           meshItem.curveSegments = form.value.curveSegments;
           meshItem.bevelSegments = form.value.bevelSegments;
@@ -174,6 +177,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         materialType: new FormControl(meshItem.materialType),
         width: new FormControl(meshItem.width),
         height: new FormControl(meshItem.height),
+        text: new FormControl(meshItem.text),
         bevelEnabled: new FormControl(meshItem.bevelEnabled),
         curveSegments: new FormControl(meshItem.curveSegments),
         bevelSegments: new FormControl(meshItem.bevelSegments),
@@ -211,6 +215,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
           materialType: meshItem.materialType,
           width: meshItem.width,
           height: meshItem.height,
+          text: meshItem.text,
           bevelEnabled: meshItem.bevelEnabled,
           curveSegments: meshItem.curveSegments,
           bevelSegments: meshItem.bevelSegments,

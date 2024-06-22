@@ -20,6 +20,8 @@ export interface MeshInterface {
     width: number
     height: number
     size: number
+    text: string
+    textOrig: string // used to determine if the text has changed
     bevelEnabled: boolean
     curveSegments: number
     bevelOffset: number
