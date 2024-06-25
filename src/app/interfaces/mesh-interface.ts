@@ -3,6 +3,7 @@ import { Subscription } from "rxjs"
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
 import { AnimationPropertyDescriptor } from "./animations-interfaces"
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry"
+import { Font } from "three/examples/jsm/loaders/FontLoader"
 
 export interface MeshInterface {
     id: number
@@ -39,6 +40,13 @@ export interface MeshInterface {
     yRotation: AnimationPropertyDescriptor
     zRotation: AnimationPropertyDescriptor
 }
+
+export interface FontInterface {
+    name: FontName
+    promise: Promise<Font>
+}
+
+export type FontName = 'Helvetiker' | 'Helvetiker Bold';
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 

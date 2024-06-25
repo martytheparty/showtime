@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
-import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
+import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
@@ -116,14 +116,34 @@ export class ThreejsService {
       signalType: 'MappedSupportedPropertyTypes'
     });
   mappedSupportedPropertyTypesValues: Signal<MappedSupportedPropertyTypesSignal> = computed(() => this.mappedSupportedPropertyTypesSignal())
+  
+  private fontList: FontInterface[] = [];
+  private fontListSignal: WritableSignal<FontInterface[]> = signal(this.fontList);
+  fontListValues: Signal<FontInterface[]> = computed( () => this.fontListSignal());
+
+  
   loader = new FontLoader();
 
  helvetikerRegularPromise: Promise<Font> = new Promise((resolve) => { 
   this.loader.load('assets/fonts/helvetiker_regular.typeface.json', 
     (font: Font) => { resolve(font); }
-  )}) ; 
+  )}); 
+
+  helvetikerBoldPromise: Promise<Font> = new Promise((resolve) => { 
+  this.loader.load('assets/fonts/helvetiker_bold.typeface.json', 
+    (font: Font) => { resolve(font); }
+  )}); 
+
+  
 
   constructor() {
+    this.fontList.push({name: 'Helvetiker', promise: this.helvetikerRegularPromise});
+    this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
+    Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
+      () => {
+        this.fontListSignal.set(Array.from(this.fontList));
+      }
+    );
 
   }
 
@@ -407,7 +427,6 @@ export class ThreejsService {
 
   async addMesh(meshItem: MeshInterface): Promise<MeshInterface>
   {
-    let font = await this.helvetikerRegularPromise;
     let geometry: BoxGeometry | SphereGeometry | TextGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 
     if (meshItem.shape === 'SphereGeometry') {
@@ -450,7 +469,6 @@ export class ThreejsService {
   async updateMesh(meshItem: MeshInterface): Promise<void>
   {
     const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
-    const font = await this.helvetikerRegularPromise;
 
     if (updateMesh?.geometry.type !== meshItem.shape) {
       // the mesh needs to be converted
@@ -604,7 +622,9 @@ export class ThreejsService {
 
   async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
   {
-    const font = await this.helvetikerRegularPromise;
+    let font = await this.helvetikerRegularPromise;
+    let boldFont = await this.helvetikerBoldPromise;
+
     const tg: TextGeometry = new TextGeometry(meshItem.text, {
       font: font,
       size: meshItem.size * 1,
