@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FontListComponent } from './font-list/font-list.component';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -33,7 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTableModule,
     CommonModule,
     MatSliderModule,
-    TableFilterComponent
+    TableFilterComponent,
+    FontListComponent
   ],
   templateUrl: './mesh-manager.component.html',
   styleUrl: './mesh-manager.component.scss'
