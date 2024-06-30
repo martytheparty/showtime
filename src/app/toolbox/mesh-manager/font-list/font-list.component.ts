@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
-import { FontName } from '../../../interfaces/mesh-interface';
+import { FontInterface, FontName } from '../../../interfaces/mesh-interface';
 import { MatIconModule } from '@angular/material/icon';
+import { ThreejsService } from '../../../services/threejs.service';
 
 @Component({
   selector: 'app-font-list',
@@ -15,6 +16,21 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class FontListComponent {
 
+  threeJsService: ThreejsService = inject(ThreejsService);
+
   fonts: FontName[] = [];
+
+  constructor() {
+    effect( () => {
+      if (this.threeJsService.fontListValues().length > 0) {
+        this.fonts = this.threeJsService
+                            .fontListValues()
+                              .map((font: FontInterface) =>  font.name);
+        console.log(this.threeJsService.fontListValues());
+      } else {
+        console.log("There are no records in the list");
+      }
+    } );
+  }
 
 }
