@@ -27,8 +27,6 @@ export class FontListComponent {
                             .fontListValues()
                               .map((font: FontInterface) =>  font.name);
         console.log(this.threeJsService.fontListValues());
-      } else {
-        console.log("There are no records in the list");
       }
     } );
   }

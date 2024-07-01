@@ -10,9 +10,9 @@
    <mat-form-field >
       <mat-label>Choose Font</mat-label>
                   <mat-select>
-                     <mat-option value="normal">normal</mat-option>
-                     <mat-option value="basic">basic</mat-option>
-                     <mat-option value="phong">phong</mat-option>
+                     @for (font of fonts; track $index) {
+                        <mat-option [value]="font">{{font}}</mat-option>
+                      }
                   </mat-select>
                   <mat-hint>
                      The font that will be used.
