@@ -1,5 +1,5 @@
-import { Component, inject, effect } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
+import { Component, inject, effect, input } from '@angular/core';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { FontInterface, FontName } from '../../../interfaces/mesh-interface';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../../services/threejs.service';
@@ -16,6 +16,8 @@ import { ThreejsService } from '../../../services/threejs.service';
 })
 export class FontListComponent {
 
+  font = input.required<string>();
+
   threeJsService: ThreejsService = inject(ThreejsService);
 
   fonts: FontName[] = [];
@@ -26,9 +28,13 @@ export class FontListComponent {
         this.fonts = this.threeJsService
                             .fontListValues()
                               .map((font: FontInterface) =>  font.name);
-        console.log(this.threeJsService.fontListValues());
       }
     } );
+  }
+
+  changeFont(event: MatSelectChange){
+    
+    console.log('hrllo',event);
   }
 
 }

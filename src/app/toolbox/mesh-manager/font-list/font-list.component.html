@@ -9,7 +9,7 @@
 } @else {
    <mat-form-field >
       <mat-label>Choose Font</mat-label>
-                  <mat-select>
+                  <mat-select [value]="font()" (selectionChange)="changeFont($event)">
                      @for (font of fonts; track $index) {
                         <mat-option [value]="font">{{font}}</mat-option>
                       }

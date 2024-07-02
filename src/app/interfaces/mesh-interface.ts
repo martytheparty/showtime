@@ -39,6 +39,7 @@ export interface MeshInterface {
     xRotation: AnimationPropertyDescriptor
     yRotation: AnimationPropertyDescriptor
     zRotation: AnimationPropertyDescriptor
+    font: FontName
 }
 
 export interface FontInterface {

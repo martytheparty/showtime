@@ -116,7 +116,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       type: 'mesh',
       xRotation: { startValue: 0, endValue: 0, animated: true},
       yRotation: { startValue: 0, endValue: 0, animated: true},
-      zRotation: { startValue: 0, endValue: 0, animated: true}
+      zRotation: { startValue: 0, endValue: 0, animated: true},
+      font: 'Helvetiker'
     } 
      
     await this.threejsService.addMesh(meshItem);

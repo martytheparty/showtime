@@ -152,7 +152,7 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'TextGeometry')
          {
-            <app-font-list></app-font-list>
+            <app-font-list [font]="mesh.font"></app-font-list>
 
             <mat-form-field [formGroup]="mesh.form">
                <mat-label>Text</mat-label>
