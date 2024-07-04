@@ -45,6 +45,7 @@ export interface MeshInterface {
 export interface FontInterface {
     name: FontName
     promise: Promise<Font>
+    font?: Font
 }
 
 export type FontName = 'Helvetiker' | 'Helvetiker Bold';

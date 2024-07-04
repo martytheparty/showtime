@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../services/threejs.service';
-import { MeshInterface } from '../../interfaces/mesh-interface';
+import { FontName, MeshInterface } from '../../interfaces/mesh-interface';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -265,6 +265,12 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   blueUpdate(value: number, meshItem: MeshInterface): void
   {
     meshItem.blueColor = value;
+    this.threejsService.updateMesh(meshItem);
+  }
+
+  updateFont(value: FontName, meshItem: MeshInterface): void
+  {
+    meshItem.font = value;
     this.threejsService.updateMesh(meshItem);
   }
 

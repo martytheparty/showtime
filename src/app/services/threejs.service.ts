@@ -141,6 +141,28 @@ export class ThreejsService {
     this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
     Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
+        
+        this.helvetikerRegularPromise.then(
+          (font) => {
+            const fontItem = this.fontList.find( (fi: FontInterface) => fi.name === 'Helvetiker' );
+            if(fontItem)
+            { 
+              fontItem.font = font;
+            }
+          }
+        );
+
+        this.helvetikerBoldPromise.then(
+          (font) => {
+            const fontItem = this.fontList.find( (fi: FontInterface) => fi.name === 'Helvetiker Bold' );
+            if(fontItem)
+            { 
+              fontItem.font = font;
+            }
+          }
+        );
+
+
         this.fontListSignal.set(Array.from(this.fontList));
       }
     );
@@ -622,8 +644,16 @@ export class ThreejsService {
 
   async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
   {
-    let font = await this.helvetikerRegularPromise;
-    let boldFont = await this.helvetikerBoldPromise;
+    let helvetiker = await this.helvetikerRegularPromise;
+    let helvetikerBold = await this.helvetikerBoldPromise;
+    let font;
+
+    if (meshItem.font === 'Helvetiker') {
+      font = helvetiker;
+    } else  {
+      font = helvetikerBold; 
+    }
+
 
     const tg: TextGeometry = new TextGeometry(meshItem.text, {
       font: font,
