@@ -134,35 +134,19 @@ export class ThreejsService {
     (font: Font) => { resolve(font); }
   )}); 
 
-  
+  fontPromises: Promise<void>;
 
   constructor() {
     this.fontList.push({name: 'Helvetiker', promise: this.helvetikerRegularPromise});
     this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
-    Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
+    this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
         
-        this.helvetikerRegularPromise.then(
-          (font) => {
-            const fontItem = this.fontList.find( (fi: FontInterface) => fi.name === 'Helvetiker' );
-            if(fontItem)
-            { 
-              fontItem.font = font;
-            }
-          }
+        this.fontList.forEach(
+          (fontItem: FontInterface) => fontItem.promise.then( (font) => {
+            fontItem.font = font;
+          } )
         );
-
-        this.helvetikerBoldPromise.then(
-          (font) => {
-            const fontItem = this.fontList.find( (fi: FontInterface) => fi.name === 'Helvetiker Bold' );
-            if(fontItem)
-            { 
-              fontItem.font = font;
-            }
-          }
-        );
-
-
         this.fontListSignal.set(Array.from(this.fontList));
       }
     );
@@ -644,15 +628,17 @@ export class ThreejsService {
 
   async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
   {
-    let helvetiker = await this.helvetikerRegularPromise;
-    let helvetikerBold = await this.helvetikerBoldPromise;
-    let font;
+    await this.fontPromises;
 
-    if (meshItem.font === 'Helvetiker') {
-      font = helvetiker;
-    } else  {
-      font = helvetikerBold; 
-    }
+    let font: Font = this.fontList[0].font as Font;
+
+    this.fontList.forEach(
+      (fontItem: FontInterface) => {
+        if (fontItem.name === meshItem.font){
+          font = fontItem.font as Font;
+        }
+      }
+    );
 
 
     const tg: TextGeometry = new TextGeometry(meshItem.text, {
