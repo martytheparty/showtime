@@ -48,7 +48,7 @@ export interface FontInterface {
     font?: Font
 }
 
-export type FontName = 'Helvetiker' | 'Helvetiker Bold';
+export type FontName = 'Helvetiker' | 'Helvetiker Bold' | 'Gentilis';
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 

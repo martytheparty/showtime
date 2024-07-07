@@ -134,11 +134,17 @@ export class ThreejsService {
     (font: Font) => { resolve(font); }
   )}); 
 
+  gentilisRregularPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/gentilis_regular.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )}); 
+
   fontPromises: Promise<void>;
 
   constructor() {
     this.fontList.push({name: 'Helvetiker', promise: this.helvetikerRegularPromise});
     this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
+    this.fontList.push({name: 'Gentilis', promise: this.gentilisRregularPromise});
     this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
         
