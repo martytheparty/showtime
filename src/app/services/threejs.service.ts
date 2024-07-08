@@ -134,17 +134,36 @@ export class ThreejsService {
     (font: Font) => { resolve(font); }
   )}); 
 
-  gentilisRregularPromise: Promise<Font> = new Promise((resolve) => { 
+  gentilisRegularPromise: Promise<Font> = new Promise((resolve) => { 
     this.loader.load('assets/fonts/gentilis_regular.typeface.json', 
       (font: Font) => { resolve(font); }
     )}); 
+
+  gentilisBoldPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/gentilis_bold.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+    
+    optimerRegularPromise: Promise<Font> = new Promise((resolve) => { 
+      this.loader.load('assets/fonts/optimer_regular.typeface.json', 
+        (font: Font) => { resolve(font); }
+      )}); 
+  
+    optimerBoldPromise: Promise<Font> = new Promise((resolve) => { 
+      this.loader.load('assets/fonts/optimer_bold.typeface.json', 
+        (font: Font) => { resolve(font); }
+      )});
 
   fontPromises: Promise<void>;
 
   constructor() {
     this.fontList.push({name: 'Helvetiker', promise: this.helvetikerRegularPromise});
     this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
-    this.fontList.push({name: 'Gentilis', promise: this.gentilisRregularPromise});
+    this.fontList.push({name: 'Gentilis', promise: this.gentilisRegularPromise});
+    this.fontList.push({name: 'Gentilis Bold', promise: this.gentilisBoldPromise});
+    this.fontList.push({name: 'Optimer', promise: this.optimerRegularPromise});
+    this.fontList.push({name: 'Optimer Bold', promise: this.optimerBoldPromise});
+  
     this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
         
