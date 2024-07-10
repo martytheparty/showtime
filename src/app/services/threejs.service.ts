@@ -144,15 +144,40 @@ export class ThreejsService {
       (font: Font) => { resolve(font); }
     )});
     
-    optimerRegularPromise: Promise<Font> = new Promise((resolve) => { 
-      this.loader.load('assets/fonts/optimer_regular.typeface.json', 
-        (font: Font) => { resolve(font); }
-      )}); 
-  
-    optimerBoldPromise: Promise<Font> = new Promise((resolve) => { 
-      this.loader.load('assets/fonts/optimer_bold.typeface.json', 
-        (font: Font) => { resolve(font); }
-      )});
+  optimerRegularPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/optimer_regular.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )}); 
+
+  optimerBoldPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/optimer_bold.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+
+  droidSansBoldPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/droid/droid_sans_bold.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+
+  droidSansMonoPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/droid/droid_sans_mono_regular.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+
+  droidSansPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/droid/droid_sans_regular.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+
+  droidSerifBoldPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/droid/droid_serif_bold.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
+
+  droidSerifPromise: Promise<Font> = new Promise((resolve) => { 
+    this.loader.load('assets/fonts/droid/droid_serif_regular.typeface.json', 
+      (font: Font) => { resolve(font); }
+    )});
 
   fontPromises: Promise<void>;
 
@@ -163,7 +188,12 @@ export class ThreejsService {
     this.fontList.push({name: 'Gentilis Bold', promise: this.gentilisBoldPromise});
     this.fontList.push({name: 'Optimer', promise: this.optimerRegularPromise});
     this.fontList.push({name: 'Optimer Bold', promise: this.optimerBoldPromise});
-  
+    this.fontList.push({name: 'Droid Sans Bold', promise: this.droidSansBoldPromise});
+    this.fontList.push({name: 'Droid Sans Mono', promise: this.droidSansMonoPromise});
+    this.fontList.push({name: 'Droid Sans', promise: this.droidSansPromise});
+    this.fontList.push({name: 'Droid Serif Bold', promise: this.droidSerifBoldPromise});
+    this.fontList.push({name: 'Droid Serif', promise: this.droidSerifPromise});
+
     this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
         

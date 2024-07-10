@@ -48,7 +48,7 @@ export interface FontInterface {
     font?: Font
 }
 
-export type FontName = 'Helvetiker' | 'Helvetiker Bold' | 'Gentilis' | 'Gentilis Bold'| 'Optimer' | 'Optimer Bold';
+export type FontName = 'Helvetiker' | 'Helvetiker Bold' | 'Gentilis' | 'Gentilis Bold'| 'Optimer' | 'Optimer Bold' | 'Droid Sans Bold' | 'Droid Sans Mono' | 'Droid Sans' | 'Droid Serif Bold' | 'Droid Serif';
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 
