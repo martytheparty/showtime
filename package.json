@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "font-list": "ng g c toolbox/mesh-manager/font-list"
+    "meshservice": "ng g s services/mesh"
   },
   "private": true,
   "dependencies": {

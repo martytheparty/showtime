@@ -1,7 +1,7 @@
 import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
-import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
@@ -11,6 +11,7 @@ import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
 import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, PropertyMenuItem } from '../interfaces/animations-interfaces';
 import { AnimationService } from './animation.service';
+import { MeshService } from './mesh.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ import { AnimationService } from './animation.service';
 export class ThreejsService {
 
   private animationService: AnimationService = inject(AnimationService);
+  private meshService: MeshService = inject(MeshService);
 
   cameraType: CameraType = 'PerspectiveCamera';
   width = 0;
@@ -122,77 +124,22 @@ export class ThreejsService {
   fontListValues: Signal<FontInterface[]> = computed( () => this.fontListSignal());
 
   
-  loader = new FontLoader();
 
- helvetikerRegularPromise: Promise<Font> = new Promise((resolve) => { 
-  this.loader.load('assets/fonts/helvetiker_regular.typeface.json', 
-    (font: Font) => { resolve(font); }
-  )}); 
-
-  helvetikerBoldPromise: Promise<Font> = new Promise((resolve) => { 
-  this.loader.load('assets/fonts/helvetiker_bold.typeface.json', 
-    (font: Font) => { resolve(font); }
-  )}); 
-
-  gentilisRegularPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/gentilis_regular.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )}); 
-
-  gentilisBoldPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/gentilis_bold.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-    
-  optimerRegularPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/optimer_regular.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )}); 
-
-  optimerBoldPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/optimer_bold.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-
-  droidSansBoldPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/droid/droid_sans_bold.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-
-  droidSansMonoPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/droid/droid_sans_mono_regular.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-
-  droidSansPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/droid/droid_sans_regular.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-
-  droidSerifBoldPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/droid/droid_serif_bold.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
-
-  droidSerifPromise: Promise<Font> = new Promise((resolve) => { 
-    this.loader.load('assets/fonts/droid/droid_serif_regular.typeface.json', 
-      (font: Font) => { resolve(font); }
-    )});
 
   fontPromises: Promise<void>;
 
   constructor() {
-    this.fontList.push({name: 'Helvetiker', promise: this.helvetikerRegularPromise});
-    this.fontList.push({name: 'Helvetiker Bold', promise: this.helvetikerBoldPromise});
-    this.fontList.push({name: 'Gentilis', promise: this.gentilisRegularPromise});
-    this.fontList.push({name: 'Gentilis Bold', promise: this.gentilisBoldPromise});
-    this.fontList.push({name: 'Optimer', promise: this.optimerRegularPromise});
-    this.fontList.push({name: 'Optimer Bold', promise: this.optimerBoldPromise});
-    this.fontList.push({name: 'Droid Sans Bold', promise: this.droidSansBoldPromise});
-    this.fontList.push({name: 'Droid Sans Mono', promise: this.droidSansMonoPromise});
-    this.fontList.push({name: 'Droid Sans', promise: this.droidSansPromise});
-    this.fontList.push({name: 'Droid Serif Bold', promise: this.droidSerifBoldPromise});
-    this.fontList.push({name: 'Droid Serif', promise: this.droidSerifPromise});
+    this.fontList.push({name: 'Helvetiker', promise: this.meshService.helvetikerRegularPromise});
+    this.fontList.push({name: 'Helvetiker Bold', promise: this.meshService.helvetikerBoldPromise});
+    this.fontList.push({name: 'Gentilis', promise: this.meshService.gentilisRegularPromise});
+    this.fontList.push({name: 'Gentilis Bold', promise: this.meshService.gentilisBoldPromise});
+    this.fontList.push({name: 'Optimer', promise: this.meshService.optimerRegularPromise});
+    this.fontList.push({name: 'Optimer Bold', promise: this.meshService.optimerBoldPromise});
+    this.fontList.push({name: 'Droid Sans Bold', promise: this.meshService.droidSansBoldPromise});
+    this.fontList.push({name: 'Droid Sans Mono', promise: this.meshService.droidSansMonoPromise});
+    this.fontList.push({name: 'Droid Sans', promise: this.meshService.droidSansPromise});
+    this.fontList.push({name: 'Droid Serif Bold', promise: this.meshService.droidSerifBoldPromise});
+    this.fontList.push({name: 'Droid Serif', promise: this.meshService.droidSerifPromise});
 
     this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
       () => {
