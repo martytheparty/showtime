@@ -119,40 +119,16 @@ export class ThreejsService {
     });
   mappedSupportedPropertyTypesValues: Signal<MappedSupportedPropertyTypesSignal> = computed(() => this.mappedSupportedPropertyTypesSignal())
   
-  private fontList: FontInterface[] = [];
-  private fontListSignal: WritableSignal<FontInterface[]> = signal(this.fontList);
+  private fontListSignal: WritableSignal<FontInterface[]> = signal(this.meshService.fontList);
   fontListValues: Signal<FontInterface[]> = computed( () => this.fontListSignal());
 
-  
-
-
-  fontPromises: Promise<void>;
-
   constructor() {
-    this.fontList.push({name: 'Helvetiker', promise: this.meshService.helvetikerRegularPromise});
-    this.fontList.push({name: 'Helvetiker Bold', promise: this.meshService.helvetikerBoldPromise});
-    this.fontList.push({name: 'Gentilis', promise: this.meshService.gentilisRegularPromise});
-    this.fontList.push({name: 'Gentilis Bold', promise: this.meshService.gentilisBoldPromise});
-    this.fontList.push({name: 'Optimer', promise: this.meshService.optimerRegularPromise});
-    this.fontList.push({name: 'Optimer Bold', promise: this.meshService.optimerBoldPromise});
-    this.fontList.push({name: 'Droid Sans Bold', promise: this.meshService.droidSansBoldPromise});
-    this.fontList.push({name: 'Droid Sans Mono', promise: this.meshService.droidSansMonoPromise});
-    this.fontList.push({name: 'Droid Sans', promise: this.meshService.droidSansPromise});
-    this.fontList.push({name: 'Droid Serif Bold', promise: this.meshService.droidSerifBoldPromise});
-    this.fontList.push({name: 'Droid Serif', promise: this.meshService.droidSerifPromise});
 
-    this.fontPromises = Promise.all(this.fontList.map((fontItem) => fontItem.promise)).then(
+    this.meshService.fontPromises.then(
       () => {
-        
-        this.fontList.forEach(
-          (fontItem: FontInterface) => fontItem.promise.then( (font) => {
-            fontItem.font = font;
-          } )
-        );
-        this.fontListSignal.set(Array.from(this.fontList));
+        this.fontListSignal.set(Array.from(this.meshService.fontList));
       }
-    );
-
+    )
   }
 
   updateAnimation(animation: AnimationInterface): void 
@@ -630,11 +606,11 @@ export class ThreejsService {
 
   async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
   {
-    await this.fontPromises;
+    await this.meshService.fontPromises;
 
-    let font: Font = this.fontList[0].font as Font;
+    let font: Font = this.meshService.fontList[0].font as Font;
 
-    this.fontList.forEach(
+    this.meshService.fontList.forEach(
       (fontItem: FontInterface) => {
         if (fontItem.name === meshItem.font){
           font = fontItem.font as Font;
