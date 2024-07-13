@@ -410,7 +410,7 @@ export class ThreejsService {
   async addMesh(meshItem: MeshInterface): Promise<MeshInterface>
   {
     const mesh: SupportedMeshes = await this.meshService.addMesh(meshItem);
-   // this.updateMesh(meshItem);    
+   // this.updateMesh(meshItem);  // I don't think that this is needed  
     this.meshListSignal.set(this.meshService.meshItems);
     this.scenes[0].add( mesh );
 
