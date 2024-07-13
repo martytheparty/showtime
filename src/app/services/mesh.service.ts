@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
+import * as THREE from 'three';
+
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-import { FontInterface } from '../interfaces/mesh-interface';
+import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
+import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, SphereGeometry } from 'three';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
 @Injectable({
   providedIn: 'root'
@@ -66,8 +70,10 @@ export class MeshService {
     )});
 
   fontList: FontInterface[] = [];
-
   fontPromises: Promise<void>;
+
+  meshItems: MeshInterface[] = [];
+  meshes: SupportedMeshes[] = [];
 
   constructor() { 
 
@@ -94,4 +100,65 @@ export class MeshService {
       }
     );
   }
+
+  async addMesh(meshItem: MeshInterface): Promise<SupportedMeshes>
+  {
+    let geometry: BoxGeometry | SphereGeometry | TextGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+
+    if (meshItem.shape === 'SphereGeometry') {
+      geometry = new THREE.SphereGeometry(.5,32,32);
+    } else if (meshItem.shape === 'TextGeometry') {
+      geometry = await this.getTextGeometry(meshItem);
+    }
+
+    let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
+    
+    if (meshItem.materialType === 'basic') {
+      material = new THREE.MeshBasicMaterial();
+    } else if (meshItem.materialType === 'phong') {
+      material = new THREE.MeshPhongMaterial();
+    }
+
+    const mesh: SupportedMeshes = new THREE.Mesh( geometry, material );
+    meshItem.id = mesh.id;
+    this.meshes.push(mesh);
+    this.meshItems.push( meshItem );
+    this.meshItems = [... this.meshItems];
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    return mesh;
+  }
+
+  async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
+  {
+    await this.fontPromises;
+
+    let font: Font = this.fontList[0].font as Font;
+
+    this.fontList.forEach(
+      (fontItem: FontInterface) => {
+        if (fontItem.name === meshItem.font){
+          font = fontItem.font as Font;
+        }
+      }
+    );
+
+
+    const tg: TextGeometry = new TextGeometry(meshItem.text, {
+      font: font,
+      size: meshItem.size * 1,
+      height: meshItem.height * 1,
+      curveSegments: meshItem.curveSegments * 1,
+      bevelEnabled: meshItem.bevelEnabled,
+      bevelThickness: meshItem.bevelThickness * 1,
+      bevelSize: meshItem.bevelSize * 1,
+      bevelOffset:  meshItem.bevelOffset * 1,
+      bevelSegments:  meshItem.bevelSegments * 1,
+      steps: meshItem.steps * 1
+    });
+    return tg;
+
+  }
 }
+

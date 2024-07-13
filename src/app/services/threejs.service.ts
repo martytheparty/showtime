@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@a
 import * as THREE from 'three';
 import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
+import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
@@ -63,7 +63,6 @@ export class ThreejsService {
   };
   cameraItems: SupportedCameraItems[] = [this.cameraItem];  
   rendererItem: RendererInterface = { castShadows: true };
-  meshes: SupportedMeshes[] = [];
   lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scenes: Scene[] = [new THREE.Scene()]
@@ -78,14 +77,13 @@ export class ThreejsService {
   };
   sceneItems: SceneInterface[] = [this.sceneItem];
 
-  meshItems: MeshInterface[] = [];
   lightItems: LightInterface[] = [];
   
 
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
-  private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshItems);
+  private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshService.meshItems);
   meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
   private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightItems);
@@ -411,48 +409,19 @@ export class ThreejsService {
 
   async addMesh(meshItem: MeshInterface): Promise<MeshInterface>
   {
-    let geometry: BoxGeometry | SphereGeometry | TextGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-
-    if (meshItem.shape === 'SphereGeometry') {
-      geometry = new THREE.SphereGeometry(.5,32,32);
-    } else if (meshItem.shape === 'TextGeometry') {
-      geometry = await this.getTextGeometry(meshItem);
-    }
-
-    let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
-
-    
-    if (meshItem.materialType === 'basic') {
-      material = new THREE.MeshBasicMaterial();
-    } else if (meshItem.materialType === 'phong') {
-      material = new THREE.MeshPhongMaterial();
-    }
-
-    const mesh: SupportedMeshes = new THREE.Mesh( geometry, material );
-    meshItem.id = mesh.id;
-    this.meshes.push(mesh);
-
-    this.updateMesh(meshItem);    
-
-    this.meshItems.push( meshItem );
-
-    this.meshItems = [... this.meshItems];
-
-    this.meshListSignal.set(this.meshItems);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-
+    const mesh: SupportedMeshes = await this.meshService.addMesh(meshItem);
+   // this.updateMesh(meshItem);    
+    this.meshListSignal.set(this.meshService.meshItems);
     this.scenes[0].add( mesh );
 
     this.animationService.setAnimationPairs(meshItem, mesh);
     this.animationPairSignal.set(this.animationService.animationsPairs);
-
     return meshItem;
   }
 
   async updateMesh(meshItem: MeshInterface): Promise<void>
   {
-    const updateMesh = this.meshes.find((mesh) => mesh.id === meshItem.id);
+    const updateMesh = this.meshService.meshes.find((mesh) => mesh.id === meshItem.id);
 
     if (updateMesh?.geometry.type !== meshItem.shape) {
       // the mesh needs to be converted
@@ -471,7 +440,7 @@ export class ThreejsService {
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
-        const geometry: TextGeometry  = await this.getTextGeometry(meshItem);
+        const geometry: TextGeometry  = await this.meshService.getTextGeometry(meshItem);
         updateMesh.geometry = geometry;
       }
 
@@ -516,7 +485,7 @@ export class ThreejsService {
       )
       {
         meshItem.textOrig = meshItem.text;
-        const newGeometry: TextGeometry = await this.getTextGeometry(meshItem);
+        const newGeometry: TextGeometry = await this.meshService.getTextGeometry(meshItem);
         updateMesh.geometry = newGeometry;
       }
     }
@@ -588,8 +557,8 @@ export class ThreejsService {
       material.color.setRGB(meshItem.redColor/255,meshItem.greenColor/255,meshItem.blueColor/255)
     }
 
-    this.meshItems = [... this.meshItems];
-    this.meshListSignal.set(this.meshItems);
+    this.meshService.meshItems = [... this.meshService.meshItems];
+    this.meshListSignal.set(this.meshService.meshItems);
 
     if (meshItem.animated && updateMesh) {
       this.animationService.setAnimationPairs(meshItem, updateMesh);
@@ -604,49 +573,18 @@ export class ThreejsService {
     this.animationService.clock.start();
   }
 
-  async getTextGeometry(meshItem: MeshInterface): Promise<TextGeometry>
-  {
-    await this.meshService.fontPromises;
-
-    let font: Font = this.meshService.fontList[0].font as Font;
-
-    this.meshService.fontList.forEach(
-      (fontItem: FontInterface) => {
-        if (fontItem.name === meshItem.font){
-          font = fontItem.font as Font;
-        }
-      }
-    );
-
-
-    const tg: TextGeometry = new TextGeometry(meshItem.text, {
-      font: font,
-      size: meshItem.size * 1,
-      height: meshItem.height * 1,
-      curveSegments: meshItem.curveSegments * 1,
-      bevelEnabled: meshItem.bevelEnabled,
-      bevelThickness: meshItem.bevelThickness * 1,
-      bevelSize: meshItem.bevelSize * 1,
-      bevelOffset:  meshItem.bevelOffset * 1,
-      bevelSegments:  meshItem.bevelSegments * 1,
-      steps: meshItem.steps * 1
-    });
-    return tg;
-
-  }
-
   deleteMesh(id: number): void
   {
-    const mesh = this.meshes.find( (mesh) => mesh.id === id);
+    const mesh = this.meshService.meshes.find( (mesh) => mesh.id === id);
 
     if(mesh)
     {
       this.scenes[0].remove(mesh);
-      this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
+      this.meshService.meshes = this.meshService.meshes.filter((mesh) => mesh.id !== id);
 
-      this.meshItems = this.meshItems.filter((mesh) => mesh.id !== id);
+      this.meshService.meshItems = this.meshService.meshItems.filter((mesh) => mesh.id !== id);
 
-      this.meshListSignal.set(this.meshItems);
+      this.meshListSignal.set(this.meshService.meshItems);
 
       // delete any animation pairs that have been deleted
       // huge risk of a memory leak if stale pairs are not
@@ -708,7 +646,7 @@ export class ThreejsService {
 
           }
         );
-        this.meshes.forEach(
+        this.meshService.meshes.forEach(
           (mesh) => {
             const meshItem: MeshInterface | undefined = this.getMeshItemForId(mesh.id);
 
@@ -768,7 +706,7 @@ export class ThreejsService {
 
   getMeshItemForId(meshId: number): MeshInterface | undefined
   {
-    return this.meshItems.find(
+    return this.meshService.meshItems.find(
       (mi: MeshInterface) => mi.id === meshId
     );
 
@@ -803,7 +741,7 @@ export class ThreejsService {
   resetClock(): void {
     this.animationService.clock.start();
 
-    this.meshes.forEach(
+    this.meshService.meshes.forEach(
       (mesh) => {
         this.animationService.updateMeshForTime(mesh, this.getMeshItemForId(mesh.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
