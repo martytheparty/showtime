@@ -442,12 +442,10 @@ export class ThreejsService {
   deleteMesh(id: number): void
   {
     const mesh = this.meshService.meshes.find( (mesh) => mesh.id === id);
+    this.meshService.deleteMesh(id);
 
     if(mesh)
     {
-      this.scenes[0].remove(mesh);
-      this.meshService.meshes = this.meshService.meshes.filter((mesh) => mesh.id !== id);
-
       this.meshService.meshItems = this.meshService.meshItems.filter((mesh) => mesh.id !== id);
 
       this.meshListSignal.set(this.meshService.meshItems);

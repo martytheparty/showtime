@@ -300,5 +300,15 @@ export class MeshService {
     this.meshItems = [... this.meshItems];
   }
 
-}
+  deleteMesh(id: number): void
+  {
+    const mesh = this.meshes.find( (mesh) => mesh.id === id);
 
+    if(mesh)
+    {
+      this.meshes = this.meshes.filter((mesh) => mesh.id !== id);
+      this.meshItems = this.meshItems.filter((mesh) => mesh.id !== id);
+    }
+  }
+
+}
