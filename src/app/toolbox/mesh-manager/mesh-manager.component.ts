@@ -53,6 +53,8 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   edit = false;
   expandedMeshId = 0;
 
+  formDataDict: { [key: number]: {form: FormGroup , sub: Subscription} } = {};
+
   constructor(){
     effect(
       () => {
@@ -123,12 +125,13 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     await this.threejsService.addMesh(meshItem);
 
     const form = this.setupForm(meshItem);
-    this.setupSubs(meshItem, form);
+    const sub = this.setupSubs(meshItem, form);
+    this.formDataDict[meshItem.id] = {form, sub};
 
     return meshItem;
   }
 
-  setupSubs(meshItem: MeshInterface, form: FormGroup): void
+  setupSubs(meshItem: MeshInterface, form: FormGroup): Subscription
   {
     const sub: Subscription = form.valueChanges.subscribe(
       () => {
@@ -163,7 +166,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
 
     this.subs.push(sub);
     meshItem.sub = sub;
-
+    return sub;
   }
 
   setupForm(meshItem: MeshInterface): FormGroup
