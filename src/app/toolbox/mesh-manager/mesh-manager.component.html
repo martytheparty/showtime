@@ -24,7 +24,7 @@ multiTemplateDataRows
    <th mat-header-cell *matHeaderCellDef> name </th>
    <td mat-cell *matCellDef="let mesh"> 
       @if (edit) {
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <input formControlName="name" type="text">
         </form>         
       } @else {
@@ -38,7 +38,7 @@ multiTemplateDataRows
    <th mat-header-cell *matHeaderCellDef> x position  </th>
    <td mat-cell *matCellDef="let mesh">
       @if (edit) {
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <input formControlName="xPos" type="text">
         </form>         
       } @else {
@@ -51,7 +51,7 @@ multiTemplateDataRows
    <th mat-header-cell *matHeaderCellDef> y position  </th>
    <td mat-cell *matCellDef="let mesh"> 
       @if (edit) {
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <input formControlName="yPos" type="text">
         </form>         
       } @else {
@@ -64,7 +64,7 @@ multiTemplateDataRows
    <th mat-header-cell *matHeaderCellDef> z position  </th>
    <td mat-cell *matCellDef="let mesh"> 
       @if (edit) {
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <input formControlName="zPos" type="text">
         </form>         
       } @else {
@@ -120,7 +120,7 @@ multiTemplateDataRows
            }"
        >
        <div class="detail-form">
-         <mat-form-field [formGroup]="mesh.form">
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
             <mat-label>Choose Shape</mat-label>
             <mat-select formControlName="shape">
                <mat-option value="BoxGeometry">Cube</mat-option>
@@ -134,7 +134,7 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'BoxGeometry')
          {
-            <mat-form-field [formGroup]="mesh.form">
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Width</mat-label>
                <input formControlName="width" matInput >
                <mat-hint>Cube Width (along x-axis)</mat-hint>
@@ -143,7 +143,7 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'BoxGeometry' || mesh.shape === 'TextGeometry')
          {
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Height</mat-label>
                <input formControlName="height" matInput >
                <mat-hint>Cube Height (along y-axis)/Text Thickness</mat-hint>
@@ -154,53 +154,53 @@ multiTemplateDataRows
          {
             <app-font-list (newFont)="updateFont($event, mesh)" [font]="mesh.font"></app-font-list>
 
-            <mat-form-field [formGroup]="mesh.form">
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Text</mat-label>
                <input class="text" formControlName="text" matInput >
                <mat-hint>The Text That Is Rendered</mat-hint>
              </mat-form-field>
 
-            <form [formGroup]="mesh.form">
+            <form [formGroup]="formDataDict[mesh.id].form">
                <mat-checkbox formControlName="bevelEnabled">Bevel Enabled</mat-checkbox>
            </form>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Size</mat-label>
                <input formControlName="size" matInput >
                <mat-hint>Height & Width</mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Curved Segments</mat-label>
                <input formControlName="curveSegments" matInput >
                <mat-hint>More segment result in smother renders</mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Bevel Offset</mat-label>
                <input formControlName="bevelOffset" matInput >
                <mat-hint>This parameter shifts the start of the bevel from the shape’s outline inward or outward.</mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Bevel Segments</mat-label>
                <input formControlName="bevelSegments" matInput >
                <mat-hint>The number of segments from the bottom to the top of segments</mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Bevel Thickness</mat-label>
                <input formControlName="bevelThickness" matInput >
                <mat-hint>This parameter sets the depth or thickness of the bevel. </mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Bevel Size</mat-label>
                <input formControlName="bevelSize" matInput >
                <mat-hint>This parameter sets the distance from the original shape's outline to the start of the bevel.</mat-hint>
              </mat-form-field>
 
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Steps</mat-label>
                <input formControlName="steps" matInput >
                <mat-hint>Defines the number of segments along the bevel's depth.</mat-hint>
@@ -209,7 +209,7 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'BoxGeometry')
          {
-             <mat-form-field [formGroup]="mesh.form">
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Depth</mat-label>
                <input formControlName="depth" matInput >
                <mat-hint>Cube Depth (along z-axis)</mat-hint>
@@ -218,32 +218,32 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'SphereGeometry')
          {
-            <mat-form-field [formGroup]="mesh.form">
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Radius</mat-label>
                <input formControlName="radius" matInput >
                <mat-hint>Sphere Radius</mat-hint>
              </mat-form-field>
          }
 
-         <mat-form-field [formGroup]="mesh.form">
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
             <mat-label>X Rotation</mat-label>
             <input formControlName="xRotation" matInput >
             <mat-hint>X Rotation</mat-hint>
           </mat-form-field>
 
-          <mat-form-field [formGroup]="mesh.form">
+          <mat-form-field [formGroup]="formDataDict[mesh.id].form">
             <mat-label>Y Rotation</mat-label>
             <input formControlName="yRotation" matInput >
             <mat-hint>y Rotation</mat-hint>
           </mat-form-field>
 
-          <mat-form-field [formGroup]="mesh.form">
+          <mat-form-field [formGroup]="formDataDict[mesh.id].form">
             <mat-label>Z Rotation</mat-label>
             <input formControlName="zRotation" matInput >
             <mat-hint>z Rotation</mat-hint>
           </mat-form-field>
 
-         <mat-form-field [formGroup]="mesh.form">
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
             <mat-label>Choose Material</mat-label>
             <mat-select formControlName="materialType">
                <mat-option value="normal">normal</mat-option>
@@ -256,13 +256,13 @@ multiTemplateDataRows
             </mat-hint>
          </mat-form-field>
           
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <mat-checkbox formControlName="castShadow">Cast Shadows</mat-checkbox>
         </form>
 
         @if(mesh.materialType === 'phong')
         {
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <mat-checkbox formControlName="receiveShadow">Receieve Shadows</mat-checkbox>
         </form>
         }
@@ -280,7 +280,7 @@ multiTemplateDataRows
             ></app-color-picker>
          }
 
-         <form [formGroup]="mesh.form">
+         <form [formGroup]="formDataDict[mesh.id].form">
             <mat-checkbox formControlName="animated">Animated</mat-checkbox>
         </form>
 

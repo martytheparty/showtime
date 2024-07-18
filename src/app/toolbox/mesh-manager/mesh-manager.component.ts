@@ -17,6 +17,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FontListComponent } from './font-list/font-list.component';
+import { FormLuInterface } from '../../interfaces/common';
 
 @Component({
   selector: 'app-mesh-manager',
@@ -53,7 +54,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   edit = false;
   expandedMeshId = 0;
 
-  formDataDict: { [key: number]: {form: FormGroup , sub: Subscription} } = {};
+  formDataDict: FormLuInterface = {};
 
   constructor(){
     effect(
@@ -83,6 +84,11 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
     this.subs.forEach(
       (sub) => sub?.unsubscribe()
     );
+
+    Object.keys(this.formDataDict).forEach( (key) => {
+      const keyValue = key as unknown as number;
+      this.formDataDict[keyValue].sub?.unsubscribe();
+    } );
   }
 
   async addMesh(): Promise<MeshInterface>
@@ -164,8 +170,6 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
       }
     );
 
-    this.subs.push(sub);
-    meshItem.sub = sub;
     return sub;
   }
 
@@ -202,15 +206,13 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
         zRotation: new FormControl(meshItem.zRotation.startValue)
       }
     );
-
-    meshItem.form = form;
     return form;
   }
 
   updateForm(meshItem: MeshInterface): void
   { 
-    if(meshItem.form) {
-      meshItem.form.patchValue(
+    if(this.formDataDict[meshItem.id]) {
+      this.formDataDict[meshItem.id].form.patchValue(
         {
           id: meshItem.id,
           name: meshItem.name,
@@ -250,7 +252,7 @@ export class MeshManagerComponent implements OnDestroy, OnInit{
   deleteMesh(meshItem: MeshInterface): void
   {
     this.threejsService.deleteMesh(meshItem.id);
-    meshItem.sub?.unsubscribe();
+    this.formDataDict[meshItem.id].sub?.unsubscribe();
   }
 
   redUpdate(value: number, meshItem: MeshInterface): void

@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "meshservice": "ng g s services/mesh"
+    "utilint": "ng g i interfaces/common"
   },
   "private": true,
   "dependencies": {

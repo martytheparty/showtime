@@ -447,6 +447,7 @@ export class ThreejsService {
 
     if(mesh)
     {
+      this.scenes[0].remove(mesh);
       this.meshService.meshItems = this.meshService.meshItems.filter((mesh) => mesh.id !== id);
 
       this.meshListSignal.set(this.meshService.meshItems);
@@ -454,6 +455,8 @@ export class ThreejsService {
       // delete any animation pairs that have been deleted
       // huge risk of a memory leak if stale pairs are not
       // deleted
+
+      
 
       this.animationService.animationsPairs = this.animationService.animationsPairs
             .filter( (pair: AnimationPair) => pair.item.id !== id );

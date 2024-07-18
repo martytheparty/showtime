@@ -12,8 +12,6 @@ export interface MeshInterface {
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
     zPos: AnimationPropertyDescriptor
-    form?: FormGroup
-    sub?: Subscription
     materialType: MaterialTypes
     redColor: number
     greenColor: number
