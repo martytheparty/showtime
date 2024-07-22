@@ -1,0 +1,19 @@
+.top-row, .second-row
+{
+    height: 78px;
+    display: flex;
+
+    mat-checkbox {
+        margin: 17px 0;
+    }
+
+    button
+    {
+        margin: 17px 3px;
+    }
+
+    .slider
+    {
+        margin: 14px;
+    }
+}

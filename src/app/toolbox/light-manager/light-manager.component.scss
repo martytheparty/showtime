@@ -1,0 +1,29 @@
+button {
+    margin: 0 2px;
+}
+
+input {
+    width: 50px;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+.light-detail {
+    overflow: hidden;
+    display: flex;
+  }
+
+.collapsed {
+    display: none;
+}
+
+app-table-filter{
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.detail-form {
+    padding: 30px;
+}

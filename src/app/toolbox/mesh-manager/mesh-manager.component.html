@@ -1,0 +1,299 @@
+<button class="add-mesh" mat-raised-button color="primary" (click)="addMesh()">Add Mesh</button>
+<button 
+    class="edit-meshes" 
+    mat-raised-button 
+    color="primary" 
+    (click)="toggleEdit()">
+    @if(edit) { Show Raw Data  } @else { Show Edit Forms } 
+</button>
+<app-table-filter (filterValue)="updateFilter($event)"></app-table-filter>
+
+<table 
+mat-table 
+[dataSource]="filteredMeshList"
+multiTemplateDataRows
+>
+<ng-container matColumnDef="id">
+   <th mat-header-cell *matHeaderCellDef> ID </th>
+   <td mat-cell *matCellDef="let mesh"> 
+       {{mesh.id}}
+   </td>
+</ng-container>
+
+<ng-container matColumnDef="name">
+   <th mat-header-cell *matHeaderCellDef> name </th>
+   <td mat-cell *matCellDef="let mesh"> 
+      @if (edit) {
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <input formControlName="name" type="text">
+        </form>         
+      } @else {
+         {{mesh.name}}
+      }
+
+   </td>
+</ng-container>
+
+<ng-container matColumnDef="xPos">
+   <th mat-header-cell *matHeaderCellDef> x position  </th>
+   <td mat-cell *matCellDef="let mesh">
+      @if (edit) {
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <input formControlName="xPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.xPos.startValue}}
+      } 
+   </td>
+</ng-container>
+
+<ng-container matColumnDef="yPos">
+   <th mat-header-cell *matHeaderCellDef> y position  </th>
+   <td mat-cell *matCellDef="let mesh"> 
+      @if (edit) {
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <input formControlName="yPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.yPos.startValue}}
+      } 
+   </td>
+</ng-container>
+
+<ng-container matColumnDef="zPos">
+   <th mat-header-cell *matHeaderCellDef> z position  </th>
+   <td mat-cell *matCellDef="let mesh"> 
+      @if (edit) {
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <input formControlName="zPos" type="text">
+        </form>         
+      } @else {
+         {{mesh.zPos.startValue}}
+      } 
+   </td>
+</ng-container>
+
+<ng-container matColumnDef="expand">
+   <th 
+       mat-header-cell 
+       *matHeaderCellDef 
+       aria-label="row actions">
+       &nbsp;
+   </th>
+   <td mat-cell *matCellDef="let mesh">
+       @if (edit)
+       {
+           <button 
+               mat-icon-button 
+               aria-label="expand row" 
+               (click)="(expandedMeshId = expandedMeshId === mesh.id ? null : mesh.id); $event.stopPropagation()">
+               @if (expandedMeshId === mesh.id) {
+                 <mat-icon>keyboard_arrow_up</mat-icon>
+               } @else {
+                 <mat-icon>keyboard_arrow_down</mat-icon>
+               }
+             </button>
+             <button 
+             mat-icon-button 
+             aria-label="delete mesh" 
+             (click)="deleteMesh(mesh)">
+             @if (expandedMeshId === mesh.id) {
+               <mat-icon>delete</mat-icon>
+             } @else {
+               <mat-icon>delete</mat-icon>
+             }
+           </button>
+       } @else {
+           &nbsp;
+       }
+   </td>
+ </ng-container>
+
+ <ng-container matColumnDef="expandedDetail">
+   <td mat-cell 
+       *matCellDef="let mesh" 
+       [attr.colspan]="displayedColumns.length"
+   >
+     <div class="light-detail"
+           [ngClass]="{ 
+               'collapsed':  mesh.id != expandedMeshId
+           }"
+       >
+       <div class="detail-form">
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+            <mat-label>Choose Shape</mat-label>
+            <mat-select formControlName="shape">
+               <mat-option value="BoxGeometry">Cube</mat-option>
+               <mat-option value="SphereGeometry">Sphere</mat-option>
+               <mat-option value="TextGeometry">Text</mat-option>
+            </mat-select>
+            <mat-hint>
+               The shape of the mesh.
+            </mat-hint>
+         </mat-form-field>
+
+         @if (mesh.shape === 'BoxGeometry')
+         {
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Width</mat-label>
+               <input formControlName="width" matInput >
+               <mat-hint>Cube Width (along x-axis)</mat-hint>
+             </mat-form-field>
+         }
+
+         @if (mesh.shape === 'BoxGeometry' || mesh.shape === 'TextGeometry')
+         {
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Height</mat-label>
+               <input formControlName="height" matInput >
+               <mat-hint>Cube Height (along y-axis)/Text Thickness</mat-hint>
+             </mat-form-field>
+         }
+
+         @if (mesh.shape === 'TextGeometry')
+         {
+            <app-font-list (newFont)="updateFont($event, mesh)" [font]="mesh.font"></app-font-list>
+
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Text</mat-label>
+               <input class="text" formControlName="text" matInput >
+               <mat-hint>The Text That Is Rendered</mat-hint>
+             </mat-form-field>
+
+            <form [formGroup]="formDataDict[mesh.id].form">
+               <mat-checkbox formControlName="bevelEnabled">Bevel Enabled</mat-checkbox>
+           </form>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Size</mat-label>
+               <input formControlName="size" matInput >
+               <mat-hint>Height & Width</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Curved Segments</mat-label>
+               <input formControlName="curveSegments" matInput >
+               <mat-hint>More segment result in smother renders</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Bevel Offset</mat-label>
+               <input formControlName="bevelOffset" matInput >
+               <mat-hint>This parameter shifts the start of the bevel from the shape’s outline inward or outward.</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Bevel Segments</mat-label>
+               <input formControlName="bevelSegments" matInput >
+               <mat-hint>The number of segments from the bottom to the top of segments</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Bevel Thickness</mat-label>
+               <input formControlName="bevelThickness" matInput >
+               <mat-hint>This parameter sets the depth or thickness of the bevel. </mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Bevel Size</mat-label>
+               <input formControlName="bevelSize" matInput >
+               <mat-hint>This parameter sets the distance from the original shape's outline to the start of the bevel.</mat-hint>
+             </mat-form-field>
+
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Steps</mat-label>
+               <input formControlName="steps" matInput >
+               <mat-hint>Defines the number of segments along the bevel's depth.</mat-hint>
+             </mat-form-field>
+         }
+
+         @if (mesh.shape === 'BoxGeometry')
+         {
+             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Depth</mat-label>
+               <input formControlName="depth" matInput >
+               <mat-hint>Cube Depth (along z-axis)</mat-hint>
+             </mat-form-field>
+         }
+
+         @if (mesh.shape === 'SphereGeometry')
+         {
+            <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+               <mat-label>Radius</mat-label>
+               <input formControlName="radius" matInput >
+               <mat-hint>Sphere Radius</mat-hint>
+             </mat-form-field>
+         }
+
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+            <mat-label>X Rotation</mat-label>
+            <input formControlName="xRotation" matInput >
+            <mat-hint>X Rotation</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+            <mat-label>Y Rotation</mat-label>
+            <input formControlName="yRotation" matInput >
+            <mat-hint>y Rotation</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+            <mat-label>Z Rotation</mat-label>
+            <input formControlName="zRotation" matInput >
+            <mat-hint>z Rotation</mat-hint>
+          </mat-form-field>
+
+         <mat-form-field [formGroup]="formDataDict[mesh.id].form">
+            <mat-label>Choose Material</mat-label>
+            <mat-select formControlName="materialType">
+               <mat-option value="normal">normal</mat-option>
+               <mat-option value="basic">basic</mat-option>
+               <mat-option value="phong">phong</mat-option>
+            </mat-select>
+            <mat-hint>
+               The material that will be rendered for the mesh.
+               <mat-icon tabindex="0" (keyup.enter)="launchMaterialDialog()" (click)="launchMaterialDialog()" class="tt-info">information</mat-icon>
+            </mat-hint>
+         </mat-form-field>
+          
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <mat-checkbox formControlName="castShadow">Cast Shadows</mat-checkbox>
+        </form>
+
+        @if(mesh.materialType === 'phong')
+        {
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <mat-checkbox formControlName="receiveShadow">Receieve Shadows</mat-checkbox>
+        </form>
+        }
+
+         @if(mesh.materialType !== 'normal')
+         {
+            <div>Color:</div>
+            <app-color-picker
+            [redValue]="mesh.redColor"
+            [greenValue]="mesh.greenColor"
+            [blueValue]="mesh.blueColor"
+            (redUpdate)="redUpdate($event, mesh)"
+            (greenUpdate)="greenUpdate($event, mesh)"
+            (blueUpdate)="blueUpdate($event, mesh)"
+            ></app-color-picker>
+         }
+
+         <form [formGroup]="formDataDict[mesh.id].form">
+            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
+        </form>
+
+       </div>
+     </div>
+   </td>
+ </ng-container>
+
+
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<tr mat-row 
+*matRowDef="let row; columns: ['expandedDetail']" 
+class="detail-row">
+</tr>
+</table>

@@ -1,0 +1,21 @@
+@if(fonts.length === 0) {
+   <div class="loading">
+      <div class="icon">
+         <mat-icon aria-hidden="true" fontIcon="download">
+         </mat-icon>
+      </div>
+      <div>Loading...</div> 
+   </div>
+} @else {
+   <mat-form-field >
+      <mat-label>Choose Font</mat-label>
+                  <mat-select [value]="font()" (selectionChange)="changeFont($event)">
+                     @for (font of fonts; track $index) {
+                        <mat-option [value]="font">{{font}}</mat-option>
+                      }
+                  </mat-select>
+                  <mat-hint>
+                     The font that will be used.
+                  </mat-hint>
+      </mat-form-field>
+}

@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-body {
-    margin: 0;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "../src/app/toolbox/toolbox.compoent_x.scss";
+
+// app-toolbox
+// {
+//     // prevents double scrollbars in the tab bodies
+//     mat-tab-group
+//     {
+//         max-height: 50vh;
+//     }
+
+//      // removes the scrollbar when tab just have buttons
+//     .mat-mdc-tab-body-content
+//     {
+//         min-height: 200px;
+//     }
+// }

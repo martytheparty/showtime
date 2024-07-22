@@ -1,0 +1,21 @@
+<button (click)="toggleEdit()" mat-raised-button color="primary">
+    @if(editing)
+    {
+        Show Raw Data
+    } @else {
+        Show Edit Form
+    }
+</button>
+
+<mat-checkbox (change)="updateCameraType($event)" [checked]="cameraType==='OrthographicCamera'" >Orthographic</mat-checkbox>
+
+@if(editing && cameraType === 'PerspectiveCamera')
+{
+    <app-perspective-form></app-perspective-form>
+} @else if(cameraType === 'PerspectiveCamera') {
+    <app-perspective-data></app-perspective-data>
+} @else if (editing && cameraType === 'OrthographicCamera') {
+    <app-og-form></app-og-form>
+} @else {
+    <app-og-data></app-og-data>
+}

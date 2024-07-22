@@ -1,0 +1,30 @@
+<table>
+    <tr>
+        <td>
+            Background Color:<br>
+            <app-color-picker
+            [redValue]="red"
+            [greenValue]="green"
+            [blueValue]="blue"
+            (redUpdate)="redColorChange($event)"
+            (greenUpdate)="greenColorChange($event)"
+            (blueUpdate)="blueColorChange($event)"
+            ></app-color-picker>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <mat-form-field [formGroup]="form">
+            <mat-checkbox formControlName="castShadows">Cast Shaddows</mat-checkbox>
+            </mat-form-field>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <mat-form-field [formGroup]="form">
+            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
+            </mat-form-field>
+        </td>
+    </tr>
+</table>
+

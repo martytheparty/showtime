@@ -1,0 +1,183 @@
+<button class="add-light" mat-raised-button color="primary" (click)="addLight()">Add Light</button>
+<button 
+    class="edit-lights" 
+    mat-raised-button 
+    color="primary" 
+    (click)="toggleEdit()">
+    @if(edit) { Show Raw Data  } @else { Show Edit Forms } 
+</button>
+<app-table-filter (filterValue)="updateFilter($event)"></app-table-filter>
+
+@if(lightsList)
+{
+    <table 
+        mat-table 
+        [dataSource]="filteredLightsList"
+        multiTemplateDataRows
+        >
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let light"> 
+                {{light.id}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> name </th>
+            <td mat-cell *matCellDef="let light">
+                @if(edit)
+                {
+                    <form [formGroup]="light.form">
+                        <input formControlName="name" type="text">
+                    </form>
+                } @else {
+                    {{light.name}}
+                }
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="xPos">
+            <th mat-header-cell *matHeaderCellDef> x position </th>
+            <td mat-cell *matCellDef="let light">
+                @if(edit)
+                {
+                    <form [formGroup]="light.form">
+                        <input formControlName="xPos" type="text">
+                    </form>
+                } @else {
+                    {{light.xPos.startValue}}
+                }
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="yPos">
+            <th mat-header-cell *matHeaderCellDef> y position </th>
+            <td mat-cell *matCellDef="let light">
+                @if(edit)
+                {
+                    <form [formGroup]="light.form">
+                    <input formControlName="yPos" type="text">
+                    </form>
+                } @else {
+                    {{light.yPos.startValue}}
+                }
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="zPos">
+            <th mat-header-cell *matHeaderCellDef> z position </th>
+            <td mat-cell *matCellDef="let light">
+                @if(edit)
+                {
+                    <form [formGroup]="light.form">
+                        <input formControlName="zPos" type="text">
+                    </form>
+                } @else {
+                    {{light.zPos.startValue}}
+                }
+            </td>
+        </ng-container>
+
+
+        
+        <ng-container matColumnDef="expand">
+            <th 
+                mat-header-cell 
+                *matHeaderCellDef 
+                aria-label="row actions">
+                &nbsp;
+            </th>
+            <td mat-cell *matCellDef="let light">
+                @if (edit)
+                {
+                    <button 
+                        mat-icon-button 
+                        aria-label="expand row" 
+                        (click)="(expandedLightId = expandedLightId === light.id ? null : light.id); $event.stopPropagation()">
+                        @if (expandedLightId === light.id) {
+                          <mat-icon>keyboard_arrow_up</mat-icon>
+                        } @else {
+                          <mat-icon>keyboard_arrow_down</mat-icon>
+                        }
+                      </button>
+                      <button 
+                      mat-icon-button 
+                      aria-label="delete light" 
+                      (click)="deleteLight(light)">
+                      @if (expandedLightId === light.id) {
+                        <mat-icon>delete</mat-icon>
+                      } @else {
+                        <mat-icon>delete</mat-icon>
+                      }
+                    </button>
+                } @else {
+                    &nbsp;
+                }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell 
+                *matCellDef="let light" 
+                [attr.colspan]="displayedColumns.length"
+            >
+              <div class="light-detail"
+                    [ngClass]="{ 
+                        'collapsed':  light.id != expandedLightId
+                    }"
+                >
+                <div class="detail-form">
+                    <table>
+                        <tr>
+                            <td>intensity</td>
+                            <td>
+                                <form [formGroup]="light.form">
+                                    <mat-slider min="0" max="1" step=".01" showTickMarks discrete [displayWith]="formatLabel">
+                                        <input formControlName="intensity" matSliderThumb>
+                                    </mat-slider>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>colors</td>
+                            <td><app-color-picker 
+                                [redValue]="light.redColor"
+                                [greenValue]="light.greenColor"
+                                [blueValue]="light.blueColor"
+                                (redUpdate)="redUpdate($event, light)"
+                                (blueUpdate)="blueUpdate($event, light)"
+                                (greenUpdate)="greenUpdate($event, light)"
+                                ></app-color-picker></td>
+                        </tr>
+                        <tr>
+                            <td>cast shadows</td>
+                            <td>
+                                <form [formGroup]="light.form">
+                                    <mat-checkbox formControlName="castShadow"></mat-checkbox>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>animated</td>
+                            <td>
+                        <form [formGroup]="light.form">
+                            <mat-checkbox formControlName="animated"></mat-checkbox>
+                        </form>
+                    </td>
+                </tr>
+                    </table>
+
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row 
+            *matRowDef="let row; columns: ['expandedDetail']" 
+            class="detail-row">
+        </tr>
+      </table>
+}

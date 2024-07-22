@@ -1,0 +1,66 @@
+.data-row
+{
+    display: flex;
+
+    .data-title
+    {
+        width: 60px;
+        text-align: right;
+    }
+
+    .data-value
+    {
+        margin-left: 5px;
+
+        input
+        {
+            width: 35px;
+        }
+    }
+}
+
+mat-form-field
+{
+    width: 400px;
+    display: block;
+
+    .tt-info
+    {
+        font-size: 16px;
+        top: 4px;
+        position: relative;
+        cursor: pointer;
+    }
+}
+
+button {
+    margin: 10px 2px 0 2px;
+}
+
+input {
+    width: 50px;
+}
+
+input.text {
+    width: 150px;
+}
+
+.collapsed {
+    display: none;
+}
+
+.detail-row {
+    height: 0px;
+}
+
+app-table-filter{
+    display: inline-block;
+    margin: 0 2px;
+    position: relative;
+    top: 5px;
+}
+
+app-font-list {
+    width: 400px;
+    display: block;
+}
