@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MeshInterface } from '../../../../interfaces/mesh-interface';
-import { OrthographicCameraInterface, PerspectiveCameraInterface } from '../../../../interfaces/camera-interfaces';
+import { CameraInterface } from '../../../../interfaces/camera-interfaces';
 import { LightInterface } from '../../../../interfaces/light-interface';
 import { SceneInterface } from '../../../../interfaces/scene-interface';
 import { MatSliderModule } from '@angular/material/slider';
@@ -66,7 +66,7 @@ export class AnimationPropertyComponent {
           // strongly types item.
           if ('xLookat' in item)
           {
-            item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+            item = item as CameraInterface;
           } else {
             item = item as MeshInterface | LightInterface;
           }
@@ -159,7 +159,7 @@ export class AnimationPropertyComponent {
       // strongly types item.
       if ('xLookat' in item)
       {
-        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+        item = item as CameraInterface;
       } else {
         item = item as MeshInterface | LightInterface;
       }
@@ -183,7 +183,7 @@ export class AnimationPropertyComponent {
       // strongly types item.
       if ('xLookat' in item)
       {
-        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+        item = item as CameraInterface;
       } else {
         item = item as MeshInterface | LightInterface;
       }
@@ -207,7 +207,7 @@ export class AnimationPropertyComponent {
       // strongly types item.
       if ('xLookat' in item)
       {
-        item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+        item = item as CameraInterface;
       } else {
         item = item as MeshInterface | LightInterface;
       }
@@ -250,7 +250,7 @@ export class AnimationPropertyComponent {
     // strongly types item.
     if ('xLookat' in item)
     {
-      item = item as PerspectiveCameraInterface | OrthographicCameraInterface;
+      item = item as CameraInterface;
     } else if ('background') {
       item = item as SceneInterface;
     } else {

@@ -5,7 +5,7 @@ import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
-import { PerspectiveCameraInterface, OrthographicCameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
+import { CameraInterface, CameraType, SupportedCameras, SupportedCameraItems } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SceneInterface } from '../interfaces/scene-interface';
 import { RendererInterface } from '../interfaces/renderer-interface';
@@ -25,7 +25,7 @@ export class ThreejsService {
   width = 0;
   height = 0;
   orthographicCamera: OrthographicCamera = new THREE.OrthographicCamera();
-  orthographicCameraItem: OrthographicCameraInterface = {
+  orthographicCameraItem: CameraInterface = {
     id: -1,
     name: 'orthographic Camera',
     left: -6,
@@ -45,7 +45,7 @@ export class ThreejsService {
   };
   cameras: SupportedCameras[] = [new THREE.PerspectiveCamera()];
 
-  cameraItem: PerspectiveCameraInterface = {
+  cameraItem: CameraInterface = {
     id: this.cameras[0].id,
     name: 'Perspective Camera', 
     fov: 70,
@@ -92,8 +92,8 @@ export class ThreejsService {
   private cameraItemSignal: WritableSignal<SupportedCameraItems[]> = signal(this.cameraItems);
   cameraItemValues: Signal<SupportedCameraItems[]> = computed( () => this.cameraItemSignal() );
 
-  private orthographicCameraItemSignal: WritableSignal<OrthographicCameraInterface> = signal(this.orthographicCameraItem);
-  orthographicCameraItemValues: Signal<OrthographicCameraInterface> = computed( () => this.orthographicCameraItemSignal() );
+  private orthographicCameraItemSignal: WritableSignal<CameraInterface> = signal(this.orthographicCameraItem);
+  orthographicCameraItemValues: Signal<CameraInterface> = computed( () => this.orthographicCameraItemSignal() );
 
   private animationSignal: WritableSignal<AnimationInterface> = signal(this.animationService.animationItem);
   animationValue: Signal<AnimationInterface> = computed( () => this.animationSignal());
@@ -250,8 +250,15 @@ export class ThreejsService {
         {
           const camera: PerspectiveCamera = this.cameras[0] as PerspectiveCamera;
           // orthagraphic camera does not have these four that's why they need to be separate.
-          camera.fov = this.cameraItem.fov;
-          camera.aspect = this.cameraItem.aspect;
+          if (this.cameraItem.fov)
+          {
+            camera.fov = this.cameraItem.fov;
+          }
+          
+          if (this.cameraItem.aspect) {
+            camera.aspect = this.cameraItem.aspect;
+          }
+
           near = this.cameraItem.near;
           far = this.cameraItem.far;
           xPos = this.cameraItem.xPos.startValue;
@@ -270,10 +277,22 @@ export class ThreejsService {
 
         } else {
           const camera: OrthographicCamera = this.cameras[0] as OrthographicCamera;
-          camera.left = this.orthographicCameraItem.left;
-          camera.right = this.orthographicCameraItem.right;
-          camera.top = this.orthographicCameraItem.top;
-          camera.bottom = this.orthographicCameraItem.bottom;
+          if (this.orthographicCameraItem.left) {
+            camera.left = this.orthographicCameraItem.left;
+          }
+
+          if (this.orthographicCameraItem.right) {
+            camera.right = this.orthographicCameraItem.right;
+          }
+
+          if (this.orthographicCameraItem.top) {
+            camera.top = this.orthographicCameraItem.top;
+          }
+
+          if (this.orthographicCameraItem.bottom) {
+            camera.bottom = this.orthographicCameraItem.bottom;
+          }
+
           near = this.orthographicCameraItem.near;
           far = this.orthographicCameraItem.far;
           xPos = this.orthographicCameraItem.xPos.startValue;
@@ -489,7 +508,7 @@ export class ThreejsService {
       {
         this.cameras.forEach(
           (camera) => {
-            const cameraItem:  PerspectiveCameraInterface | OrthographicCameraInterface | undefined = this.getCameraItemForId(camera.id);
+            const cameraItem:  CameraInterface | undefined = this.getCameraItemForId(camera.id);
             
             if (cameraItem && cameraItem.animated){
               if (this.animationService.animationItem.pause) {
@@ -587,7 +606,7 @@ export class ThreejsService {
     );
   }
 
-  getCameraItemForId(cameraId: number): PerspectiveCameraInterface | OrthographicCameraInterface | undefined
+  getCameraItemForId(cameraId: number): CameraInterface | undefined
   {
     return this.cameraItems.find(
       (camera: SupportedCameraItems) => camera.id === cameraId

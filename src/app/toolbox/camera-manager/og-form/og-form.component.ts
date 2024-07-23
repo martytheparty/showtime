@@ -1,6 +1,6 @@
 import { Component, OnDestroy, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { OrthographicCameraInterface } from '../../../interfaces/camera-interfaces';
+import { CameraInterface } from '../../../interfaces/camera-interfaces';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
@@ -21,7 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class OgFormComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);
-  cameraItem: OrthographicCameraInterface | undefined;
+  cameraItem: CameraInterface | undefined;
 
   form: FormGroup = new FormGroup({
     bottom: new FormControl(0),
@@ -44,21 +44,23 @@ export class OgFormComponent implements OnDestroy {
     effect(() => {
       this.cameraItem = this.threeJsService.orthographicCameraItemValues();
 
-      this.form.setValue(
-        {
-          bottom: this.cameraItem.bottom,
-          top: this.cameraItem.top,
-          left: this.cameraItem.left,
-          right: this.cameraItem.right,
-          near: this.cameraItem.near,
-          xPos: this.cameraItem.xPos.startValue,
-          yPos: this.cameraItem.yPos.startValue,
-          zPos: this.cameraItem.zPos.startValue,
-          xLookat: this.cameraItem.xLookat.startValue,
-          yLookat: this.cameraItem.yLookat.startValue,
-          zLookat: this.cameraItem.zLookat.startValue,
-          animated: this.cameraItem.animated
-        });
+      if (this.cameraItem !== undefined) {
+        this.form.setValue(
+          {
+            bottom: this.cameraItem.bottom,
+            top: this.cameraItem.top,
+            left: this.cameraItem.left,
+            right: this.cameraItem.right,
+            near: this.cameraItem.near,
+            xPos: this.cameraItem.xPos.startValue,
+            yPos: this.cameraItem.yPos.startValue,
+            zPos: this.cameraItem.zPos.startValue,
+            xLookat: this.cameraItem.xLookat.startValue,
+            yLookat: this.cameraItem.yLookat.startValue,
+            zLookat: this.cameraItem.zLookat.startValue,
+            animated: this.cameraItem.animated
+          });
+      }
 
       const sub = this.form.valueChanges.subscribe(
         () => {

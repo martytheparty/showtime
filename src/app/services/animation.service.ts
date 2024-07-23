@@ -4,7 +4,7 @@ import { SupportedLights, LightInterface } from '../interfaces/light-interface';
 import * as THREE from 'three';
 import { Scene } from 'three';
 import { SceneInterface } from '../interfaces/scene-interface';
-import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
+import { CameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
 import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypes, PropertyMenuItem } from '../interfaces/animations-interfaces';
 
 
@@ -66,7 +66,7 @@ export class AnimationService {
     }
   }
 
-  setAnimationPairs(item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void {
+  setAnimationPairs(item: MeshInterface | LightInterface | CameraInterface | SceneInterface, threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene): void {
     const pair = this.animationsPairs
       .find((pair) => pair.item.id === item.id);
     if (item.animated && !pair) {

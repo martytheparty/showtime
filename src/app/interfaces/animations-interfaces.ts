@@ -1,5 +1,5 @@
 import { Scene } from "three"
-import { OrthographicCameraInterface, PerspectiveCameraInterface, SupportedCameras } from "./camera-interfaces"
+import { CameraInterface, SupportedCameras } from "./camera-interfaces"
 import { LightInterface, SupportedLights } from "./light-interface"
 import { MeshInterface, SupportedMeshes } from "./mesh-interface"
 import { SceneInterface } from "./scene-interface"
@@ -19,7 +19,7 @@ export interface AnimationPropertyDescriptor {
 }
 
 export interface AnimationPair {
-    item: MeshInterface | LightInterface | PerspectiveCameraInterface | OrthographicCameraInterface | SceneInterface,
+    item: MeshInterface | LightInterface | CameraInterface | SceneInterface,
     threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene
 }
 

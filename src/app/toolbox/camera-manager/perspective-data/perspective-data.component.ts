@@ -1,6 +1,6 @@
 import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { PerspectiveCameraInterface } from '../../../interfaces/camera-interfaces';
+import { CameraInterface } from '../../../interfaces/camera-interfaces';
 
 @Component({
   selector: 'app-perspective-data',
@@ -11,7 +11,7 @@ import { PerspectiveCameraInterface } from '../../../interfaces/camera-interface
 })
 export class PerspectiveDataComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
-  cameraItem: PerspectiveCameraInterface | undefined;
+  cameraItem: CameraInterface | undefined;
 
   constructor() {
     effect(
@@ -20,7 +20,7 @@ export class PerspectiveDataComponent {
           this.threeJsService.cameraItemValues().length > 0 &&
           this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
-            this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;        
+            this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;        
         }
       }
     ); 
