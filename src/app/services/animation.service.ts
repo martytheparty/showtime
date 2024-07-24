@@ -4,7 +4,7 @@ import { SupportedLights, LightInterface } from '../interfaces/light-interface';
 import * as THREE from 'three';
 import { Scene } from 'three';
 import { SceneInterface } from '../interfaces/scene-interface';
-import { CameraInterface, SupportedCameraItems, SupportedCameras } from '../interfaces/camera-interfaces';
+import { CameraInterface, SupportedCameras } from '../interfaces/camera-interfaces';
 import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypes, PropertyMenuItem } from '../interfaces/animations-interfaces';
 
 
@@ -190,7 +190,7 @@ export class AnimationService {
 
   updateCameraForTime(
     camera: SupportedCameras,
-    cameraItem: SupportedCameraItems | undefined,
+    cameraItem: CameraInterface | undefined,
     time: number,
     animationTime: number
   ): void {

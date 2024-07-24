@@ -29,4 +29,3 @@ export interface CameraInterface {
 export type CameraType = 'PerspectiveCamera' | 'OrthographicCamera';
 
 export type SupportedCameras = PerspectiveCamera | OrthographicCamera;
-export type SupportedCameraItems = CameraInterface;
