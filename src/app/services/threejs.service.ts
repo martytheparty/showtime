@@ -23,7 +23,6 @@ export class ThreejsService {
   private meshService: MeshService = inject(MeshService);
   private cameraService: CameraService = inject(CameraService);
 
-  cameraType: CameraType = 'PerspectiveCamera';
   width = 0;
   height = 0;
 
@@ -139,19 +138,9 @@ export class ThreejsService {
 
   setupCamera(init = false): void
   {
-    if (this.cameraType === 'PerspectiveCamera')
+    this.cameraService.setupCamera(init);
+    if (this.cameraService.cameraType === 'PerspectiveCamera')
     {
-      this.cameraService.cameras = [new THREE.PerspectiveCamera( 
-        this.cameraService.cameraItem.fov, 
-        this.cameraService.cameraItem.aspect, 
-        this.cameraService.cameraItem.near, 
-        this.cameraService.cameraItem.far)];
-        this.cameraService.cameraItem.id =  this.cameraService.cameras[0].id;
-        this.cameraService.cameras[0].position.z = this.cameraService.cameraItem.zPos.startValue;
-        this.cameraService.cameras[0].position.x = this.cameraService.cameraItem.xPos.startValue;
-        this.cameraService.cameras[0].position.y = this.cameraService.cameraItem.yPos.startValue;
-        this.cameraService.cameras[0].lookAt(this.cameraService.cameraItem.xLookat.startValue, this.cameraService.cameraItem.yLookat.startValue, this.cameraService.cameraItem.zLookat.startValue);
-
         if (this.cameraService.cameraItem.animated) {
           this.animationService.setAnimationPairs(this.cameraService.cameraItem, this.cameraService.cameras[0]);
           this.animationPairSignal.set(this.animationService.animationsPairs);
@@ -161,22 +150,7 @@ export class ThreejsService {
             this.animationPairSignal.set(this.animationService.animationsPairs);
           }
         }
-        this.cameraService.cameraItems = [this.cameraService.cameraItem];
     } else {
-      this.cameraService.cameras = [new THREE.OrthographicCamera(
-        this.cameraService.orthographicCameraItem.left,
-        this.cameraService.orthographicCameraItem.right,
-        this.cameraService.orthographicCameraItem.top,
-        this.cameraService.orthographicCameraItem.bottom,
-        this.cameraService.orthographicCameraItem.near,
-        this.cameraService.orthographicCameraItem.far
-      )];
-      this.cameraService.orthographicCameraItem.id =  this.cameraService.cameras[0].id;
-      this.cameraService.cameras[0].position.z = this.cameraService.orthographicCameraItem.zPos.startValue;
-      this.cameraService.cameras[0].position.x = this.cameraService.orthographicCameraItem.xPos.startValue;
-      this.cameraService.cameras[0].position.y = this.cameraService.orthographicCameraItem.yPos.startValue;
-      this.cameraService.cameras[0].lookAt(this.cameraService.orthographicCameraItem.xLookat.startValue, this.cameraService.orthographicCameraItem.yLookat.startValue, this.cameraService.orthographicCameraItem.zLookat.startValue);
-
       if (this.cameraService.orthographicCameraItem.animated) {
         this.animationService.setAnimationPairs(this.cameraService.orthographicCameraItem, this.cameraService.cameras[0]);
         this.animationPairSignal.set(this.animationService.animationsPairs);
@@ -184,8 +158,6 @@ export class ThreejsService {
         this.animationService.pruneAnimationPairs();
         this.animationPairSignal.set(this.animationService.animationsPairs);
       }
-
-      this.cameraService.cameraItems = [this.cameraService.orthographicCameraItem];
     }
     // setting the camearItemsSignal here caused an error
     // since this method is called from an effect
@@ -202,7 +174,7 @@ export class ThreejsService {
     // so a new camera is created only if the type of camera
     // changes.
     // #1 determine if the current camera type has changed
-    if (this.cameraType === this.cameraService.cameras[0].type)
+    if (this.cameraService.cameraType === this.cameraService.cameras[0].type)
     {
       const currentCamera = this.cameraService.cameras[0];
       let isAnimated = false;
@@ -211,7 +183,7 @@ export class ThreejsService {
       let zPos = 0;
       let far = 0;
       let near = 0;
-      if (this.cameraType === 'PerspectiveCamera')
+      if (this.cameraService.cameraType === 'PerspectiveCamera')
         {
           const camera: PerspectiveCamera = this.cameraService.cameras[0] as PerspectiveCamera;
           // orthagraphic camera does not have these four that's why they need to be separate.
@@ -291,7 +263,7 @@ export class ThreejsService {
 
   updateCameraType(cameraType: CameraType): void
   {
-    this.cameraType = cameraType;
+    this.cameraService.cameraType = cameraType;
 
     // delete the old camera from the pairs list if it exists
     this.animationService.animationsPairs = this.animationService.animationsPairs

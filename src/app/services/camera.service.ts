@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CameraInterface, SupportedCameras } from '../interfaces/camera-interfaces';
+import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/camera-interfaces';
 
 import * as THREE from 'three';
 import { OrthographicCamera } from 'three';
@@ -8,6 +8,8 @@ import { OrthographicCamera } from 'three';
   providedIn: 'root'
 })
 export class CameraService {
+
+  cameraType: CameraType = 'PerspectiveCamera';
 
   cameras: SupportedCameras[] = [new THREE.PerspectiveCamera()];
 
@@ -49,5 +51,39 @@ export class CameraService {
     animated: false
   };
 
+  setupCamera(init = false): void
+  {
+    if (this.cameraType === 'PerspectiveCamera')
+    {
+      this.cameras = [new THREE.PerspectiveCamera( 
+        this.cameraItem.fov, 
+        this.cameraItem.aspect, 
+        this.cameraItem.near, 
+        this.cameraItem.far)];
+        this.cameraItem.id =  this.cameras[0].id;
+        this.cameras[0].position.z = this.cameraItem.zPos.startValue;
+        this.cameras[0].position.x = this.cameraItem.xPos.startValue;
+        this.cameras[0].position.y = this.cameraItem.yPos.startValue;
+        this.cameras[0].lookAt(this.cameraItem.xLookat.startValue, this.cameraItem.yLookat.startValue, this.cameraItem.zLookat.startValue);
+        this.cameraItems = [this.cameraItem];
+    } else {
+      this.cameras = [new THREE.OrthographicCamera(
+        this.orthographicCameraItem.left,
+        this.orthographicCameraItem.right,
+        this.orthographicCameraItem.top,
+        this.orthographicCameraItem.bottom,
+        this.orthographicCameraItem.near,
+        this.orthographicCameraItem.far
+      )];
+      this.orthographicCameraItem.id =  this.cameras[0].id;
+      this.cameras[0].position.z = this.orthographicCameraItem.zPos.startValue;
+      this.cameras[0].position.x = this.orthographicCameraItem.xPos.startValue;
+      this.cameras[0].position.y = this.orthographicCameraItem.yPos.startValue;
+      this.cameras[0].lookAt(this.orthographicCameraItem.xLookat.startValue, this.orthographicCameraItem.yLookat.startValue, this.orthographicCameraItem.zLookat.startValue);
+      this.cameraItems = [this.orthographicCameraItem];
+    }
+  }
+
   constructor() { }
+  
 }
