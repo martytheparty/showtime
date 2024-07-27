@@ -1,6 +1,6 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { PerspectiveCameraInterface } from '../../../interfaces/camera-interfaces';
+import {CameraInterface } from '../../../interfaces/camera-interfaces';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,7 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class PerspectiveFormComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);
 
-  cameraItem: PerspectiveCameraInterface | undefined;
+  cameraItem: CameraInterface | undefined;
 
   form: FormGroup = new FormGroup({
     fov: new FormControl(0),
@@ -112,7 +112,7 @@ export class PerspectiveFormComponent implements OnDestroy {
       () => {
         if (this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
-          this.cameraItem = this.threeJsService.cameraItemValues()[0] as PerspectiveCameraInterface;
+          this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;
           if (this.cameraItem)
           {
             this.form.patchValue({

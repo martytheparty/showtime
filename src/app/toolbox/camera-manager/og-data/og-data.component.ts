@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { OrthographicCameraInterface } from '../../../interfaces/camera-interfaces';
+import { CameraInterface } from '../../../interfaces/camera-interfaces';
 
 @Component({
   selector: 'app-og-data',
@@ -12,7 +12,7 @@ import { OrthographicCameraInterface } from '../../../interfaces/camera-interfac
 export class OgDataComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
 
-  cameraItem: OrthographicCameraInterface | undefined;
+  cameraItem: CameraInterface | undefined;
 
   constructor(){
     effect(() => {
