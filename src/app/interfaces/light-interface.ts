@@ -6,6 +6,7 @@ import { PointLight } from "three"
 export interface LightInterface {
     id: number
     name: string
+    lightType: 'Point' | 'Spot'
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
     zPos: AnimationPropertyDescriptor

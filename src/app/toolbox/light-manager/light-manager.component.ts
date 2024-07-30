@@ -13,6 +13,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-light-manager',
@@ -28,7 +29,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TableFilterComponent,
     MatSliderModule,
     ColorPickerComponent,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule
   ],
   templateUrl: './light-manager.component.html',
   styleUrl: './light-manager.component.scss'
@@ -73,6 +75,7 @@ export class LightManagerComponent implements OnDestroy {
     const lightItem: LightInterface = {
       id: -1,
       name: '',
+      lightType: 'Point',
       xPos: {startValue: 0, endValue: 0, animated: true},
       yPos: {startValue: 0, endValue: 0, animated: true},
       zPos: {startValue: 0, endValue: 0, animated: true},
@@ -91,6 +94,7 @@ export class LightManagerComponent implements OnDestroy {
       {
         id: new FormControl(lightItem.id),
         name: new FormControl(''),
+        lightType: new FormControl(lightItem.lightType),
         xPos: new FormControl(lightItem.xPos.startValue),
         yPos: new FormControl(lightItem.yPos.startValue),
         zPos: new FormControl(lightItem.zPos.startValue),

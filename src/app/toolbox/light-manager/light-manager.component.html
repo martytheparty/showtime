@@ -127,8 +127,23 @@
                         'collapsed':  light.id != expandedLightId
                     }"
                 >
-                <div class="detail-form">
+                <div class="detail-form">                
                     <table>
+                        <tr>
+                            <td>Light Type</td>
+                            <td>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>Choose Light Type</mat-label>
+                                    <mat-select formControlName="lightType">
+                                       <mat-option value="Point">Point</mat-option>
+                                       <mat-option value="Spot">Light</mat-option>
+                                    </mat-select>
+                                    <mat-hint>
+                                       The type of light.
+                                    </mat-hint>
+                                 </mat-form-field>
+                            </td>
+                        </tr>
                         <tr>
                             <td>intensity</td>
                             <td>
