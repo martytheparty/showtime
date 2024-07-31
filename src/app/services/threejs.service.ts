@@ -248,10 +248,15 @@ export class ThreejsService {
       return (light.id === lightItem.id)
     } );
 
-    console.log('light', light);
-
     if (light)
     {
+
+      if (light.type !== lightItem.lightType) {
+        console.log("We need to change the light type", light);
+
+        // TODO Handle animations
+      }
+
       light.position.setX(lightItem.xPos.startValue);
       light.position.setY(lightItem.yPos.startValue);
       light.position.setZ(lightItem.zPos.startValue);
@@ -271,9 +276,7 @@ export class ThreejsService {
         this.animationPairSignal.set(this.animationService.animationsPairs);
       }
 
-      if (light.type !== lightItem.lightType) {
-        console.log("We need to change the light type");
-      }
+
 
       this.lightItems = [... this.lightItems];
       this.lightListSignal.set(this.lightItems);
