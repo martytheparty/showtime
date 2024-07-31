@@ -75,7 +75,7 @@ export class LightManagerComponent implements OnDestroy {
     const lightItem: LightInterface = {
       id: -1,
       name: '',
-      lightType: 'Point',
+      lightType: 'PointLight',
       xPos: {startValue: 0, endValue: 0, animated: true},
       yPos: {startValue: 0, endValue: 0, animated: true},
       zPos: {startValue: 0, endValue: 0, animated: true},
@@ -108,6 +108,7 @@ export class LightManagerComponent implements OnDestroy {
       () => {
         lightItem.name = lightItem.form?.value.name;
         lightItem.intensity = lightItem.form?.value.intensity;
+        lightItem.lightType = lightItem.form?.value.lightType;
 
         if (lightItem.form?.value.xPos || lightItem.form?.value.xPos === 0) {
           const xPosition = parseFloat(lightItem.form.value.xPos);
