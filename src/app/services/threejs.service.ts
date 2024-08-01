@@ -3,7 +3,7 @@ import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@a
 import * as THREE from 'three';
 import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
+import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, SpotLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
@@ -226,34 +226,63 @@ export class ThreejsService {
 
   addLight(lightItem: LightInterface): LightInterface
   {
-    this.lightItems.push(lightItem);
+    /* 
+      Sometimes a new light is added for changes (like changing from point light to spotlight)
+      so a new light must be created for the scene, but the light item should NOT be re-added or
+      there will be a duplicate.
+    */
+    const existingLight = this.lightItems.find( (light: LightInterface) => {
+      return (light.id === lightItem.id)
+    } );
+
+    if (existingLight === undefined)
+    {
+      this.lightItems.push(lightItem);
+    }
+    
     this.lightItems = [... this.lightItems];
-    const light = new THREE.PointLight();
-    this.lights.push(light);
-    light.intensity = lightItem.intensity;
-    light.position.setX(lightItem.xPos.startValue);
-    light.position.setY(lightItem.yPos.startValue);
-    light.position.setZ(lightItem.zPos.startValue);
-    lightItem.id = light.id;
-    light.castShadow = lightItem.castShadow;
+    let light;
+    if(lightItem.lightType === "PointLight") {
+      // create a new pointlight
+      light = new THREE.PointLight();
+    } else if (lightItem.lightType === "SpotLight") {
+      // create a new spotlight
+      light = new THREE.SpotLight();
+    }
+    const threeLight = light as SupportedLights;
+    this.lights.push(threeLight);
+    threeLight.intensity = lightItem.intensity;
+    threeLight.position.setX(lightItem.xPos.startValue);
+    threeLight.position.setY(lightItem.yPos.startValue);
+    threeLight.position.setZ(lightItem.zPos.startValue);
+    lightItem.id = threeLight.id;
+    threeLight.castShadow = lightItem.castShadow;
     this.lightListSignal.set(this.lightItems);
-    this.scenes[0].add( light );
+    this.scenes[0].add( threeLight );
 
     return lightItem;
   }
 
   updateLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight) => {
+    const light = this.lights.find( (light: PointLight | SpotLight) => {
       return (light.id === lightItem.id)
     } );
 
     if (light)
     {
-
       if (light.type !== lightItem.lightType) {
-        console.log("We need to change the light type", light);
 
+        const light = this.lights.find( (light: PointLight | SpotLight) => {
+          return (light.id === lightItem.id)
+        } ) as SupportedLights;
+
+        // remove from list
+        this.lights = this.lights.filter((light) => light.id !== lightItem.id);
+        // remove from scene
+        this.scenes[0].remove(light);
+
+        this.addLight(lightItem);
         // TODO Handle animations
       }
 
@@ -275,9 +304,6 @@ export class ThreejsService {
         this.animationService.pruneAnimationPairs();
         this.animationPairSignal.set(this.animationService.animationsPairs);
       }
-
-
-
       this.lightItems = [... this.lightItems];
       this.lightListSignal.set(this.lightItems);
 
@@ -288,7 +314,7 @@ export class ThreejsService {
 
   deleteLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight) => {
+    const light = this.lights.find( (light: PointLight | SpotLight) => {
       return (light.id === lightItem.id)
     } );
 
