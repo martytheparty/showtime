@@ -56,6 +56,15 @@ export class AnimationService {
 
   constructor() { }
 
+  updateLight(light: SupportedLights): void {
+    const pair: AnimationPair = this.animationsPairs
+                .find( (aniPair: AnimationPair) => {
+                  return (aniPair.item.id === light.id)
+                } ) as AnimationPair;
+
+    pair.threeObj = light;
+  }
+
   pruneAnimationPairs(): void {
     if (this.animationsPairs.length > 0) {
       // basically deleted any pairs that are not animated
