@@ -66,6 +66,15 @@ export class LightManagerComponent implements OnDestroy {
             }
           );
         }
+
+        // determine if the row should be openned due to id change
+        this.lightsList.forEach( (lightItem: LightInterface) => 
+          {
+            if (this.expandedLightId === lightItem.previousId) {
+              this.expandedLightId = lightItem.id;
+            }
+          }
+          );
       }
     ); 
   }
@@ -85,7 +94,8 @@ export class LightManagerComponent implements OnDestroy {
       greenColor: 255,
       blueColor: 255,
       animated: false,
-      type: 'light'
+      type: 'light',
+      previousId: -1
     };
 
     this.threejsService.addLight(lightItem);

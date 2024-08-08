@@ -272,7 +272,7 @@ export class ThreejsService {
     if (light)
     {
       if (light.type !== lightItem.lightType) {
-
+        lightItem.previousId = lightItem.id;
         const light = this.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id)
         } ) as SupportedLights;
@@ -286,7 +286,11 @@ export class ThreejsService {
         const newLight = this.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id);
         } ) as SupportedLights;
-        this.animationService.updateLight(newLight);
+
+        if (lightItem.animated) {
+          this.animationService.updateLight(newLight);
+        }
+
       }
 
       light.position.setX(lightItem.xPos.startValue);

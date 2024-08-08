@@ -19,6 +19,7 @@ export interface LightInterface {
     sub?: Subscription
     animated: boolean
     type: 'light'
+    previousId: number
 }
 
 export type SupportedLights = PointLight | SpotLight;

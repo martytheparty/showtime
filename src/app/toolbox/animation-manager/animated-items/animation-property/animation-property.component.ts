@@ -108,7 +108,8 @@ export class AnimationPropertyComponent {
 
           let prop = item[this.propertyName()] as AnimationPropertyDescriptor;
 
-          if (prop?.startValue && prop?.endValue) {
+          if ((prop?.startValue || prop?.startValue === 0) 
+                && (prop?.endValue || prop?.endValue === 0)) {
             // technically a property for a type for mesh
             // may exist on lights but the poperty on one
             // is animated and the property on the other
@@ -269,6 +270,7 @@ export class AnimationPropertyComponent {
     // keeps that table in sync with the threeJS
     if (property === 'startValue') {
       tableItem['start'] = value;
+      tableItem['current'] = value;
     } else {
       tableItem['end'] = value;
     }
