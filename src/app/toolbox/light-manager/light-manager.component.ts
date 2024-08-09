@@ -117,8 +117,15 @@ export class LightManagerComponent implements OnDestroy {
     lightItem.form.valueChanges.subscribe(
       () => {
         lightItem.name = lightItem.form?.value.name;
-        lightItem.intensity = lightItem.form?.value.intensity;
         lightItem.lightType = lightItem.form?.value.lightType;
+
+        if (lightItem.form?.value.intensity || lightItem.form?.value.intensity === 0) {
+          const intensity = parseFloat(lightItem.form.value.intensity);
+          if (!isNaN(intensity))
+          {
+            lightItem.intensity = intensity;
+          }
+        }
 
         if (lightItem.form?.value.xPos || lightItem.form?.value.xPos === 0) {
           const xPosition = parseFloat(lightItem.form.value.xPos);
@@ -144,9 +151,6 @@ export class LightManagerComponent implements OnDestroy {
           }
         }
 
-        // this is updated very often by the slider... this may need to be debounced
-        // if there are performance issues.
-        lightItem.intensity = lightItem.form?.value.intensity;
         lightItem.name = lightItem.form?.value.name;
         lightItem.castShadow = lightItem.form?.value.castShadow;
         lightItem.animated = lightItem.form?.value.animated;
@@ -171,7 +175,8 @@ export class LightManagerComponent implements OnDestroy {
               greenColor: lightItem.greenColor,
               blueColor: lightItem.blueColor,
               castShadow: lightItem.castShadow,
-              animated: lightItem.animated
+              animated: lightItem.animated,
+              intensity: lightItem.intensity
             }, { emitEvent: false}
           )
         } else {

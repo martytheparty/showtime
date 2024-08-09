@@ -147,11 +147,13 @@
                         <tr>
                             <td>intensity</td>
                             <td>
-                                <form [formGroup]="light.form">
-                                    <mat-slider min="0" max="1" step=".01" showTickMarks discrete [displayWith]="formatLabel">
-                                        <input formControlName="intensity" matSliderThumb>
-                                    </mat-slider>
-                                </form>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>Intensity</mat-label>
+                                    <input formControlName="intensity" matInput >
+                                    <mat-hint>100% intensity is 1</mat-hint>
+                                </mat-form-field>
+
+
                             </td>
                         </tr>
                         <tr>
