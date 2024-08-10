@@ -36,7 +36,8 @@ export class AnimationService {
     { name: 'Z Rotation', itemValue: 'zRotation', threeProperty: 'rotation', threeSubProperty: 'z' },
     { name: 'Red', itemValue: 'redColor', threeProperty: 'background', threeSubProperty: 'r' },
     { name: 'Green', itemValue: 'greenColor', threeProperty: 'background', threeSubProperty: 'g' },
-    { name: 'Blue', itemValue: 'blueColor', threeProperty: 'background', threeSubProperty: 'b' }
+    { name: 'Blue', itemValue: 'blueColor', threeProperty: 'background', threeSubProperty: 'b' },
+    { name: 'Intensity', itemValue: 'intensity', threeProperty: 'intensity', threeSubProperty: '' }
   ];
 
   supportedPropsDictionary: MappedSupportedPropertyTypes = {
@@ -51,7 +52,8 @@ export class AnimationService {
     zRotation: ['mesh'],
     redColor: ['Scene'],
     greenColor: ['Scene'],
-    blueColor: ['Scene']
+    blueColor: ['Scene'],
+    intensity: ['light']
   };
 
   constructor() { }
@@ -145,6 +147,7 @@ export class AnimationService {
       let xSpeed = 0;
       let ySpeed = 0;
       let zSpeed = 0;
+      let intensitySpeed = 0;
 
       if (lightItem.xPos.animated) {
         xSpeed = (lightItem.xPos.endValue * 1 - lightItem.xPos.startValue * 1) / animationTime;
@@ -158,9 +161,14 @@ export class AnimationService {
         zSpeed = (lightItem.zPos.endValue * 1 - lightItem.zPos.startValue * 1) / animationTime;
       }
 
+      if (lightItem.intensity.animated) {
+        intensitySpeed = (lightItem.intensity.endValue * 1 - lightItem.intensity.startValue * 1) / animationTime;
+      }
+
       light.position.setX(lightItem.xPos.startValue * 1 + xSpeed * time);
       light.position.setY(lightItem.yPos.startValue * 1 + ySpeed * time);
       light.position.setZ(lightItem.zPos.startValue * 1 + zSpeed * time);
+      light.intensity = lightItem.intensity.startValue * 1 + intensitySpeed * time;
     }
   }
 

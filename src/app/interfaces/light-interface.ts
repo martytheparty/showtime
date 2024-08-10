@@ -13,7 +13,7 @@ export interface LightInterface {
     redColor: number
     greenColor: number
     blueColor: number
-    intensity: number
+    intensity: AnimationPropertyDescriptor
     castShadow: boolean
     form?: FormGroup
     sub?: Subscription

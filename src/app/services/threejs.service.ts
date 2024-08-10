@@ -251,7 +251,7 @@ export class ThreejsService {
     }
     const threeLight = light as SupportedLights;
     this.lights.push(threeLight);
-    threeLight.intensity = lightItem.intensity;
+    threeLight.intensity = lightItem.intensity.startValue;
     threeLight.position.setX(lightItem.xPos.startValue);
     threeLight.position.setY(lightItem.yPos.startValue);
     threeLight.position.setZ(lightItem.zPos.startValue);
@@ -296,7 +296,7 @@ export class ThreejsService {
       light.position.setX(lightItem.xPos.startValue);
       light.position.setY(lightItem.yPos.startValue);
       light.position.setZ(lightItem.zPos.startValue);
-      light.intensity = lightItem.intensity;
+      light.intensity = lightItem.intensity.startValue;
       if (lightItem.name)
       {
         light.name = lightItem.name;
