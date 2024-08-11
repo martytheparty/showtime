@@ -228,6 +228,8 @@ export class AnimationPropertyComponent {
         current = threeObj[this.threePropertyName()].g;
       } else if (this.threePropertyName() === 'background'&& this.threeSubPropertyName() === 'b') {
         current = threeObj[this.threePropertyName()].b;
+      } else if (this.threePropertyName() === 'intensity') {
+        current = threeObj[this.threePropertyName()];
       } else {
         current = threeObj[this.threePropertyName()][this.threeSubPropertyName()];
       }
@@ -258,7 +260,7 @@ export class AnimationPropertyComponent {
     if ('xLookat' in item)
     {
       item = item as CameraInterface;
-    } else if ('background') {
+    } else if ('background' in item) {
       item = item as SceneInterface;
     } else {
       item = item as MeshInterface | LightInterface;
@@ -266,7 +268,6 @@ export class AnimationPropertyComponent {
 
     let value = parseFloat(target.value);
     const prop = item[this.propertyName()] as AnimationPropertyDescriptor;
-
     // keeps that table in sync with the threeJS
     if (property === 'startValue') {
       tableItem['start'] = value;
