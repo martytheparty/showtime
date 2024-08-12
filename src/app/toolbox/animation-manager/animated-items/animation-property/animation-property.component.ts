@@ -76,9 +76,6 @@ export class AnimationPropertyComponent {
           }
         );
       }
-
-
-
     } );
   }
 
@@ -202,8 +199,9 @@ export class AnimationPropertyComponent {
 
   getCurrent(id: number): number {
     const pair: AnimationPair = this.getPair(id);
-    if (pair){
-      const threeObj = pair.threeObj as any;
+    const threeObj = pair.threeObj as any;
+
+    if (pair && threeObj[this.threePropertyName()] !== undefined){
       let item = pair.item as any;
 
       // this code allows the transpiler to compile and 
