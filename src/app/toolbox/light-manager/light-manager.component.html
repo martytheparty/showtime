@@ -152,10 +152,50 @@
                                     <input formControlName="intensity" matInput >
                                     <mat-hint>100% intensity is 1</mat-hint>
                                 </mat-form-field>
-
-
                             </td>
                         </tr>
+                        @if (light.lightType === 'SpotLight') {
+                        <tr>
+                            <td>angle</td>
+                            <td>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>Angle</mat-label>
+                                    <input formControlName="angle" matInput >
+                                    <mat-hint>The spread of the spotlight.</mat-hint>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>penumbra</td>
+                            <td>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>Penumbra</mat-label>
+                                    <input formControlName="penumbra" matInput >
+                                    <mat-hint>The gradient transition 0 to 1.</mat-hint>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>decay</td>
+                            <td>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>Decay</mat-label>
+                                    <input formControlName="decay" matInput >
+                                    <mat-hint>Intensity decrease rate.</mat-hint>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>x-target</td>
+                            <td>
+                                <mat-form-field [formGroup]="light.form">
+                                    <mat-label>x-target</mat-label>
+                                    <input formControlName="targetXPos" matInput >
+                                    <mat-hint>Target X Position.</mat-hint>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    }
                         <tr>
                             <td>colors</td>
                             <td><app-color-picker 

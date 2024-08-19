@@ -95,7 +95,16 @@ export class LightManagerComponent implements OnDestroy {
       blueColor: 255,
       animated: false,
       type: 'light',
-      previousId: -1
+      previousId: -1,
+      angle: 1,
+      penumbra: 0,
+      decay: 1,
+      target: {
+        xPos: 0,
+        yPos: 0,
+        zPos: 0,
+        addedToScene: false
+      }
     };
 
     this.threejsService.addLight(lightItem);
@@ -110,7 +119,11 @@ export class LightManagerComponent implements OnDestroy {
         zPos: new FormControl(lightItem.zPos.startValue),
         intensity: new FormControl(lightItem.intensity.startValue),
         castShadow: new FormControl(lightItem.castShadow),
-        animated: new FormControl(lightItem.animated)
+        animated: new FormControl(lightItem.animated),
+        angle: new FormControl(lightItem.angle),
+        penumbra: new FormControl(lightItem.penumbra),
+        decay: new FormControl(lightItem.decay),
+        targetXPos: new FormControl(lightItem.target.xPos)
       }
     );
 
@@ -118,6 +131,38 @@ export class LightManagerComponent implements OnDestroy {
       () => {
         lightItem.name = lightItem.form?.value.name;
         lightItem.lightType = lightItem.form?.value.lightType;
+
+        if (lightItem.form?.value.angle || lightItem.form?.value.angle === 0) {
+          const angle = parseFloat(lightItem.form.value.angle);
+          if (!isNaN(angle))
+          {
+            lightItem.angle = lightItem.form?.value.angle;
+          }
+        }
+
+        if (lightItem.form?.value.penumbra || lightItem.form?.value.penumbra === 0) {
+          const penumbra = parseFloat(lightItem.form.value.penumbra);
+          if (!isNaN(penumbra))
+          {
+            lightItem.penumbra = lightItem.form?.value.penumbra;
+          }
+        }
+
+        if (lightItem.form?.value.decay || lightItem.form?.value.decay === 0) {
+          const decay = parseFloat(lightItem.form.value.decay);
+          if (!isNaN(decay))
+          {
+            lightItem.decay = lightItem.form?.value.decay;
+          }
+        }
+
+        if (lightItem.form?.value.targetXPos || lightItem.form?.value.targetXPos === 0) {
+          const targetXPos = parseFloat(lightItem.form.value.targetXPos);
+          if (!isNaN(targetXPos))
+          {
+            lightItem.target.xPos = lightItem.form?.value.targetXPos * 1;
+          }
+        }
 
         if (lightItem.form?.value.intensity || lightItem.form?.value.intensity === 0) {
           const intensity = parseFloat(lightItem.form.value.intensity);
@@ -176,7 +221,11 @@ export class LightManagerComponent implements OnDestroy {
               blueColor: lightItem.blueColor,
               castShadow: lightItem.castShadow,
               animated: lightItem.animated,
-              intensity: lightItem.intensity.startValue
+              intensity: lightItem.intensity.startValue,
+              angle: lightItem.angle,
+              penumbra: lightItem.penumbra,
+              decay: lightItem.decay,
+              targetXPos: lightItem.target.xPos
             }, { emitEvent: false}
           )
         } else {

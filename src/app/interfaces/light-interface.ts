@@ -20,6 +20,18 @@ export interface LightInterface {
     animated: boolean
     type: 'light'
     previousId: number
+    angle: number,
+    penumbra: number,
+    decay: number,
+    target: TargetObject, // high interest tech debt should be removed when grouping is implemented
+}
+
+export interface TargetObject {
+    xPos: number,
+    yPos: number,
+    zPos: number,
+    id?: number,
+    addedToScene: boolean
 }
 
 export type SupportedLights = PointLight | SpotLight;

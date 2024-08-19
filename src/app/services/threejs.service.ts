@@ -26,6 +26,7 @@ export class ThreejsService {
   width = 0;
   height = 0;
 
+
   rendererItem: RendererInterface = { castShadows: true };
   lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -297,6 +298,29 @@ export class ThreejsService {
       light.position.setY(lightItem.yPos.startValue);
       light.position.setZ(lightItem.zPos.startValue);
       light.intensity = lightItem.intensity.startValue;
+      
+      if (lightItem.lightType === 'SpotLight')
+      {
+        const spotLight = light as SpotLight;
+        spotLight.angle = lightItem.angle;
+        spotLight.penumbra = lightItem.penumbra;
+        spotLight.decay = lightItem.decay;
+        if (!lightItem.target?.id)
+        {
+          const lightTargetObject = new THREE.Object3D();
+          spotLight.target = lightTargetObject;
+          lightItem.target.id = spotLight.target.id;
+          this.scenes[0].add(spotLight.target);
+          lightItem.target.addedToScene = true;
+        }
+
+        spotLight.target.position.setX(lightItem.target.xPos); 
+        console.log('spotlight item id', lightItem.id);
+        console.log('spotlight item target id', lightItem.target.id);
+        console.log('spotlight', spotLight.id);
+        console.log('spotlight target', spotLight.target.id);
+      }
+
       if (lightItem.name)
       {
         light.name = lightItem.name;
