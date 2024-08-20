@@ -266,7 +266,7 @@ export class ThreejsService {
 
   updateLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight | SpotLight) => {
+    let light = this.lights.find( (light: PointLight | SpotLight) => {
       return (light.id === lightItem.id)
     } );
 
@@ -274,20 +274,20 @@ export class ThreejsService {
     {
       if (light.type !== lightItem.lightType) {
         lightItem.previousId = lightItem.id;
-        const light = this.lights.find( (light: SupportedLights) => {
+        let oldLight = this.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id)
         } ) as SupportedLights;
 
         // remove from list
         this.lights = this.lights.filter((light) => light.id !== lightItem.id);
         // remove from scene
-        this.scenes[0].remove(light);
+        this.scenes[0].remove(oldLight);
 
         this.addLight(lightItem);
         const newLight = this.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id);
         } ) as SupportedLights;
-
+        light = newLight;
         if (lightItem.animated) {
           this.animationService.updateLight(newLight);
         }
@@ -301,7 +301,7 @@ export class ThreejsService {
       
       if (lightItem.lightType === 'SpotLight')
       {
-        const spotLight = light as SpotLight;
+        const spotLight = light as SpotLight; // this was assigning the passed in light which was the old light
         spotLight.angle = lightItem.angle;
         spotLight.penumbra = lightItem.penumbra;
         spotLight.decay = lightItem.decay;
@@ -315,10 +315,6 @@ export class ThreejsService {
         }
 
         spotLight.target.position.setX(lightItem.target.xPos); 
-        console.log('spotlight item id', lightItem.id);
-        console.log('spotlight item target id', lightItem.target.id);
-        console.log('spotlight', spotLight.id);
-        console.log('spotlight target', spotLight.target.id);
       }
 
       if (lightItem.name)
@@ -377,7 +373,6 @@ export class ThreejsService {
   {
     const mesh: SupportedMeshes = await this.meshService.addMesh(meshItem);
     //this.updateMesh(meshItem);  // I don't think that this is needed  
-    console.log(mesh);
     this.meshListSignal.set(this.meshService.meshItems);
     this.scenes[0].add( mesh );
 
