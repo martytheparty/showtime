@@ -315,6 +315,7 @@ export class ThreejsService {
         }
 
         spotLight.target.position.setX(lightItem.target.xPos); 
+        spotLight.target.position.setY(lightItem.target.yPos); 
       }
 
       if (lightItem.name)
