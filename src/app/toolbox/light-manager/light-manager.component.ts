@@ -124,7 +124,8 @@ export class LightManagerComponent implements OnDestroy {
         penumbra: new FormControl(lightItem.penumbra),
         decay: new FormControl(lightItem.decay),
         targetXPos: new FormControl(lightItem.target.xPos),
-        targetYPos: new FormControl(lightItem.target.yPos)
+        targetYPos: new FormControl(lightItem.target.yPos),
+        targetZPos: new FormControl(lightItem.target.zPos)
       }
     );
 
@@ -170,6 +171,14 @@ export class LightManagerComponent implements OnDestroy {
           if (!isNaN(targetYPos))
           {
             lightItem.target.yPos = lightItem.form?.value.targetYPos * 1;
+          }
+        }
+
+        if (lightItem.form?.value.targetZPos || lightItem.form?.value.targetZPos === 0) {
+          const targetZPos = parseFloat(lightItem.form.value.targetZPos);
+          if (!isNaN(targetZPos))
+          {
+            lightItem.target.zPos = lightItem.form?.value.targetZPos * 1;
           }
         }
 
@@ -235,7 +244,8 @@ export class LightManagerComponent implements OnDestroy {
               penumbra: lightItem.penumbra,
               decay: lightItem.decay,
               targetXPos: lightItem.target.xPos,
-              targetYPos: lightItem.target.yPos
+              targetYPos: lightItem.target.yPos,
+              targetZPos: lightItem.target.zPos
             }, { emitEvent: false}
           )
         } else {
