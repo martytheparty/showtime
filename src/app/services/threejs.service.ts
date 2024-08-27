@@ -1,8 +1,6 @@
 import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
-import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, SpotLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/camera-interfaces';
@@ -13,6 +11,7 @@ import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, 
 import { AnimationService } from './animation.service';
 import { MeshService } from './mesh.service';
 import { CameraService } from './camera.service';
+import { LightService } from './light.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +21,13 @@ export class ThreejsService {
   private animationService: AnimationService = inject(AnimationService);
   private meshService: MeshService = inject(MeshService);
   private cameraService: CameraService = inject(CameraService);
+  private lightService: LightService = inject(LightService);
 
   width = 0;
   height = 0;
 
 
   rendererItem: RendererInterface = { castShadows: true };
-  lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scenes: Scene[] = [new THREE.Scene()]
   sceneItem: SceneInterface = {
@@ -42,16 +41,13 @@ export class ThreejsService {
   };
   sceneItems: SceneInterface[] = [this.sceneItem];
 
-  lightItems: LightInterface[] = [];
-  
-
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
   private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshService.meshItems);
   meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
-  private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightItems);
+  private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightService.lightItems);
   lightListValues: Signal<LightInterface[]> = computed( () => this.lightListSignal() );
 
   private cameraItemSignal: WritableSignal<CameraInterface[]> = signal(this.cameraService.cameraItems);
@@ -227,38 +223,9 @@ export class ThreejsService {
 
   addLight(lightItem: LightInterface): LightInterface
   {
-    /* 
-      Sometimes a new light is added for changes (like changing from point light to spotlight)
-      so a new light must be created for the scene, but the light item should NOT be re-added or
-      there will be a duplicate.
-    */
-    const existingLight = this.lightItems.find( (light: LightInterface) => {
-      return (light.id === lightItem.id)
-    } );
+    const threeLight = this.lightService.addLight(lightItem);
 
-    if (existingLight === undefined)
-    {
-      this.lightItems.push(lightItem);
-    }
-    
-    this.lightItems = [... this.lightItems];
-    let light;
-    if(lightItem.lightType === "PointLight") {
-      // create a new pointlight
-      light = new THREE.PointLight();
-    } else if (lightItem.lightType === "SpotLight") {
-      // create a new spotlight
-      light = new THREE.SpotLight();
-    }
-    const threeLight = light as SupportedLights;
-    this.lights.push(threeLight);
-    threeLight.intensity = lightItem.intensity.startValue;
-    threeLight.position.setX(lightItem.xPos.startValue);
-    threeLight.position.setY(lightItem.yPos.startValue);
-    threeLight.position.setZ(lightItem.zPos.startValue);
-    lightItem.id = threeLight.id;
-    threeLight.castShadow = lightItem.castShadow;
-    this.lightListSignal.set(this.lightItems);
+    this.lightListSignal.set(this.lightService.lightItems);
     this.scenes[0].add( threeLight );
 
     return lightItem;
@@ -266,7 +233,7 @@ export class ThreejsService {
 
   updateLight(lightItem: LightInterface): void
   {
-    let light = this.lights.find( (light: PointLight | SpotLight) => {
+    let light = this.lightService.lights.find( (light: PointLight | SpotLight) => {
       return (light.id === lightItem.id)
     } );
 
@@ -274,24 +241,23 @@ export class ThreejsService {
     {
       if (light.type !== lightItem.lightType) {
         lightItem.previousId = lightItem.id;
-        let oldLight = this.lights.find( (light: SupportedLights) => {
+        let oldLight = this.lightService.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id)
         } ) as SupportedLights;
 
         // remove from list
-        this.lights = this.lights.filter((light) => light.id !== lightItem.id);
+        this.lightService.lights = this.lightService.lights.filter((light) => light.id !== lightItem.id);
         // remove from scene
         this.scenes[0].remove(oldLight);
 
         this.addLight(lightItem);
-        const newLight = this.lights.find( (light: SupportedLights) => {
+        const newLight = this.lightService.lights.find( (light: SupportedLights) => {
           return (light.id === lightItem.id);
         } ) as SupportedLights;
         light = newLight;
         if (lightItem.animated) {
           this.animationService.updateLight(newLight);
         }
-
       }
 
       light.position.setX(lightItem.xPos.startValue);
@@ -333,8 +299,8 @@ export class ThreejsService {
         this.animationService.pruneAnimationPairs();
         this.animationPairSignal.set(this.animationService.animationsPairs);
       }
-      this.lightItems = [... this.lightItems];
-      this.lightListSignal.set(this.lightItems);
+      this.lightService.lightItems = [... this.lightService.lightItems];
+      this.lightListSignal.set(this.lightService.lightItems);
 
       this.animationService.animationsPairs = [... this.animationService.animationsPairs];
       this.animationPairSignal.set(this.animationService.animationsPairs);
@@ -343,7 +309,7 @@ export class ThreejsService {
 
   deleteLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight | SpotLight) => {
+    const light = this.lightService.lights.find( (light: PointLight | SpotLight) => {
       return (light.id === lightItem.id)
     } );
 
@@ -352,11 +318,11 @@ export class ThreejsService {
     if(light)
     {
       this.scenes[0].remove(light);
-      this.lights = this.lights.filter((light) => light.id !== id);
+      this.lightService.lights = this.lightService.lights.filter((light) => light.id !== id);
 
-      this.lightItems = this.lightItems.filter((light) => light.id !== id);
+      this.lightService.lightItems = this.lightService.lightItems.filter((light) => light.id !== id);
 
-      this.lightListSignal.set(this.lightItems);
+      this.lightListSignal.set(this.lightService.lightItems);
 
       // delete any animation pairs that have been deleted
       // huge risk of a memory leak if stale pairs are not
@@ -463,7 +429,7 @@ export class ThreejsService {
             }
           }
         );
-        this.lights.forEach(
+        this.lightService.lights.forEach(
           (light) => {
             const lightItem: LightInterface | undefined = this.getLightItemForId(light.id);
 
@@ -512,12 +478,12 @@ export class ThreejsService {
         // this doesn't work by itself the lights need to be turned off as well
         this.renderer.shadowMap.enabled = this.rendererItem.castShadows;
 
-        this.lights.forEach(
+        this.lightService.lights.forEach(
           (light) => 
           {
             if (this.renderer.shadowMap.enabled)
             {
-              const lightItem: LightInterface | undefined = this.lightItems.find(li => li.id === light.id);
+              const lightItem: LightInterface | undefined = this.lightService.lightItems.find(li => li.id === light.id);
               if (lightItem)
               {
                 light.castShadow = lightItem.castShadow;
@@ -545,7 +511,7 @@ export class ThreejsService {
 
   getLightItemForId(lightId: number): LightInterface | undefined
   {
-    return this.lightItems.find(
+    return this.lightService.lightItems.find(
       (li: LightInterface) => li.id === lightId
     );
   }
@@ -578,7 +544,7 @@ export class ThreejsService {
       }
     );
 
-    this.lights.forEach(
+    this.lightService.lights.forEach(
       (light) => {
         this.animationService.updateLightForTime(light, this.getLightItemForId(light.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
