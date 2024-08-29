@@ -223,6 +223,7 @@ export class ThreejsService {
 
   addLight(lightItem: LightInterface): LightInterface
   {
+    // note: the lightItem.id gets set in the addLight function
     const threeLight = this.lightService.addLight(lightItem);
 
     this.lightListSignal.set(this.lightService.lightItems);
@@ -233,78 +234,70 @@ export class ThreejsService {
 
   updateLight(lightItem: LightInterface): void
   {
-    let light = this.lightService.lights.find( (light: PointLight | SpotLight) => {
-      return (light.id === lightItem.id)
-    } );
+    let light = this.lightService.getThreeJsLight(lightItem.id);
 
     if (light)
     {
       if (light.type !== lightItem.lightType) {
         lightItem.previousId = lightItem.id;
-        let oldLight = this.lightService.lights.find( (light: SupportedLights) => {
-          return (light.id === lightItem.id)
-        } ) as SupportedLights;
+        let oldLight = this.lightService.getThreeJsLight(lightItem.id);
 
         // remove from list
-        this.lightService.lights = this.lightService.lights.filter((light) => light.id !== lightItem.id);
+        this.lightService.deleteThreeJsLight(lightItem.id);
         // remove from scene
         this.scenes[0].remove(oldLight);
 
+        // note - the lightItem.id gets updated in the addLight function.
         this.addLight(lightItem);
-        const newLight = this.lightService.lights.find( (light: SupportedLights) => {
-          return (light.id === lightItem.id);
-        } ) as SupportedLights;
-        light = newLight;
+
+        light = this.lightService.getThreeJsLight(lightItem.id);
         if (lightItem.animated) {
-          this.animationService.updateLight(newLight);
+          this.animationService.updateLight(light);
         }
       }
 
-      light.position.setX(lightItem.xPos.startValue);
-      light.position.setY(lightItem.yPos.startValue);
-      light.position.setZ(lightItem.zPos.startValue);
-      light.intensity = lightItem.intensity.startValue;
-      
       if (lightItem.lightType === 'SpotLight')
       {
         const spotLight = light as SpotLight; // this was assigning the passed in light which was the old light
-        spotLight.angle = lightItem.angle;
-        spotLight.penumbra = lightItem.penumbra;
-        spotLight.decay = lightItem.decay;
-        if (!lightItem.target?.id)
-        {
-          const lightTargetObject = new THREE.Object3D();
-          spotLight.target = lightTargetObject;
-          lightItem.target.id = spotLight.target.id;
-          this.scenes[0].add(spotLight.target);
-          lightItem.target.addedToScene = true;
-        }
-
-        spotLight.target.position.setX(lightItem.target.xPos); 
-        spotLight.target.position.setY(lightItem.target.yPos); 
-        spotLight.target.position.setZ(lightItem.target.zPos); 
+        // target code should be replaced by future grouping code
+        this.attachSpotlightTarget(spotLight, lightItem)
       }
 
-      if (lightItem.name)
-      {
-        light.name = lightItem.name;
-      }
-      light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
-      light.castShadow = lightItem.castShadow;
+      this.lightService.updateLight(lightItem);
+      this.processAnimationsForLights(lightItem, light);
+      this.publishLights();
+    }
+  }
 
-      if (lightItem.animated && light) {
-        this.animationService.setAnimationPairs(lightItem, light);
-        this.animationPairSignal.set(this.animationService.animationsPairs);
-      } else {
-        this.animationService.pruneAnimationPairs();
-        this.animationPairSignal.set(this.animationService.animationsPairs);
-      }
-      this.lightService.lightItems = [... this.lightService.lightItems];
-      this.lightListSignal.set(this.lightService.lightItems);
+  attachSpotlightTarget(spotLight: SpotLight, lightItem: LightInterface): void
+  {
+    if (!lightItem.target?.id)
+    {
+      const lightTargetObject = new THREE.Object3D();
+      spotLight.target = lightTargetObject;
+      lightItem.target.id = spotLight.target.id;
+      this.scenes[0].add(spotLight.target);
+      lightItem.target.addedToScene = true;
+    }
+  }
 
-      this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+  processAnimationsForLights(lightItem: LightInterface, light: SupportedLights): void
+  {
+    if (lightItem.animated && light) {
+      this.animationService.setAnimationPairs(lightItem, light);
+      this.animationPairSignal.set(this.animationService.animationsPairs);
+    } else {
+      this.animationService.pruneAnimationPairs();
       this.animationPairSignal.set(this.animationService.animationsPairs);
     }
+
+    this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+    this.animationPairSignal.set(this.animationService.animationsPairs);
+  }
+  publishLights(): void
+  {
+    this.lightService.lightItems = [... this.lightService.lightItems];
+    this.lightListSignal.set(this.lightService.lightItems);
   }
 
   deleteLight(lightItem: LightInterface): void

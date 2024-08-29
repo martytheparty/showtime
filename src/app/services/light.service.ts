@@ -51,5 +51,51 @@ export class LightService {
     return threeLight;
   }
 
+  updateLight(lightItem: LightInterface): void
+  {
+
+    let light = this.lights.find( (light: PointLight | SpotLight) => {
+      return (light.id === lightItem.id)
+    } ) as SupportedLights;
+
+    light.position.setX(lightItem.xPos.startValue);
+    light.position.setY(lightItem.yPos.startValue);
+    light.position.setZ(lightItem.zPos.startValue);
+    light.intensity = lightItem.intensity.startValue;
+
+    if (lightItem.lightType === 'SpotLight')
+      {
+        const spotLight = light as SpotLight; // this was assigning the passed in light which was the old light
+        // target code should be replaced by future grouping code
+        
+        spotLight.angle = lightItem.angle;
+        spotLight.penumbra = lightItem.penumbra;
+        spotLight.decay = lightItem.decay;
+        spotLight.target.position.setX(lightItem.target.xPos); 
+        spotLight.target.position.setY(lightItem.target.yPos); 
+        spotLight.target.position.setZ(lightItem.target.zPos); 
+      }
+
+
+    if (lightItem.name)
+      {
+        light.name = lightItem.name;
+      }
+      light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
+      light.castShadow = lightItem.castShadow;
+  }
+
+  getThreeJsLight(id: number): SupportedLights
+  {
+    return this.lights.find( (light: SupportedLights) => {
+      return (light.id === id)
+    } ) as SupportedLights;
+  }
+
+  deleteThreeJsLight(id: number): void
+  {
+    this.lights = this.lights.filter((light) => light.id !== id);
+  }
+
  
 }
