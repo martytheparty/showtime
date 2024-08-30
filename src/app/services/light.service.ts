@@ -97,5 +97,18 @@ export class LightService {
     this.lights = this.lights.filter((light) => light.id !== id);
   }
 
+  deleteLight(lightItem: LightInterface): void
+  {
+    let light = this.getThreeJsLight(lightItem.id);
+
+
+    if(light)
+    {
+      this.deleteThreeJsLight(lightItem.id);
+      this.lightItems = this.lightItems.filter((light) => light.id !== lightItem.id);
+    }
+
+  }
+
  
 }

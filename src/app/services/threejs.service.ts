@@ -302,18 +302,14 @@ export class ThreejsService {
 
   deleteLight(lightItem: LightInterface): void
   {
-    const light = this.lightService.lights.find( (light: PointLight | SpotLight) => {
-      return (light.id === lightItem.id)
-    } );
+    let light = this.lightService.getThreeJsLight(lightItem.id);
+    this.lightService.deleteLight(lightItem);
 
     const id = lightItem.id;
 
     if(light)
     {
       this.scenes[0].remove(light);
-      this.lightService.lights = this.lightService.lights.filter((light) => light.id !== id);
-
-      this.lightService.lightItems = this.lightService.lightItems.filter((light) => light.id !== id);
 
       this.lightListSignal.set(this.lightService.lightItems);
 
