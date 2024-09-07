@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
 import { SpotLight, PointLight } from 'three';
+import { RecyclableSequenceService } from './utils/recyclable-sequence-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LightService {
-
+  private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   lights: SupportedLights[] = [];
   lightItems: LightInterface[] = [];
 
@@ -27,6 +28,7 @@ export class LightService {
     if (existingLight === undefined)
     {
       this.lightItems.push(lightItem);
+      lightItem.stId = this.recyclableSequenceService.generateId();
     }
     
     this.lightItems = [... this.lightItems];
@@ -100,7 +102,7 @@ export class LightService {
   deleteLight(lightItem: LightInterface): void
   {
     let light = this.getThreeJsLight(lightItem.id);
-
+    this.recyclableSequenceService.recycleId(lightItem.stId);
 
     if(light)
     {

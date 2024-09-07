@@ -18,7 +18,7 @@
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> ID </th>
             <td mat-cell *matCellDef="let light"> 
-                {{light.id}}
+                {{light.id}}/{{light.stId}}
             </td>
         </ng-container>
 
@@ -27,7 +27,7 @@
             <td mat-cell *matCellDef="let light">
                 @if(edit)
                 {
-                    <form [formGroup]="light.form">
+                    <form [formGroup]="formDataDict[light.stId].form">
                         <input formControlName="name" type="text">
                     </form>
                 } @else {
@@ -42,7 +42,7 @@
             <td mat-cell *matCellDef="let light">
                 @if(edit)
                 {
-                    <form [formGroup]="light.form">
+                    <form [formGroup]="formDataDict[light.stId].form">
                         <input formControlName="xPos" type="text">
                     </form>
                 } @else {
@@ -56,7 +56,7 @@
             <td mat-cell *matCellDef="let light">
                 @if(edit)
                 {
-                    <form [formGroup]="light.form">
+                    <form [formGroup]="formDataDict[light.stId].form">
                     <input formControlName="yPos" type="text">
                     </form>
                 } @else {
@@ -70,7 +70,7 @@
             <td mat-cell *matCellDef="let light">
                 @if(edit)
                 {
-                    <form [formGroup]="light.form">
+                    <form [formGroup]="formDataDict[light.stId].form">
                         <input formControlName="zPos" type="text">
                     </form>
                 } @else {
@@ -132,7 +132,7 @@
                         <tr>
                             <td>Light Type</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>Choose Light Type</mat-label>
                                     <mat-select formControlName="lightType">
                                        <mat-option value="PointLight">Point</mat-option>
@@ -147,7 +147,7 @@
                         <tr>
                             <td>intensity</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>Intensity</mat-label>
                                     <input formControlName="intensity" matInput >
                                     <mat-hint>100% intensity is 1</mat-hint>
@@ -158,7 +158,7 @@
                         <tr>
                             <td>angle</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>Angle</mat-label>
                                     <input formControlName="angle" matInput >
                                     <mat-hint>The spread of the spotlight.</mat-hint>
@@ -168,7 +168,7 @@
                         <tr>
                             <td>penumbra</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>Penumbra</mat-label>
                                     <input formControlName="penumbra" matInput >
                                     <mat-hint>The gradient transition 0 to 1.</mat-hint>
@@ -178,7 +178,7 @@
                         <tr>
                             <td>decay</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>Decay</mat-label>
                                     <input formControlName="decay" matInput >
                                     <mat-hint>Intensity decrease rate.</mat-hint>
@@ -188,7 +188,7 @@
                         <tr>
                             <td>x-target</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>x-target</mat-label>
                                     <input formControlName="targetXPos" matInput >
                                     <mat-hint>Target X Position.</mat-hint>
@@ -198,7 +198,7 @@
                         <tr>
                             <td>y-target</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>y-target</mat-label>
                                     <input formControlName="targetYPos" matInput >
                                     <mat-hint>Target Y Position.</mat-hint>
@@ -208,7 +208,7 @@
                         <tr>
                             <td>z-target</td>
                             <td>
-                                <mat-form-field [formGroup]="light.form">
+                                <mat-form-field [formGroup]="formDataDict[light.stId].form">
                                     <mat-label>z-target</mat-label>
                                     <input formControlName="targetZPos" matInput >
                                     <mat-hint>Target Z Position.</mat-hint>
@@ -230,7 +230,7 @@
                         <tr>
                             <td>cast shadows</td>
                             <td>
-                                <form [formGroup]="light.form">
+                                <form [formGroup]="formDataDict[light.stId].form">
                                     <mat-checkbox formControlName="castShadow"></mat-checkbox>
                                 </form>
                             </td>
@@ -238,7 +238,7 @@
                         <tr>
                             <td>animated</td>
                             <td>
-                        <form [formGroup]="light.form">
+                        <form [formGroup]="formDataDict[light.stId].form">
                             <mat-checkbox formControlName="animated"></mat-checkbox>
                         </form>
                     </td>

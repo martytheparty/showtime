@@ -5,8 +5,9 @@ import { PointLight, SpotLight } from "three"
 
 export interface LightInterface {
     id: number
+    stId: number
     name: string
-    lightType: 'PointLight' | 'SpotLight'
+    lightType: LightTypes
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
     zPos: AnimationPropertyDescriptor
@@ -15,8 +16,6 @@ export interface LightInterface {
     blueColor: number
     intensity: AnimationPropertyDescriptor
     castShadow: boolean
-    form?: FormGroup
-    sub?: Subscription
     animated: boolean
     type: 'light'
     previousId: number
@@ -35,3 +34,5 @@ export interface TargetObject {
 }
 
 export type SupportedLights = PointLight | SpotLight;
+
+export type LightTypes = 'PointLight' | 'SpotLight';
