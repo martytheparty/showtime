@@ -1,9 +1,7 @@
 import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@angular/core';
 
 import * as THREE from 'three';
-import { Font } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
+import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, OrthographicCamera, PerspectiveCamera, PointLight, SpotLight, Scene, SphereGeometry, WebGLRenderer } from 'three';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
 import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/camera-interfaces';
 import { LightInterface, SupportedLights } from '../interfaces/light-interface';
@@ -13,6 +11,7 @@ import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, 
 import { AnimationService } from './animation.service';
 import { MeshService } from './mesh.service';
 import { CameraService } from './camera.service';
+import { LightService } from './light.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +21,13 @@ export class ThreejsService {
   private animationService: AnimationService = inject(AnimationService);
   private meshService: MeshService = inject(MeshService);
   private cameraService: CameraService = inject(CameraService);
+  private lightService: LightService = inject(LightService);
 
   width = 0;
   height = 0;
 
+
   rendererItem: RendererInterface = { castShadows: true };
-  lights: SupportedLights[] = [];
   renderer: WebGLRenderer = new THREE.WebGLRenderer( { antialias: true } );
   scenes: Scene[] = [new THREE.Scene()]
   sceneItem: SceneInterface = {
@@ -41,16 +41,13 @@ export class ThreejsService {
   };
   sceneItems: SceneInterface[] = [this.sceneItem];
 
-  lightItems: LightInterface[] = [];
-  
-
   private initialized: WritableSignal<boolean> = signal(false);
   isInitiazed: Signal<boolean> = computed( () => this.initialized() );
 
   private meshListSignal: WritableSignal<MeshInterface[]> = signal(this.meshService.meshItems);
   meshList: Signal<MeshInterface[]> = computed( () => this.meshListSignal() );
 
-  private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightItems);
+  private lightListSignal: WritableSignal<LightInterface[]> = signal(this.lightService.lightItems);
   lightListValues: Signal<LightInterface[]> = computed( () => this.lightListSignal() );
 
   private cameraItemSignal: WritableSignal<CameraInterface[]> = signal(this.cameraService.cameraItems);
@@ -226,73 +223,95 @@ export class ThreejsService {
 
   addLight(lightItem: LightInterface): LightInterface
   {
-    this.lightItems.push(lightItem);
-    this.lightItems = [... this.lightItems];
-    const light = new THREE.PointLight();
-    this.lights.push(light);
-    light.intensity = lightItem.intensity;
-    light.position.setX(lightItem.xPos.startValue);
-    light.position.setY(lightItem.yPos.startValue);
-    light.position.setZ(lightItem.zPos.startValue);
-    lightItem.id = light.id;
-    light.castShadow = lightItem.castShadow;
-    this.lightListSignal.set(this.lightItems);
-    this.scenes[0].add( light );
+    // note: the lightItem.id gets set in the addLight function
+    const threeLight = this.lightService.addLight(lightItem);
+
+    this.lightListSignal.set(this.lightService.lightItems);
+    this.scenes[0].add( threeLight );
 
     return lightItem;
   }
 
   updateLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight) => {
-      return (light.id === lightItem.id)
-    } );
+    let light = this.lightService.getThreeJsLight(lightItem.id);
 
     if (light)
     {
-      light.position.setX(lightItem.xPos.startValue);
-      light.position.setY(lightItem.yPos.startValue);
-      light.position.setZ(lightItem.zPos.startValue);
-      light.intensity = lightItem.intensity;
-      if (lightItem.name)
+      if (light.type !== lightItem.lightType) {
+        lightItem.previousId = lightItem.id;
+        let oldLight = this.lightService.getThreeJsLight(lightItem.id);
+
+        // remove from list
+        this.lightService.deleteThreeJsLight(lightItem.id);
+        // remove from scene
+        this.scenes[0].remove(oldLight);
+
+        // note - the lightItem.id gets updated in the addLight function.
+        this.addLight(lightItem);
+
+        light = this.lightService.getThreeJsLight(lightItem.id);
+        if (lightItem.animated) {
+          this.animationService.updateLight(light);
+        }
+      }
+
+      if (lightItem.lightType === 'SpotLight')
       {
-        light.name = lightItem.name;
-      }
-      light.color.setRGB(lightItem.redColor/255,lightItem.greenColor/255,lightItem.blueColor/255);
-      light.castShadow = lightItem.castShadow;
-
-      if (lightItem.animated && light) {
-        this.animationService.setAnimationPairs(lightItem, light);
-        this.animationPairSignal.set(this.animationService.animationsPairs);
-      } else {
-        this.animationService.pruneAnimationPairs();
-        this.animationPairSignal.set(this.animationService.animationsPairs);
+        const spotLight = light as SpotLight; // this was assigning the passed in light which was the old light
+        // target code should be replaced by future grouping code
+        this.attachSpotlightTarget(spotLight, lightItem)
       }
 
-      this.lightItems = [... this.lightItems];
-      this.lightListSignal.set(this.lightItems);
+      this.lightService.updateLight(lightItem);
+      this.processAnimationsForLights(lightItem, light);
+      this.publishLights();
+    }
+  }
 
-      this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+  attachSpotlightTarget(spotLight: SpotLight, lightItem: LightInterface): void
+  {
+    if (!lightItem.target?.id)
+    {
+      const lightTargetObject = new THREE.Object3D();
+      spotLight.target = lightTargetObject;
+      lightItem.target.id = spotLight.target.id;
+      this.scenes[0].add(spotLight.target);
+      lightItem.target.addedToScene = true;
+    }
+  }
+
+  processAnimationsForLights(lightItem: LightInterface, light: SupportedLights): void
+  {
+    if (lightItem.animated && light) {
+      this.animationService.setAnimationPairs(lightItem, light);
+      this.animationPairSignal.set(this.animationService.animationsPairs);
+    } else {
+      this.animationService.pruneAnimationPairs();
       this.animationPairSignal.set(this.animationService.animationsPairs);
     }
+
+    this.animationService.animationsPairs = [... this.animationService.animationsPairs];
+    this.animationPairSignal.set(this.animationService.animationsPairs);
+  }
+  publishLights(): void
+  {
+    this.lightService.lightItems = [... this.lightService.lightItems];
+    this.lightListSignal.set(this.lightService.lightItems);
   }
 
   deleteLight(lightItem: LightInterface): void
   {
-    const light = this.lights.find( (light: PointLight) => {
-      return (light.id === lightItem.id)
-    } );
+    let light = this.lightService.getThreeJsLight(lightItem.id);
+    this.lightService.deleteLight(lightItem);
 
     const id = lightItem.id;
 
     if(light)
     {
       this.scenes[0].remove(light);
-      this.lights = this.lights.filter((light) => light.id !== id);
 
-      this.lightItems = this.lightItems.filter((light) => light.id !== id);
-
-      this.lightListSignal.set(this.lightItems);
+      this.lightListSignal.set(this.lightService.lightItems);
 
       // delete any animation pairs that have been deleted
       // huge risk of a memory leak if stale pairs are not
@@ -311,7 +330,6 @@ export class ThreejsService {
   {
     const mesh: SupportedMeshes = await this.meshService.addMesh(meshItem);
     //this.updateMesh(meshItem);  // I don't think that this is needed  
-    console.log(mesh);
     this.meshListSignal.set(this.meshService.meshItems);
     this.scenes[0].add( mesh );
 
@@ -400,7 +418,7 @@ export class ThreejsService {
             }
           }
         );
-        this.lights.forEach(
+        this.lightService.lights.forEach(
           (light) => {
             const lightItem: LightInterface | undefined = this.getLightItemForId(light.id);
 
@@ -449,12 +467,12 @@ export class ThreejsService {
         // this doesn't work by itself the lights need to be turned off as well
         this.renderer.shadowMap.enabled = this.rendererItem.castShadows;
 
-        this.lights.forEach(
+        this.lightService.lights.forEach(
           (light) => 
           {
             if (this.renderer.shadowMap.enabled)
             {
-              const lightItem: LightInterface | undefined = this.lightItems.find(li => li.id === light.id);
+              const lightItem: LightInterface | undefined = this.lightService.lightItems.find(li => li.id === light.id);
               if (lightItem)
               {
                 light.castShadow = lightItem.castShadow;
@@ -482,7 +500,7 @@ export class ThreejsService {
 
   getLightItemForId(lightId: number): LightInterface | undefined
   {
-    return this.lightItems.find(
+    return this.lightService.lightItems.find(
       (li: LightInterface) => li.id === lightId
     );
   }
@@ -515,7 +533,7 @@ export class ThreejsService {
       }
     );
 
-    this.lights.forEach(
+    this.lightService.lights.forEach(
       (light) => {
         this.animationService.updateLightForTime(light, this.getLightItemForId(light.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }

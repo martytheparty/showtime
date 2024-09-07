@@ -23,9 +23,9 @@ export interface AnimationPair {
     threeObj: SupportedMeshes | SupportedLights | SupportedCameras | Scene
 }
 
-export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat' | 'yLookat' | 'zLookat' | 'redColor' | 'greenColor' | 'blueColor' | 'xRotation' | 'yRotation' | 'zRotation';
-export type ThreeObjProperties = 'position' | 'lookAt' | 'background' | 'rotation';
-export type ThreeObjSubProperties = 'x' | 'y' | 'z' | 'r' | 'g' | 'b';
+export type AnimationInterfaceProperties = 'xPos' | 'yPos' | 'zPos' | 'xLookat' | 'yLookat' | 'zLookat' | 'redColor' | 'greenColor' | 'blueColor' | 'xRotation' | 'yRotation' | 'zRotation' | 'intensity';
+export type ThreeObjProperties = 'position' | 'lookAt' | 'background' | 'rotation' | 'intensity';
+export type ThreeObjSubProperties = 'x' | 'y' | 'z' | 'r' | 'g' | 'b' | '';
 export type SuportedThreeObjTypes = 'light' | 'mesh' | 'OrthographicCamera' | 'PerspectiveCamera' | 'Scene';
 export type MappedSupportedPropertyTypes = { [key: string] : SuportedThreeObjTypes[] };
 
