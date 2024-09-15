@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "rservice": "ng g s services/utils/RecyclableSequenceService"
+    "sservice": "ng g s services/showtime/showtime-scene"
   },
   "private": true,
   "dependencies": {

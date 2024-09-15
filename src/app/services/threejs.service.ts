@@ -13,6 +13,8 @@ import { MeshService } from './mesh.service';
 import { CameraService } from './camera.service';
 import { LightService } from './light.service';
 import { SceneService } from './scene.service';
+import { ThreeSceneService } from './three/three-scene.service';
+import { ShowtimeSceneService } from './showtime/showtime-scene.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,9 @@ export class ThreejsService {
   private cameraService: CameraService = inject(CameraService);
   private lightService: LightService = inject(LightService);
   private sceneService: SceneService = inject(SceneService);
+
+  private threeJsSceneService: ThreeSceneService = inject(ThreeSceneService);
+  private showTimeSceneService: ShowtimeSceneService = inject(ShowtimeSceneService);
 
   width = 0;
   height = 0;
