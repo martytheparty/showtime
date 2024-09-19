@@ -6,7 +6,7 @@ import { SceneInterface } from '../../interfaces/scene-interface';
 })
 export class ShowtimeSceneService {
 
-  sceneItem: SceneInterface = {
+  private sceneItem: SceneInterface = {
     id: -1,
     name: 'Scene',
     redColor: {startValue: 0, endValue: 0, animated: true},
@@ -16,7 +16,7 @@ export class ShowtimeSceneService {
     animated: false
   };
 
-  sceneItems: SceneInterface[] = [this.sceneItem];
+  private sceneItems: SceneInterface[] = [this.sceneItem];
 
   constructor() { }
 

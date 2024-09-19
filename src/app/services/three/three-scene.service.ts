@@ -9,9 +9,19 @@ import { SceneInterface } from '../../interfaces/scene-interface';
 })
 export class ThreeSceneService {
 
-  scenes: Scene[] = [new THREE.Scene()];
+  private scenes: Scene[] = [new THREE.Scene()];
 
   constructor() { }
+
+  getScene(): Scene
+  {
+    return this.scenes[0];
+  }
+
+  getScenes(): Scene[]
+  {
+    return this.scenes;
+  }
 
   setUpScene(sceneItem: SceneInterface ): number
   {

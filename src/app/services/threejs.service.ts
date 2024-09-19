@@ -12,7 +12,6 @@ import { AnimationService } from './animation.service';
 import { MeshService } from './mesh.service';
 import { CameraService } from './camera.service';
 import { LightService } from './light.service';
-import { SceneService } from './scene.service';
 import { ThreeSceneService } from './three/three-scene.service';
 import { ShowtimeSceneService } from './showtime/showtime-scene.service';
 
@@ -25,7 +24,6 @@ export class ThreejsService {
   private meshService: MeshService = inject(MeshService);
   private cameraService: CameraService = inject(CameraService);
   private lightService: LightService = inject(LightService);
-  private sceneService: SceneService = inject(SceneService);
 
   private threeJsSceneService: ThreeSceneService = inject(ThreeSceneService);
   private showTimeSceneService: ShowtimeSceneService = inject(ShowtimeSceneService);
@@ -58,7 +56,7 @@ export class ThreejsService {
   private animationPairSignal: WritableSignal<AnimationPair[]> = signal(this.animationService.animationsPairs);
   animationPairValues: Signal<AnimationPair[]> = computed( () => this.animationPairSignal());
 
-  private sceneSignal: WritableSignal<SceneInterface> = signal(this.sceneService.sceneItem);
+  private sceneSignal: WritableSignal<SceneInterface> = signal(this.showTimeSceneService.getScene());
   sceneItemValues: Signal<SceneInterface> = computed( () => this.sceneSignal());
 
   private rendererSignal: WritableSignal<RendererInterface> = signal(this.rendererItem);
@@ -105,16 +103,17 @@ export class ThreejsService {
 
   setUpScene()
   {
-    this.sceneService.setUpScene();
+    this.threeJsSceneService.setUpScene(this.showTimeSceneService.getScene());
   }
 
   updateScene(sceneItem: SceneInterface): void
   {
-    this.sceneService.updateScene(sceneItem);
-    this.sceneSignal.set(this.sceneService.sceneItem);
+    this.showTimeSceneService.updateScene(sceneItem);
+    this.threeJsSceneService.setUpScene(this.showTimeSceneService.getScene());
+    this.sceneSignal.set(this.showTimeSceneService.getScene());
 
-    if (this.sceneService.sceneItem.animated) {
-      this.animationService.setAnimationPairs(this.sceneService.sceneItem, this.sceneService.scenes[0]);
+    if (this.showTimeSceneService.getScene().animated) {
+      this.animationService.setAnimationPairs(this.showTimeSceneService.getScene(), this.threeJsSceneService.getScene());
       this.animationPairSignal.set(this.animationService.animationsPairs);
     } else {
       this.animationService.pruneAnimationPairs();
@@ -216,7 +215,7 @@ export class ThreejsService {
     const threeLight = this.lightService.addLight(lightItem);
 
     this.lightListSignal.set(this.lightService.lightItems);
-    this.sceneService.scenes[0].add( threeLight );
+    this.threeJsSceneService.getScene().add( threeLight );
 
     return lightItem;
   }
@@ -234,7 +233,7 @@ export class ThreejsService {
         // remove from list
         this.lightService.deleteThreeJsLight(lightItem.id);
         // remove from scene
-        this.sceneService.scenes[0].remove(oldLight);
+        this.threeJsSceneService.getScene().remove(oldLight);
 
         // note - the lightItem.id gets updated in the addLight function.
         this.addLight(lightItem);
@@ -265,7 +264,7 @@ export class ThreejsService {
       const lightTargetObject = new THREE.Object3D();
       spotLight.target = lightTargetObject;
       lightItem.target.id = spotLight.target.id;
-      this.sceneService.scenes[0].add(spotLight.target);
+      this.threeJsSceneService.getScene().add(spotLight.target);
       lightItem.target.addedToScene = true;
     }
   }
@@ -298,7 +297,7 @@ export class ThreejsService {
 
     if(light)
     {
-      this.sceneService.scenes[0].remove(light);
+      this.threeJsSceneService.getScene().remove(light);
 
       this.lightListSignal.set(this.lightService.lightItems);
 
@@ -320,7 +319,7 @@ export class ThreejsService {
     const mesh: SupportedMeshes = await this.meshService.addMesh(meshItem);
     //this.updateMesh(meshItem);  // I don't think that this is needed  
     this.meshListSignal.set(this.meshService.meshItems);
-    this.sceneService.scenes[0].add( mesh );
+    this.threeJsSceneService.getScene().add( mesh );
 
     this.animationService.setAnimationPairs(meshItem, mesh);
     this.animationPairSignal.set(this.animationService.animationsPairs);
@@ -354,7 +353,7 @@ export class ThreejsService {
 
     if(mesh)
     {
-      this.sceneService.scenes[0].remove(mesh);
+      this.threeJsSceneService.getScene().remove(mesh);
       this.meshService.meshItems = this.meshService.meshItems.filter((mesh) => mesh.id !== id);
 
       this.meshListSignal.set(this.meshService.meshItems);
@@ -435,7 +434,7 @@ export class ThreejsService {
             }
           }
         );
-        this.sceneService.scenes.forEach(
+        this.threeJsSceneService.getScenes().forEach(
           (scene) => {
             const sceneItem: SceneInterface | undefined = this.getSceneItemForId(scene.id);
 
@@ -473,7 +472,7 @@ export class ThreejsService {
         );
       }
 
-      this.renderer.render( this.sceneService.scenes[0], this.cameraService.cameras[0] );
+      this.renderer.render( this.threeJsSceneService.getScene(), this.cameraService.cameras[0] );
     }
 
     return animation;
@@ -503,7 +502,7 @@ export class ThreejsService {
 
   getSceneItemForId(sceneId: number): SceneInterface | undefined
   {
-    return this.sceneService.sceneItems.find(
+    return this.showTimeSceneService.getScenes().find(
       (scene: SceneInterface) => scene.id === sceneId
     );
   }
@@ -534,7 +533,7 @@ export class ThreejsService {
       }
     );
 
-    this.sceneService.scenes.forEach(
+    this.threeJsSceneService.getScenes().forEach(
       (scene) => {
         this.animationService.updateSceneForTime(scene, this.getSceneItemForId(scene.id), this.animationService.clock.elapsedTime, this.animationService.animationItem.time);
       }
