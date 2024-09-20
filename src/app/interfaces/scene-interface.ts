@@ -8,4 +8,5 @@ export interface SceneInterface {
     blueColor: AnimationPropertyDescriptor;
     type: 'Scene';
     animated: boolean;
+    fog: 'linear' | 'none' | 'exp2'
 }

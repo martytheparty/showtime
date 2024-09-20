@@ -6,14 +6,17 @@ import { RendererInterface } from '../../interfaces/renderer-interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-scene-manager',
   standalone: true,
   imports: [
     ColorPickerComponent,
     MatCheckboxModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   templateUrl: './scene-manager.component.html',
   styleUrl: './scene-manager.component.scss'
@@ -28,7 +31,8 @@ export class SceneManagerComponent implements OnDestroy {
   formInitialized = false;
   form: FormGroup = new FormGroup({
     castShadows: new FormControl(false),
-    animated: new FormControl(false)
+    animated: new FormControl(false),
+    fog: new FormControl('')
   });
 
   red = 0;
@@ -50,6 +54,7 @@ export class SceneManagerComponent implements OnDestroy {
 
         this.renderer = this.threejsService.rendererItemValues();
         this.form.controls['animated'].setValue(this.scene.animated);
+        this.form.controls['fog'].setValue(this.scene.fog);
 
         if (this.renderer) {
           this.form.controls['castShadows'].setValue(this.renderer.castShadows);
@@ -64,6 +69,7 @@ export class SceneManagerComponent implements OnDestroy {
         if (this.scene && this.scene.animated !== this.form.value.animated)
         {
           this.scene.animated = this.form.value.animated;
+          this.scene.fog = this.form.value.fog;
           this.threejsService.updateScene(this.scene);
         }
 

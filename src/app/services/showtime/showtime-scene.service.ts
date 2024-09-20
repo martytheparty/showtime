@@ -13,7 +13,8 @@ export class ShowtimeSceneService {
     greenColor: {startValue: 0, endValue: 0, animated: true},
     blueColor: {startValue: 0, endValue: 0, animated: true},
     type: 'Scene',
-    animated: false
+    animated: false,
+    fog: 'none'
   };
 
   private sceneItems: SceneInterface[] = [this.sceneItem];

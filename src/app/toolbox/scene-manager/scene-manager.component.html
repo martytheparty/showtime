@@ -14,16 +14,31 @@
     </tr>
     <tr>
         <td>
-            <mat-form-field [formGroup]="form">
+            <div [formGroup]="form">
             <mat-checkbox formControlName="castShadows">Cast Shaddows</mat-checkbox>
-            </mat-form-field>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div [formGroup]="form">
+            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
+            </div>
         </td>
     </tr>
     <tr>
         <td>
             <mat-form-field [formGroup]="form">
-            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
-            </mat-form-field>
+                <mat-label>Fog</mat-label>
+                <mat-select formControlName="fog">
+                   <mat-option value="none">None</mat-option>
+                   <mat-option value="linear">Linear</mat-option>\
+                   <mat-option value="exp2">Exp2</mat-option>
+                </mat-select>
+                <mat-hint>
+                   Fog.
+                </mat-hint>
+             </mat-form-field>
         </td>
     </tr>
 </table>
