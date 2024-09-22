@@ -103,7 +103,10 @@ export class ThreejsService {
 
   setUpScene()
   {
-    this.threeJsSceneService.setUpScene(this.showTimeSceneService.getScene());
+    const id = this.threeJsSceneService.setUpScene(this.showTimeSceneService.getScene());
+    const sceneItem: SceneInterface = this.showTimeSceneService.getScene();
+    sceneItem.id = id;
+    this.showTimeSceneService.updateScene(sceneItem);
   }
 
   updateScene(sceneItem: SceneInterface): void
