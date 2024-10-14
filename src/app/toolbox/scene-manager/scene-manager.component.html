@@ -32,14 +32,37 @@
                 <mat-label>Fog</mat-label>
                 <mat-select formControlName="fog">
                    <mat-option value="none">None</mat-option>
-                   <mat-option value="linear">Linear</mat-option>\
+                   <mat-option value="linear">Linear</mat-option>
                    <mat-option value="exp2">Exp2</mat-option>
                 </mat-select>
                 <mat-hint>
-                   Fog.
+                   Select a fog type.
                 </mat-hint>
              </mat-form-field>
         </td>
     </tr>
+    @if (scene?.fog === 'linear' || scene?.fog === 'exp2') {
+        <tr>
+            <td>
+            Background Color:<br>
+            <app-color-picker
+            [redValue]="fogRed"
+            [greenValue]="fogGreen"
+            [blueValue]="fogBlue"
+            (redUpdate)="redFogColorChange($event)"
+            (greenUpdate)="greenFogColorChange($event)"
+            (blueUpdate)="blueFogColorChange($event)"
+            ></app-color-picker>
+            </td>
+        </tr>
+    }
+    @if (scene?.fog === 'linear') {
+    <tr>
+        <td>
+            Near: {{scene?.near}}<br>
+            Far: {{scene?.far}}
+        </td>
+    </tr>
+    }
 </table>
 
