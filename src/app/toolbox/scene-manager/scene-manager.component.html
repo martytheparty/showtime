@@ -64,5 +64,25 @@
         </td>
     </tr>
     }
+    @else if (scene?.fog === 'exp2') {
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Density</mat-label>
+
+                <input matInput formControlName="fogDensity">
+                @if(form.get('fogDensity')?.hasError('invalidPositiveFloat'))
+                {
+                    <mat-error>
+                        Invalid positive floating-point number.
+                    </mat-error>
+                }
+                <mat-hint>
+                   Fog density.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
+    }
 </table>
 
