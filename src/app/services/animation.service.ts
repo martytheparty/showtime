@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
-import { SupportedLights, LightInterface } from '../interfaces/light-interface';
+import { MeshInterface, SupportedMeshes } from '../interfaces/three/mesh-interface';
+import { SupportedLights, LightInterface } from '../interfaces/three/light-interface';
 import * as THREE from 'three';
 import { Scene } from 'three';
-import { SceneInterface } from '../interfaces/scene-interface';
-import { CameraInterface, SupportedCameras } from '../interfaces/camera-interfaces';
-import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypes, PropertyMenuItem } from '../interfaces/animations-interfaces';
+import { SceneInterface } from '../interfaces/three/scene-interface';
+import { CameraInterface, SupportedCameras } from '../interfaces/three/camera-interfaces';
+import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypes, PropertyMenuItem } from '../interfaces/three/animations-interfaces';
 
 
 @Injectable({

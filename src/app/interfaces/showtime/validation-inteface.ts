@@ -1,0 +1,1 @@
+export type ValidationTypes = 'positive-float' | 'none';

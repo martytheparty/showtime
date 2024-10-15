@@ -1,8 +1,8 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 import { ThreejsService } from '../../services/threejs.service';
-import { SceneInterface } from '../../interfaces/scene-interface';
-import { RendererInterface } from '../../interfaces/renderer-interface';
+import { SceneInterface } from '../../interfaces/three/scene-interface';
+import { RendererInterface } from '../../interfaces/three/renderer-interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { Subscription } from 'rxjs';

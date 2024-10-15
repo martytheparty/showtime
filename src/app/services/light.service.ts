@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Injectable, inject } from '@angular/core';
-import { LightInterface, SupportedLights } from '../interfaces/light-interface';
+import { LightInterface, SupportedLights } from '../interfaces/three/light-interface';
 import { SpotLight, PointLight } from 'three';
 import { RecyclableSequenceService } from './utils/recyclable-sequence-service.service';
 

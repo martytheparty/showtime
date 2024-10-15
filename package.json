@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "valservice": "ng g s services/utils/validation"
+    "valinterface": "ng g i interfaces/validation-inteface"
   },
   "private": true,
   "dependencies": {

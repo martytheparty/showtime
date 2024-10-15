@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../services/threejs.service';
-import { FontName, MeshInterface } from '../../interfaces/mesh-interface';
+import { FontName, MeshInterface } from '../../interfaces/three/mesh-interface';
 import { Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { TableFilterComponent } from '../common-components/table-filter/table-filter.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FontListComponent } from './font-list/font-list.component';
-import { FormLuInterface } from '../../interfaces/common';
+import { FormLuInterface } from '../../interfaces/showtime/common';
 
 @Component({
   selector: 'app-mesh-manager',

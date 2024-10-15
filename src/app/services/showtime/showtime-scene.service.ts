@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { SceneInterface } from '../../interfaces/scene-interface';
+import { SceneInterface } from '../../interfaces/three/scene-interface';
 @Injectable({
   providedIn: 'root'
 })

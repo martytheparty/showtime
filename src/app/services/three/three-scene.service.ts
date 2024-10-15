@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import * as THREE from 'three';
 import { Scene } from 'three';
-import { SceneInterface } from '../../interfaces/scene-interface';
+import { SceneInterface } from '../../interfaces/three/scene-interface';
 import { MathService } from '../utils/math.service';
 @Injectable({
   providedIn: 'root'

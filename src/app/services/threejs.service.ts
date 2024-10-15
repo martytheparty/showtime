@@ -2,12 +2,12 @@ import { Injectable, Signal, WritableSignal, computed, signal, inject } from '@a
 
 import * as THREE from 'three';
 import { SpotLight, Scene, WebGLRenderer } from 'three';
-import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/mesh-interface';
-import { CameraInterface, CameraType } from '../interfaces/camera-interfaces';
-import { LightInterface, SupportedLights } from '../interfaces/light-interface';
-import { SceneInterface } from '../interfaces/scene-interface';
-import { RendererInterface } from '../interfaces/renderer-interface';
-import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, PropertyMenuItem } from '../interfaces/animations-interfaces';
+import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/three/mesh-interface';
+import { CameraInterface, CameraType } from '../interfaces/three/camera-interfaces';
+import { LightInterface, SupportedLights } from '../interfaces/three/light-interface';
+import { SceneInterface } from '../interfaces/three/scene-interface';
+import { RendererInterface } from '../interfaces/three/renderer-interface';
+import { AnimationInterface, AnimationPair, MappedSupportedPropertyTypesSignal, PropertyMenuItem } from '../interfaces/three/animations-interfaces';
 import { AnimationService } from './animation.service';
 import { MeshService } from './mesh.service';
 import { CameraService } from './camera.service';
