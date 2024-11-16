@@ -70,11 +70,25 @@
                 <mat-form-field [formGroup]="form">
                 <mat-label>Fog Density</mat-label>
 
-                <input matInput formControlName="fogDensity">
-                @if(form.get('fogDensity')?.hasError('invalidPositiveFloat'))
+                <input
+                    (keydown)="savePreviousFogDensity()"
+                    (keyup)="validateFogDensity($event, ['invalidPositiveFloat'])" 
+                    matInput 
+                    formControlName="fogDensity"
+                >
+                @if(hadFogError)
                 {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('fogDensity')?.hasError('invalidPositiveFloat'))
+                { 
                     <mat-error>
-                        Invalid positive floating-point number.
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
                     </mat-error>
                 }
                 <mat-hint>

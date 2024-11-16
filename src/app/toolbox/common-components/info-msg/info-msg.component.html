@@ -1,0 +1,11 @@
+<div class="outer">
+    <div>
+        <mat-icon matSuffix>info</mat-icon>
+    </div>
+    <div>
+        @for(token of data.validationTokens; track $index)
+        {
+            {{ validationService.getValidationHelpTextForToken(token) }} text goes here 
+        }
+    </div>
+</div>

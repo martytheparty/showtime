@@ -9,25 +9,37 @@ import { Subscription } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { UiValidationService } from '../services/ui-validation.service';
+import { FcValidatorsService } from '../services/fc-validators.service';
+import { ValidationTokenTypes } from '../../interfaces/showtime/validation-interface';
+import { ValidationErrorMsgComponent } from '../common-components/validation-error-msg/validation-error-msg.component';
+import { ValidationService } from '../../services/utils/validation.service';
+import { MatIconModule } from '@angular/material/icon';
+import { InfoMsgComponent } from '../common-components/info-msg/info-msg.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-scene-manager',
   standalone: true,
   imports: [
+    ValidationErrorMsgComponent,
     ColorPickerComponent,
     MatCheckboxModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule,
+    InfoMsgComponent
   ],
   templateUrl: './scene-manager.component.html',
   styleUrl: './scene-manager.component.scss'
 })
 export class SceneManagerComponent implements OnDestroy {
 
+  dialog = inject(MatDialog);
+
   threejsService: ThreejsService = inject(ThreejsService);
-  uiValidationService: UiValidationService = inject(UiValidationService);
+  fcValidationService: FcValidatorsService = inject(FcValidatorsService);
+  validationService: ValidationService = inject(ValidationService);
 
   scene: SceneInterface | undefined;
   renderer: RendererInterface | undefined;
@@ -39,6 +51,8 @@ export class SceneManagerComponent implements OnDestroy {
     fog: new FormControl('')
   });
 
+  hadFogError = false;
+
   red = 0;
   green = 0;
   blue = 0;
@@ -49,12 +63,25 @@ export class SceneManagerComponent implements OnDestroy {
 
   animated = false;
 
+  previousFogDensity = '';
+
   subs: Subscription[] = [];
 
   constructor() {
+    let fogDensityValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
+    
+    let validationTokens: ValidationTokenTypes[] = this.validationService.getValidationTokensForPath(["scene", "fogDensity"]);
 
-    const fogDensityValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
-    fogDensityValidators.push(this.uiValidationService.getPositiveFloatingPointValidator());
+    validationTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const validatorFunction = this.fcValidationService.getValidatorForToken(validationToken);
+        if (validatorFunction !== null) {
+          fogDensityValidators.push(validatorFunction);
+        }
+      }
+    );
+
+    
     const fogDensityFormControl =  new FormControl(
       '.1', 
       {
@@ -196,5 +223,61 @@ export class SceneManagerComponent implements OnDestroy {
       this.scene.blueFogColor = newColor;
       this.threejsService.updateScene(this.scene);
     }
+  }
+
+  savePreviousFogDensity() {
+    const control: AbstractControl<string, string> = this.form.controls['fogDensity'];
+    this.previousFogDensity = control.value;
+  }
+
+  validateFogDensity(event: KeyboardEvent, validationTokens: ValidationTokenTypes[]): void {
+    // first check to see if new value is legal
+    const control: AbstractControl<string, string> = this.form.controls['fogDensity'];
+    const currentValue = control.value;
+    const previousValue = this.previousFogDensity;
+    const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
+
+    // If it is legal do nothing. 
+    if(currentValueValidationToken !== 'none') {
+     const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
+     // if it is not legal:
+     if (previousValueValidationToken === "none")
+     {
+        // 1. It was legal but not legal now - go back to original value
+        control.setValue(previousValue);
+        // 2. show help text with information icon
+     }
+     // the fog value WAS invalid to set hadFogError to false
+     this.hadFogError = true;
+    }
+  }
+
+
+  validateValueForTokens(validationTokens: ValidationTokenTypes[], value: string): ValidationTokenTypes {
+    let failedTokenType: ValidationTokenTypes = 'none';
+
+    // sets return value based of first failed token
+    for(let i = 0; i < validationTokens.length; i++) {
+      const validationToken = validationTokens[i];
+      const validationFunction = this.validationService.getValidationFunctionForToken(validationToken);
+      if (validationFunction !== null) {
+        const result = validationFunction(value);
+        if (result === false)
+        {
+          failedTokenType = validationToken;
+          break;
+        }
+      }
+    }
+
+    return failedTokenType;
+
+  }
+
+  launchInfoDialog(validationToken: ValidationTokenTypes): void
+  {
+    this.dialog.open(InfoMsgComponent, {
+      data: { validationTokens: [validationToken] }
+    });
   }
 }
