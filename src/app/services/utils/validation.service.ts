@@ -111,7 +111,7 @@ export class ValidationService {
   }
 
   getPositiveFloatingPointValidator(value: string): boolean {
-    const POSITIVE_FLOATING_POINT_REGEX = /^\d+(\.\d+)?$|^\d+\.$/;
+    const POSITIVE_FLOATING_POINT_REGEX = /^(\d+(\.\d+)?|(\.\d+))\.?$/;
     return POSITIVE_FLOATING_POINT_REGEX.test(value);
   }
 
