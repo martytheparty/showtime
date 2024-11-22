@@ -7,7 +7,13 @@ import { ValidationTokenTypes } from '../../interfaces/showtime/validation-inter
 export class ValidationService {
 
   validationTokenForPathMap: any = {
-    scene: { fogDensity: [ this.ensureValidationTokenType('invalidPositiveFloat') ]} 
+    scene: {
+      fog: 
+      { 
+        fogDensity: [ this.ensureValidationTokenType('invalidPositiveFloat') ],
+        near: [ this.ensureValidationTokenType('invalidPositiveFloat') ]
+      }
+    }
   };
 
   validationValueTextForTokenDictionary: any = {
@@ -43,7 +49,15 @@ export class ValidationService {
       {
         validationType = this.validationTokenForPathMap[path[0]][path[1]];
       }
-
+    } else if (this.isTwoDeep(path)) {
+      if(
+        this.validationTokenForPathMap[path[0]] && 
+        this.validationTokenForPathMap[path[0]][path[1]] &&
+        this.validationTokenForPathMap[path[0]][path[1]][path[2]]
+      )
+      {
+        validationType = this.validationTokenForPathMap[path[0]][path[1]][path[2]];
+      }
     }
 
     return validationType
@@ -79,6 +93,16 @@ export class ValidationService {
   isOneDeep(path: string[]): boolean {
     let result = false;
     if (path && path.length === 2)
+    {
+      result = true;
+    }
+
+    return result;
+  }
+
+  isTwoDeep(path: string[]): boolean {
+    let result = false;
+    if (path && path.length === 3)
     {
       result = true;
     }

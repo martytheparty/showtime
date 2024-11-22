@@ -19,7 +19,7 @@ export class ShowtimeSceneService {
     blueFogColor: 100,
     fogDensity: .1,
     near: 1,
-    far: 100
+    far: 10
   };
 
   private sceneItems: SceneInterface[] = [this.sceneItem];

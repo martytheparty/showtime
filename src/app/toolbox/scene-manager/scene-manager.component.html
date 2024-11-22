@@ -44,7 +44,7 @@
     @if (scene?.fog === 'linear' || scene?.fog === 'exp2') {
         <tr>
             <td>
-            Background Color:<br>
+            Fog Color:<br>
             <app-color-picker
             [redValue]="fogRed"
             [greenValue]="fogGreen"
@@ -57,6 +57,38 @@
         </tr>
     }
     @if (scene?.fog === 'linear') {
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Near</mat-label>
+
+                <input
+                    (keydown)="savePreviousFogNear()"
+                    (keyup)="validateFogNear($event, ['invalidPositiveFloat'])"
+                    matInput 
+                    formControlName="near"
+                >
+                @if(hadNearError)
+                {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('near')?.hasError('invalidPositiveFloat'))
+                { 
+                    <mat-error>
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
+                    </mat-error>
+                }
+                <mat-hint>
+                   Where the fog starts.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
     <tr>
         <td>
             Near: {{scene?.near}}<br>

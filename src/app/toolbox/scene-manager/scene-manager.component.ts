@@ -52,6 +52,7 @@ export class SceneManagerComponent implements OnDestroy {
   });
 
   hadFogError = false;
+  hadNearError = false;
 
   red = 0;
   green = 0;
@@ -64,34 +65,13 @@ export class SceneManagerComponent implements OnDestroy {
   animated = false;
 
   previousFogDensity = '';
+  previousFogNear = '';
 
   subs: Subscription[] = [];
 
   constructor() {
-    let fogDensityValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
-    
-    let validationTokens: ValidationTokenTypes[] = this.validationService.getValidationTokensForPath(["scene", "fogDensity"]);
+    this.setupFormFields();
 
-    validationTokens.forEach(
-      (validationToken: ValidationTokenTypes) => {
-        const validatorFunction = this.fcValidationService.getValidatorForToken(validationToken);
-        if (validatorFunction !== null) {
-          fogDensityValidators.push(validatorFunction);
-        }
-      }
-    );
-
-    
-    const fogDensityFormControl =  new FormControl(
-      '.1', 
-      {
-        validators: fogDensityValidators
-      }
-    )
-    this.form.addControl("fogDensity", fogDensityFormControl);
-
-    this.form.controls['fogDensity'].markAsDirty();
-    this.form.controls['fogDensity'].markAsTouched();
     effect(
       () => {
         this.scene  = this.threejsService.sceneItemValues();
@@ -145,10 +125,29 @@ export class SceneManagerComponent implements OnDestroy {
                       this.scene.fogDensity = fDensity;
                       this.threejsService.updateScene(this.scene);
                     }
-                    
-
                   }
+
+                  if (this.form?.value.near) {
+                    let fNear = 0;
+                    if (typeof this.form.value.near === "string") {
+                      const fNearNum = parseFloat(this.form.value.near);
+                      if (!isNaN(fNearNum))
+                      {
+                        fNear = fNearNum;
+                      }
+                    } 
+
+                    if (this.scene.near !== fNear) {
+                      console.log("Updating the scene");
+                      this.scene.near = fNear;
+                      this.threejsService.updateScene(this.scene);
+                    }
+                  }
+                  
+                  
                 }
+
+
         
                 if (this.formInitialized && this.renderer) {
                   this.renderer.castShadows = this.form.value.castShadows;
@@ -158,17 +157,68 @@ export class SceneManagerComponent implements OnDestroy {
             this.subs.push(sub); 
           }
         }
-
       }
     );
-
-
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subs.forEach(
       (sub) =>  sub.unsubscribe()
     );
+  }
+
+  setupFormFields(): void
+  {
+    // Fog Density
+    let fogDensityValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
+    
+    let validationTokens: ValidationTokenTypes[] = this.validationService.getValidationTokensForPath(["scene", "fog", "fogDensity"]);
+
+    validationTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const validatorFunction = this.fcValidationService.getValidatorForToken(validationToken);
+        if (validatorFunction !== null) {
+          fogDensityValidators.push(validatorFunction);
+        }
+      }
+    );
+   
+    const fogDensityFormControl =  new FormControl(
+      '.1', 
+      {
+        validators: fogDensityValidators
+      }
+    )
+    this.form.addControl("fogDensity", fogDensityFormControl);
+
+    this.form.controls['fogDensity'].markAsDirty();
+    this.form.controls['fogDensity'].markAsTouched();
+    // Fog Near
+
+    let nearValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
+    
+    let nearTokens: ValidationTokenTypes[] = this.validationService.getValidationTokensForPath(["scene", "fog", "near"]);
+
+    nearTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const validatorFunction = this.fcValidationService.getValidatorForToken(validationToken);
+        if (validatorFunction !== null) {
+          nearValidators.push(validatorFunction);
+        }
+      }
+    );
+   
+    const nearFormControl =  new FormControl(
+      '1', 
+      {
+        validators: nearValidators
+      }
+    )
+    this.form.addControl("near", nearFormControl);
+
+    this.form.controls['near'].markAsDirty();
+    this.form.controls['near'].markAsTouched();
   }
 
   redColorChange(newColor: number): void
@@ -249,6 +299,33 @@ export class SceneManagerComponent implements OnDestroy {
      }
      // the fog value WAS invalid to set hadFogError to false
      this.hadFogError = true;
+    }
+  }
+
+  savePreviousFogNear() {
+    const control: AbstractControl<string, string> = this.form.controls['near'];
+    this.previousFogNear = control.value;
+  }
+
+  validateFogNear(event: KeyboardEvent, validationTokens: ValidationTokenTypes[]): void {
+    // first check to see if new value is legal
+    const control: AbstractControl<string, string> = this.form.controls['near'];
+    const currentValue = control.value;
+    const previousValue = this.previousFogNear;
+    const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
+
+    // If it is legal do nothing. 
+    if(currentValueValidationToken !== 'none') {
+     const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
+     // if it is not legal:
+     if (previousValueValidationToken === "none")
+     {
+        // 1. It was legal but not legal now - go back to original value
+        control.setValue(previousValue);
+        // 2. show help text with information icon
+     }
+     // the fog value WAS invalid to set hadFogError to false
+     this.hadNearError = true;
     }
   }
 
