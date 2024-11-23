@@ -138,7 +138,6 @@ export class SceneManagerComponent implements OnDestroy {
                     } 
 
                     if (this.scene.near !== fNear) {
-                      console.log("Updating the scene");
                       this.scene.near = fNear;
                       this.threejsService.updateScene(this.scene);
                     }
