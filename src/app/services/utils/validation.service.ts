@@ -24,6 +24,10 @@ export class ValidationService {
     invalidPositiveFloat: "Positive float-point numbers can only have 0-9 characters and a single decimal point."
   };
 
+  overWriteExceptionsForTokenDictionary: any = {
+    invalidPositiveFloat: ["."]
+  };
+
   validationValueFunctionForTokenDictionary: any = {
     invalidPositiveFloat: this.getPositiveFloatingPointValidator
   };
@@ -61,6 +65,15 @@ export class ValidationService {
     }
 
     return validationType
+  }
+
+  getOverwriteExceptionsForToken(token: ValidationTokenTypes): string[] 
+  {
+    let text = [];
+    if (this.overWriteExceptionsForTokenDictionary[token]){
+      text = this.overWriteExceptionsForTokenDictionary[token];
+    }
+    return text;
   }
 
   getValidationTextForToken(token: ValidationTokenTypes): string 

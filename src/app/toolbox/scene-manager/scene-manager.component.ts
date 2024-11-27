@@ -91,7 +91,6 @@ export class SceneManagerComponent implements OnDestroy {
           this.form.controls['fog'].setValue(this.scene.fog);
           this.form.controls['animated'].setValue(this.scene.animated);
           this.form.controls['castShadows'].setValue(this.renderer.castShadows);
-          this.form.controls['fogDensity'].setValue(this.scene.fogDensity.toString());
 
           if (!this.formInitialized) {
             this.formInitialized = true;
@@ -111,7 +110,7 @@ export class SceneManagerComponent implements OnDestroy {
                     this.threejsService.updateScene(this.scene);
                   }
 
-                  if (this.form?.value.fogDensity) {
+                  if (this.form?.value.fogDensity && this.form?.value.fogDensity !== ".") {
                     let fDensity = 0;
                     if (typeof this.form.value.fogDensity === "string") {
                       const fDensityNum = parseFloat(this.form.value.fogDensity);
@@ -127,7 +126,7 @@ export class SceneManagerComponent implements OnDestroy {
                     }
                   }
 
-                  if (this.form?.value.near) {
+                  if (this.form?.value.near && this.form?.value.near !== ".") {
                     let fNear = 0;
                     if (typeof this.form.value.near === "string") {
                       const fNearNum = parseFloat(this.form.value.near);
@@ -184,7 +183,7 @@ export class SceneManagerComponent implements OnDestroy {
     );
    
     const fogDensityFormControl =  new FormControl(
-      '.1', 
+      '1', 
       {
         validators: fogDensityValidators
       }
@@ -284,7 +283,10 @@ export class SceneManagerComponent implements OnDestroy {
     const control: AbstractControl<string, string> = this.form.controls['fogDensity'];
     const currentValue = control.value;
     const previousValue = this.previousFogDensity;
-    const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
+    const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue);
+    
+
+
 
     // If it is legal do nothing. 
     if(currentValueValidationToken !== 'none') {
@@ -313,8 +315,8 @@ export class SceneManagerComponent implements OnDestroy {
     const previousValue = this.previousFogNear;
     const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
 
-    // If it is legal do nothing. 
-    if(currentValueValidationToken !== 'none') {
+    // If it is legal or invalid exception (".") do nothing. 
+    if(currentValueValidationToken !== 'none' && currentValue !== ".") {
      const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
      // if it is not legal:
      if (previousValueValidationToken === "none")
