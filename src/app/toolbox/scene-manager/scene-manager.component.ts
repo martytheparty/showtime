@@ -113,7 +113,7 @@ export class SceneManagerComponent implements OnDestroy {
                       this.threejsService.updateScene(this.scene);
                     }
 
-                    if (this.form?.value.fogDensity && this.form?.value.fogDensity !== ".") {
+                    if (this.form?.value.fogDensity) {
                       let fDensity = 0;
                       if (typeof this.form.value.fogDensity === "string") {
                         const fDensityNum = parseFloat(this.form.value.fogDensity);
@@ -129,7 +129,7 @@ export class SceneManagerComponent implements OnDestroy {
                       }
                     }
 
-                    if (this.form?.value.near && this.form?.value.near !== ".") {
+                    if (this.form?.value.near) {
                       let fNear = 0;
                       if (typeof this.form.value.near === "string") {
                         const fNearNum = parseFloat(this.form.value.near);
