@@ -287,13 +287,25 @@ export class SceneManagerComponent implements OnDestroy {
     const previousValue = this.previousFogDensity;
     const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue);
     
+    let isOverwriteValue = false;
+    validationTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const exceptionValues = this.validationService.getOverwriteExceptionsForToken(validationToken);
 
+        exceptionValues.forEach(
+          (exceptionValue: string) => {
+            if (exceptionValue === currentValue) {
+              isOverwriteValue = true;
+            }
+          }
+        );
+      }
+    );
 
-
-    // If it is legal do nothing. 
-    if(currentValueValidationToken !== 'none' && currentValue !== ".") {
+    // If it is legal do nothing or and exception value. 
+    if(currentValueValidationToken !== 'none' && !isOverwriteValue) {
      const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
-     // if it is not legal:
+     // if it is not legal and the previous overwrite with previous:
      if (previousValueValidationToken === "none")
      {
         // 1. It was legal but not legal now - go back to original value
