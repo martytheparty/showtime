@@ -287,23 +287,10 @@ export class SceneManagerComponent implements OnDestroy {
     const previousValue = this.previousFogDensity;
     const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue);
     
-    let isOverwriteValue = false;
-    validationTokens.forEach(
-      (validationToken: ValidationTokenTypes) => {
-        const exceptionValues = this.validationService.getOverwriteExceptionsForToken(validationToken);
-
-        exceptionValues.forEach(
-          (exceptionValue: string) => {
-            if (exceptionValue === currentValue) {
-              isOverwriteValue = true;
-            }
-          }
-        );
-      }
-    );
+    let isValueOverwriteException = this.checkForOverwriteException(currentValue, validationTokens);
 
     // If it is legal do nothing or and exception value. 
-    if(currentValueValidationToken !== 'none' && !isOverwriteValue) {
+    if(currentValueValidationToken !== 'none' && !isValueOverwriteException) {
      const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
      // if it is not legal and the previous overwrite with previous:
      if (previousValueValidationToken === "none")
@@ -315,6 +302,25 @@ export class SceneManagerComponent implements OnDestroy {
      // the fog value WAS invalid to set hadFogError to false
      this.hadFogError = true;
     }
+  }
+
+  checkForOverwriteException(value: string, validationTokens: ValidationTokenTypes[]): boolean
+  {
+    let isValueOverwriteException = false;
+    validationTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const exceptionValues = this.validationService.getOverwriteExceptionsForToken(validationToken);
+
+        exceptionValues.forEach(
+          (exceptionValue: string) => {
+            if(exceptionValue === value){
+              isValueOverwriteException = true;
+            }
+          } 
+        );
+      }
+    );
+    return isValueOverwriteException;
   }
 
   savePreviousFogNear() {
