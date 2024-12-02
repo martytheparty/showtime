@@ -335,8 +335,9 @@ export class SceneManagerComponent implements OnDestroy {
     const previousValue = this.previousFogNear;
     const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
 
-    // If it is legal or invalid exception (".") do nothing. 
-    if(currentValueValidationToken !== 'none' && currentValue !== ".") {
+    let isValueOverwriteException = this.checkForOverwriteException(currentValue, validationTokens);
+
+    if(currentValueValidationToken !== 'none' && !isValueOverwriteException) {
      const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
      // if it is not legal:
      if (previousValueValidationToken === "none")
