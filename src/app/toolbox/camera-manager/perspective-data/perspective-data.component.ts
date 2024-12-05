@@ -1,6 +1,6 @@
 import { Component, inject, effect } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import { CameraInterface } from '../../../interfaces/camera-interfaces';
+import { CameraInterface } from '../../../interfaces/three/camera-interfaces';
 
 @Component({
   selector: 'app-perspective-data',

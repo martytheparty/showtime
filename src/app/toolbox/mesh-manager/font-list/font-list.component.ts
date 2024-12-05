@@ -1,6 +1,6 @@
 import { Component, inject, effect, input, output } from '@angular/core';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { FontInterface, FontName } from '../../../interfaces/mesh-interface';
+import { FontInterface, FontName } from '../../../interfaces/three/mesh-interface';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreejsService } from '../../../services/threejs.service';
 

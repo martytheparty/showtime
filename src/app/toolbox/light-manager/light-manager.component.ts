@@ -1,6 +1,6 @@
 import { Component, OnDestroy, effect, inject } from '@angular/core';
 import { ThreejsService } from '../../services/threejs.service';
-import { LightInterface, LightTypes } from '../../interfaces/light-interface';
+import { LightInterface, LightTypes } from '../../interfaces/three/light-interface';
 import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { TableFilterComponent } from '../common-components/table-filter/table-fi
 import { ColorPickerComponent } from '../common-components/color-picker/color-picker.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { FormLuInterface } from '../../interfaces/common';
+import { FormLuInterface } from '../../interfaces/showtime/common';
 
 @Component({
   selector: 'app-light-manager',

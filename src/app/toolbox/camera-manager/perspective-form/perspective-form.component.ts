@@ -1,6 +1,6 @@
 import { Component, inject, effect, OnDestroy } from '@angular/core';
 import { ThreejsService } from '../../../services/threejs.service';
-import {CameraInterface } from '../../../interfaces/camera-interfaces';
+import {CameraInterface } from '../../../interfaces/three/camera-interfaces';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';

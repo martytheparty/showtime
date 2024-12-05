@@ -14,17 +14,147 @@
     </tr>
     <tr>
         <td>
-            <mat-form-field [formGroup]="form">
+            <div [formGroup]="form">
             <mat-checkbox formControlName="castShadows">Cast Shaddows</mat-checkbox>
-            </mat-form-field>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div [formGroup]="form">
+            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
+            </div>
         </td>
     </tr>
     <tr>
         <td>
             <mat-form-field [formGroup]="form">
-            <mat-checkbox formControlName="animated">Animated</mat-checkbox>
-            </mat-form-field>
+                <mat-label>Fog</mat-label>
+                <mat-select formControlName="fog">
+                   <mat-option value="none">None</mat-option>
+                   <mat-option value="linear">Linear</mat-option>
+                   <mat-option value="exp2">Exp2</mat-option>
+                </mat-select>
+                <mat-hint>
+                   Select a fog type.
+                </mat-hint>
+             </mat-form-field>
         </td>
     </tr>
+    @if (scene?.fog === 'linear' || scene?.fog === 'exp2') {
+        <tr>
+            <td>
+            Fog Color:<br>
+            <app-color-picker
+            [redValue]="fogRed"
+            [greenValue]="fogGreen"
+            [blueValue]="fogBlue"
+            (redUpdate)="redFogColorChange($event)"
+            (greenUpdate)="greenFogColorChange($event)"
+            (blueUpdate)="blueFogColorChange($event)"
+            ></app-color-picker>
+            </td>
+        </tr>
+    }
+    @if (scene?.fog === 'linear') {
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Near</mat-label>
+
+                <input
+                    (keydown)="savePreviousFogNear()"
+                    (keyup)="validateFogNear($event, ['invalidPositiveFloat'])"
+                    matInput 
+                    formControlName="near"
+                >
+                @if(hadNearError)
+                {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('near')?.hasError('invalidPositiveFloat'))
+                { 
+                    <mat-error>
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
+                    </mat-error>
+                }
+                <mat-hint>
+                   Where the fog starts.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Far</mat-label>
+
+                <input
+                    (keydown)="savePreviousFogFar()"
+                    (keyup)="validateFogFar($event, ['invalidPositiveFloat'])"
+                    matInput 
+                    formControlName="far"
+                >
+                @if(hadFarError)
+                {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('far')?.hasError('invalidPositiveFloat'))
+                { 
+                    <mat-error>
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
+                    </mat-error>
+                }
+                <mat-hint>
+                   Where the fog ends.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
+    }
+    @else if (scene?.fog === 'exp2') {
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Density</mat-label>
+
+                <input
+                    (keydown)="savePreviousFogDensity()"
+                    (keyup)="validateFogDensity($event, ['invalidPositiveFloat'])" 
+                    matInput 
+                    formControlName="fogDensity"
+                >
+                @if(hadFogError)
+                {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('fogDensity')?.hasError('invalidPositiveFloat'))
+                { 
+                    <mat-error>
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
+                    </mat-error>
+                }
+                <mat-hint>
+                   Fog density.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
+    }
 </table>
 

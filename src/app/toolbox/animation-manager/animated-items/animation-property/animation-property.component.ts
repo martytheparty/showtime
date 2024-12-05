@@ -7,13 +7,13 @@ import {
   SuportedThreeObjTypes,
   ThreeObjProperties,
   ThreeObjSubProperties
-} from '../../../../interfaces/animations-interfaces';
+} from '../../../../interfaces/three/animations-interfaces';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MeshInterface } from '../../../../interfaces/mesh-interface';
-import { CameraInterface } from '../../../../interfaces/camera-interfaces';
-import { LightInterface } from '../../../../interfaces/light-interface';
-import { SceneInterface } from '../../../../interfaces/scene-interface';
+import { MeshInterface } from '../../../../interfaces/three/mesh-interface';
+import { CameraInterface } from '../../../../interfaces/three/camera-interfaces';
+import { LightInterface } from '../../../../interfaces/three/light-interface';
+import { SceneInterface } from '../../../../interfaces/three/scene-interface';
 import { MatSliderModule } from '@angular/material/slider';
 import { ThreejsService } from '../../../../services/threejs.service';
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ThreejsService } from '../../services/threejs.service';
-import { CameraType } from '../../interfaces/camera-interfaces';
+import { CameraType } from '../../interfaces/three/camera-interfaces';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { OgDataComponent } from './og-data/og-data.component';

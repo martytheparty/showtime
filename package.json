@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "rservice": "ng g s services/utils/RecyclableSequenceService"
+    "info": "ng g c toolbox/common-components/info-msg"
   },
   "private": true,
   "dependencies": {

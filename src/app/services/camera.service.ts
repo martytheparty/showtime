@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/camera-interfaces';
+import { CameraInterface, CameraType, SupportedCameras } from '../interfaces/three/camera-interfaces';
 
 import * as THREE from 'three';
 import { OrthographicCamera, PerspectiveCamera } from 'three';
