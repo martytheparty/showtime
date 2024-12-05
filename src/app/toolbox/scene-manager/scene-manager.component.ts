@@ -53,6 +53,7 @@ export class SceneManagerComponent implements OnDestroy {
 
   hadFogError = false;
   hadNearError = false;
+  hadFarError = false;
 
   red = 0;
   green = 0;
@@ -66,6 +67,7 @@ export class SceneManagerComponent implements OnDestroy {
 
   previousFogDensity = '';
   previousFogNear = '';
+  previousFogFar = '';
 
   subs: Subscription[] = [];
 
@@ -144,6 +146,14 @@ export class SceneManagerComponent implements OnDestroy {
                         this.threejsService.updateScene(this.scene);
                       }
                     }
+
+                    if (this.form?.value.far) {
+                      let fFar = parseFloat(this.form.value.far);
+                      if (this.scene.far != fFar) {
+                        this.scene.far = fFar;
+                        this.threejsService.updateScene(this.scene);
+                      }
+                    }
                   } 
                 }
 
@@ -194,6 +204,7 @@ export class SceneManagerComponent implements OnDestroy {
 
     this.form.controls['fogDensity'].markAsDirty();
     this.form.controls['fogDensity'].markAsTouched();
+
     // Fog Near
 
     let nearValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
@@ -215,10 +226,37 @@ export class SceneManagerComponent implements OnDestroy {
         validators: nearValidators
       }
     )
-    this.form.addControl("near", nearFormControl);
+    this.form.addControl('near', nearFormControl);
 
     this.form.controls['near'].markAsDirty();
     this.form.controls['near'].markAsTouched();
+
+    // Fog Far
+
+    let farValidators: ((control: AbstractControl<any, any>) => ValidationErrors | null)[] = [];
+    
+    let farTokens: ValidationTokenTypes[] = this.validationService.getValidationTokensForPath(["scene", "fog", "far"]);
+
+    farTokens.forEach(
+      (validationToken: ValidationTokenTypes) => {
+        const validatorFunction = this.fcValidationService.getValidatorForToken(validationToken);
+        if (validatorFunction !== null) {
+          farValidators.push(validatorFunction);
+        }
+      }
+    );
+   
+    const farFormControl =  new FormControl(
+      '10', 
+      {
+        validators: farValidators
+      }
+    )
+    this.form.addControl("far", farFormControl);
+
+    this.form.controls['far'].markAsDirty();
+    this.form.controls['far'].markAsTouched();
+
   }
 
   redColorChange(newColor: number): void
@@ -351,6 +389,33 @@ export class SceneManagerComponent implements OnDestroy {
     }
   }
 
+  savePreviousFogFar() {
+    const control: AbstractControl<string, string> = this.form.controls['far'];
+    this.previousFogFar = control.value;
+  }
+
+  validateFogFar(event: KeyboardEvent, validationTokens: ValidationTokenTypes[]): void {
+    // first check to see if new value is legal
+    const control: AbstractControl<string, string> = this.form.controls['far'];
+    const currentValue = control.value;
+    const previousValue = this.previousFogFar;
+    const currentValueValidationToken = this.validateValueForTokens(validationTokens, currentValue); 
+
+    let isValueOverwriteException = this.checkForOverwriteException(currentValue, validationTokens);
+
+    if(currentValueValidationToken !== 'none' && !isValueOverwriteException) {
+     const previousValueValidationToken = this.validateValueForTokens(validationTokens, previousValue);
+     // if it is not legal:
+     if (previousValueValidationToken === "none")
+     {
+        // 1. It was legal but not legal now - go back to original value
+        control.setValue(previousValue);
+        // 2. show help text with information icon
+     }
+     // the fog value WAS invalid to set hadFogError to false
+     this.hadFarError = true;
+    }
+  }
 
   validateValueForTokens(validationTokens: ValidationTokenTypes[], value: string): ValidationTokenTypes {
     let failedTokenType: ValidationTokenTypes = 'none';

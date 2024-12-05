@@ -11,7 +11,8 @@ export class ValidationService {
       fog: 
       { 
         fogDensity: [ this.ensureValidationTokenType('invalidPositiveFloat') ],
-        near: [ this.ensureValidationTokenType('invalidPositiveFloat') ]
+        near: [ this.ensureValidationTokenType('invalidPositiveFloat') ],
+        far: [ this.ensureValidationTokenType('invalidPositiveFloat') ]
       }
     }
   };

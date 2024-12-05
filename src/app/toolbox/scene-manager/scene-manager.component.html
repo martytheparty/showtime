@@ -89,11 +89,38 @@
              </mat-form-field>
             </td>
         </tr>
-    <tr>
-        <td>
-            Far: {{scene?.far}}
-        </td>
-    </tr>
+        <tr>
+            <td>
+                <mat-form-field [formGroup]="form">
+                <mat-label>Fog Far</mat-label>
+
+                <input
+                    (keydown)="savePreviousFogFar()"
+                    (keyup)="validateFogFar($event, ['invalidPositiveFloat'])"
+                    matInput 
+                    formControlName="far"
+                >
+                @if(hadFarError)
+                {
+                    <mat-icon
+                        class="form-help"
+                        (click)="launchInfoDialog('invalidPositiveFloat')"
+                        matSuffix>
+                        info
+                    </mat-icon>
+                }
+                @if(form.get('far')?.hasError('invalidPositiveFloat'))
+                { 
+                    <mat-error>
+                        <app-validation-error-msg token='invalidPositiveFloat'></app-validation-error-msg>
+                    </mat-error>
+                }
+                <mat-hint>
+                   Where the fog ends.
+                </mat-hint>
+             </mat-form-field>
+            </td>
+        </tr>
     }
     @else if (scene?.fog === 'exp2') {
         <tr>
