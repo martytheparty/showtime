@@ -4,8 +4,8 @@ import * as THREE from 'three';
 
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { FontInterface, MeshInterface, SupportedMeshes } from '../interfaces/three/mesh-interface';
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, SphereGeometry } from 'three';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import { BoxGeometry, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, SphereGeometry } from 'three';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 @Injectable({
   providedIn: 'root'
