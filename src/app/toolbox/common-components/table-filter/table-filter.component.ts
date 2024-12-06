@@ -4,11 +4,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @Component({
-  selector: 'app-table-filter',
-  standalone: true,
-  imports: [MatInputModule, MatFormFieldModule],
-  templateUrl: './table-filter.component.html',
-  styleUrl: './table-filter.component.scss'
+    selector: 'app-table-filter',
+    imports: [MatInputModule, MatFormFieldModule],
+    templateUrl: './table-filter.component.html',
+    styleUrl: './table-filter.component.scss'
 })
 export class TableFilterComponent {
 

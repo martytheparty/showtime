@@ -20,26 +20,25 @@ import { FontListComponent } from './font-list/font-list.component';
 import { FormLuInterface } from '../../interfaces/showtime/common';
 
 @Component({
-  selector: 'app-mesh-manager',
-  standalone: true,
-  imports: [
-    MatButtonModule, 
-    MatIconModule, 
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    ColorPickerComponent,
-    MaterialsComponent,
-    MatTableModule,
-    CommonModule,
-    MatSliderModule,
-    TableFilterComponent,
-    FontListComponent
-  ],
-  templateUrl: './mesh-manager.component.html',
-  styleUrl: './mesh-manager.component.scss'
+    selector: 'app-mesh-manager',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        ColorPickerComponent,
+        MaterialsComponent,
+        MatTableModule,
+        CommonModule,
+        MatSliderModule,
+        TableFilterComponent,
+        FontListComponent
+    ],
+    templateUrl: './mesh-manager.component.html',
+    styleUrl: './mesh-manager.component.scss'
 })
 export class MeshManagerComponent implements OnDestroy, OnInit{
   threejsService: ThreejsService = inject(ThreejsService);

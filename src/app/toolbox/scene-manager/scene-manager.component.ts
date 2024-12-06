@@ -17,21 +17,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { InfoMsgComponent } from '../common-components/info-msg/info-msg.component';
 import { MatDialog } from '@angular/material/dialog';
 @Component({
-  selector: 'app-scene-manager',
-  standalone: true,
-  imports: [
-    ValidationErrorMsgComponent,
-    ColorPickerComponent,
-    MatCheckboxModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatIconModule,
-    InfoMsgComponent
-  ],
-  templateUrl: './scene-manager.component.html',
-  styleUrl: './scene-manager.component.scss'
+    selector: 'app-scene-manager',
+    imports: [
+        ValidationErrorMsgComponent,
+        ColorPickerComponent,
+        MatCheckboxModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatIconModule,
+        InfoMsgComponent
+    ],
+    templateUrl: './scene-manager.component.html',
+    styleUrl: './scene-manager.component.scss'
 })
 export class SceneManagerComponent implements OnDestroy {
 

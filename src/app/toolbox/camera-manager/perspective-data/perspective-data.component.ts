@@ -3,11 +3,10 @@ import { ThreejsService } from '../../../services/threejs.service';
 import { CameraInterface } from '../../../interfaces/three/camera-interfaces';
 
 @Component({
-  selector: 'app-perspective-data',
-  standalone: true,
-  imports: [],
-  templateUrl: './perspective-data.component.html',
-  styleUrl: './perspective-data.component.scss'
+    selector: 'app-perspective-data',
+    imports: [],
+    templateUrl: './perspective-data.component.html',
+    styleUrl: './perspective-data.component.scss'
 })
 export class PerspectiveDataComponent {
   threeJsService: ThreejsService = inject(ThreejsService);

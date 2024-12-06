@@ -9,18 +9,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'app-animated-items',
-  standalone: true,
-  imports: [
-    CommonModule, 
-    ReactiveFormsModule,
-    AnimationPropertyComponent,
-    FormsModule,
-    MatInputModule,
-    MatSelectModule
-  ],
-  templateUrl: './animated-items.component.html',
-  styleUrl: './animated-items.component.scss'
+    selector: 'app-animated-items',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        AnimationPropertyComponent,
+        FormsModule,
+        MatInputModule,
+        MatSelectModule
+    ],
+    templateUrl: './animated-items.component.html',
+    styleUrl: './animated-items.component.scss'
 })
 export class AnimatedItemsComponent {
   threeJsService: ThreejsService = inject(ThreejsService);

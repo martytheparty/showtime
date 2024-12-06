@@ -8,16 +8,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-og-form',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatCheckboxModule
-  ],
-  templateUrl: './og-form.component.html',
-  styleUrl: './og-form.component.scss'
+    selector: 'app-og-form',
+    imports: [
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatCheckboxModule
+    ],
+    templateUrl: './og-form.component.html',
+    styleUrl: './og-form.component.scss'
 })
 export class OgFormComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);

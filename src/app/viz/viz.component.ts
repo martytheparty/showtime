@@ -4,11 +4,10 @@ import { ThreejsService } from '../services/threejs.service';
 
 
 @Component({
-  selector: 'app-viz',
-  standalone: true,
-  imports: [],
-  templateUrl: './viz.component.html',
-  styleUrl: './viz.component.scss'
+    selector: 'app-viz',
+    imports: [],
+    templateUrl: './viz.component.html',
+    styleUrl: './viz.component.scss'
 })
 export class VizComponent implements AfterViewInit {
 

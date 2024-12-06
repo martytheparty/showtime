@@ -6,17 +6,16 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-color-picker',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatSliderModule,
-    CommonModule
-  ],
-  templateUrl: './color-picker.component.html',
-  styleUrl: './color-picker.component.scss'
+    selector: 'app-color-picker',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSliderModule,
+        CommonModule
+    ],
+    templateUrl: './color-picker.component.html',
+    styleUrl: './color-picker.component.scss'
 })
 export class ColorPickerComponent {
 
