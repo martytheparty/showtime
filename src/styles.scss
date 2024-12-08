@@ -1,9 +1,11 @@
+@use "../src/app/toolbox/toolbox.compoent_x.scss";
+
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-@import "../src/app/toolbox/toolbox.compoent_x.scss";
 
+// @use "../src/app/toolbox/toolbox.compoent_x.scss";
 // app-toolbox
 // {
 //     // prevents double scrollbars in the tab bodies
