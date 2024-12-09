@@ -26,8 +26,7 @@ import { MatDialog } from '@angular/material/dialog';
         MatFormFieldModule,
         MatSelectModule,
         MatInputModule,
-        MatIconModule,
-        InfoMsgComponent
+        MatIconModule
     ],
     templateUrl: './scene-manager.component.html',
     styleUrl: './scene-manager.component.scss'

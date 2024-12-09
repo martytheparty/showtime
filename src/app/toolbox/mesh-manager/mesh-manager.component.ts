@@ -30,7 +30,6 @@ import { FormLuInterface } from '../../interfaces/showtime/common';
         MatSelectModule,
         MatCheckboxModule,
         ColorPickerComponent,
-        MaterialsComponent,
         MatTableModule,
         CommonModule,
         MatSliderModule,
