@@ -19,7 +19,11 @@ export class PerspectiveDataComponent {
           this.threeJsService.cameraItemValues().length > 0 &&
           this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
-            this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;        
+            setTimeout( 
+              () => {
+                this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;
+              }, 0
+             );
         }
       }
     ); 
