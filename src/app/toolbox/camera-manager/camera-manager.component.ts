@@ -10,18 +10,17 @@ import { PerspectiveFormComponent } from './perspective-form/perspective-form.co
 
 
 @Component({
-  selector: 'app-camera-manager',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCheckboxModule,
-    OgDataComponent,
-    OgFormComponent,
-    PerspectiveDataComponent,
-    PerspectiveFormComponent
-  ],
-  templateUrl: './camera-manager.component.html',
-  styleUrl: './camera-manager.component.scss'
+    selector: 'app-camera-manager',
+    imports: [
+        MatButtonModule,
+        MatCheckboxModule,
+        OgDataComponent,
+        OgFormComponent,
+        PerspectiveDataComponent,
+        PerspectiveFormComponent
+    ],
+    templateUrl: './camera-manager.component.html',
+    styleUrl: './camera-manager.component.scss'
 })
 export class CameraManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);

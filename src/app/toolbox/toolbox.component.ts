@@ -9,19 +9,18 @@ import { LightManagerComponent } from './light-manager/light-manager.component';
 import { SceneManagerComponent } from './scene-manager/scene-manager.component';
 
 @Component({
-  selector: 'app-toolbox',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatTabsModule,
-    MeshManagerComponent,
-    CameraManagerComponent,
-    AnimationManagerComponent,
-    LightManagerComponent,
-    SceneManagerComponent
-  ],
-  templateUrl: './toolbox.component.html',
-  styleUrl: './toolbox.component.scss'
+    selector: 'app-toolbox',
+    imports: [
+        MatIconModule,
+        MatTabsModule,
+        MeshManagerComponent,
+        CameraManagerComponent,
+        AnimationManagerComponent,
+        LightManagerComponent,
+        SceneManagerComponent
+    ],
+    templateUrl: './toolbox.component.html',
+    styleUrl: './toolbox.component.scss'
 })
 export class ToolboxComponent{
   threejsService: ThreejsService = inject(ThreejsService);

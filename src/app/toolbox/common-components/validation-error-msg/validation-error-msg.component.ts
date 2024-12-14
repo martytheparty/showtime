@@ -4,11 +4,10 @@ import { ValidationTokenTypes } from '../../../interfaces/showtime/validation-in
 import { ValidationService } from '../../../services/utils/validation.service';
 
 @Component({
-  selector: 'app-validation-error-msg',
-  standalone: true,
-  imports: [MatInputModule],
-  templateUrl: './validation-error-msg.component.html',
-  styleUrl: './validation-error-msg.component.scss'
+    selector: 'app-validation-error-msg',
+    imports: [MatInputModule],
+    templateUrl: './validation-error-msg.component.html',
+    styleUrl: './validation-error-msg.component.scss'
 })
 export class ValidationErrorMsgComponent {
   validationService: ValidationService = inject(ValidationService);

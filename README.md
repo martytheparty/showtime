@@ -25,3 +25,23 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+Lessons Learned
+
+- separate the concepts of the Showtime state from the
+3js state
+- 3js is not a good source of truth because it does not store
+all of the data that I care about...
+
+What I Would Do Different
+
+- Do an init screen and show the different inits that are
+happening like setting camera aspect, setting the dimensions...
+- Import/Export Build From Start
+- I should have build auto resize from the start
+
+Features That I Want In The New System
+
+- multiple views
+- collapsable menu

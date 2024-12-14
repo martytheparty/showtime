@@ -10,20 +10,19 @@ import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { AnimatedItemsComponent } from './animated-items/animated-items.component';
 @Component({
-  selector: 'app-animation-manager',
-  standalone: true,
-  imports: [
-    MatCheckboxModule,
-    MatButtonModule,
-    FormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSliderModule,
-    CommonModule,
-    AnimatedItemsComponent
-  ],
-  templateUrl: './animation-manager.component.html',
-  styleUrl: './animation-manager.component.scss'
+    selector: 'app-animation-manager',
+    imports: [
+        MatCheckboxModule,
+        MatButtonModule,
+        FormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSliderModule,
+        CommonModule,
+        AnimatedItemsComponent
+    ],
+    templateUrl: './animation-manager.component.html',
+    styleUrl: './animation-manager.component.scss'
 })
 export class AnimationManagerComponent {
   threeJsService: ThreejsService = inject(ThreejsService);

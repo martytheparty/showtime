@@ -27,11 +27,10 @@ interface TableInterface {
 }
 
 @Component({
-  selector: 'app-animation-property',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, MatSliderModule],
-  templateUrl: './animation-property.component.html',
-  styleUrl: './animation-property.component.scss'
+    selector: 'app-animation-property',
+    imports: [CommonModule, MatTableModule, MatSliderModule],
+    templateUrl: './animation-property.component.html',
+    styleUrl: './animation-property.component.scss'
 })
 export class AnimationPropertyComponent {
 

@@ -97,8 +97,9 @@ export class ThreejsService {
   setDims(vizDiv: HTMLDivElement):void{
     this.width = vizDiv.clientWidth;
     this.height = vizDiv.clientHeight;
-
+    // republish the camera because it changes
     this.cameraService.cameraItem.aspect = this.width/this.height;
+    this.cameraItemSignal.set([... this.cameraService.cameraItems]);   
   }
 
   setUpScene()

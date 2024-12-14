@@ -3,11 +3,10 @@ import { ThreejsService } from '../../../services/threejs.service';
 import { CameraInterface } from '../../../interfaces/three/camera-interfaces';
 
 @Component({
-  selector: 'app-perspective-data',
-  standalone: true,
-  imports: [],
-  templateUrl: './perspective-data.component.html',
-  styleUrl: './perspective-data.component.scss'
+    selector: 'app-perspective-data',
+    imports: [],
+    templateUrl: './perspective-data.component.html',
+    styleUrl: './perspective-data.component.scss'
 })
 export class PerspectiveDataComponent {
   threeJsService: ThreejsService = inject(ThreejsService);
@@ -20,7 +19,11 @@ export class PerspectiveDataComponent {
           this.threeJsService.cameraItemValues().length > 0 &&
           this.threeJsService.cameraItemValues()[0].type === 'PerspectiveCamera')
         {
-            this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;        
+            setTimeout( 
+              () => {
+                this.cameraItem = this.threeJsService.cameraItemValues()[0] as CameraInterface;
+              }, 0
+             );
         }
       }
     ); 

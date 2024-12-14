@@ -5,13 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ValidationService } from '../../../services/utils/validation.service';
 
 @Component({
-  selector: 'app-info-msg',
-  standalone: true,
-  imports: [
-    MatIconModule
-  ],
-  templateUrl: './info-msg.component.html',
-  styleUrl: './info-msg.component.scss'
+    selector: 'app-info-msg',
+    imports: [
+        MatIconModule
+    ],
+    templateUrl: './info-msg.component.html',
+    styleUrl: './info-msg.component.scss'
 })
 export class InfoMsgComponent {
 

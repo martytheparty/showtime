@@ -17,24 +17,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormLuInterface } from '../../interfaces/showtime/common';
 
 @Component({
-  selector: 'app-light-manager',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatTableModule,
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIcon,
-    ReactiveFormsModule,
-    TableFilterComponent,
-    MatSliderModule,
-    ColorPickerComponent,
-    MatCheckboxModule,
-    MatSelectModule
-  ],
-  templateUrl: './light-manager.component.html',
-  styleUrl: './light-manager.component.scss'
+    selector: 'app-light-manager',
+    imports: [
+        MatButtonModule,
+        MatTableModule,
+        CommonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIcon,
+        ReactiveFormsModule,
+        TableFilterComponent,
+        MatSliderModule,
+        ColorPickerComponent,
+        MatCheckboxModule,
+        MatSelectModule
+    ],
+    templateUrl: './light-manager.component.html',
+    styleUrl: './light-manager.component.scss'
 })
 
 export class LightManagerComponent implements OnDestroy {

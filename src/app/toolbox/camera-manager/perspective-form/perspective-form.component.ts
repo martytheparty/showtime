@@ -9,16 +9,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-perspective-form',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatCheckboxModule
-  ],
-  templateUrl: './perspective-form.component.html',
-  styleUrl: './perspective-form.component.scss'
+    selector: 'app-perspective-form',
+    imports: [
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatCheckboxModule
+    ],
+    templateUrl: './perspective-form.component.html',
+    styleUrl: './perspective-form.component.scss'
 })
 export class PerspectiveFormComponent implements OnDestroy {
   threeJsService: ThreejsService = inject(ThreejsService);
