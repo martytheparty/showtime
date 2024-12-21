@@ -40,8 +40,12 @@ What I Would Do Different
 happening like setting camera aspect, setting the dimensions...
 - Import/Export Build From Start
 - I should have build auto resize from the start
+- Animate at the attribute level not the object
+- Each should have its own Show Time id that is independent
+of the threeJS id.
 
 Features That I Want In The New System
 
 - multiple views
 - collapsable menu
+- grouping meshes and lights
