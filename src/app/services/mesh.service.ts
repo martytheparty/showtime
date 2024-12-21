@@ -109,7 +109,7 @@ export class MeshService {
       geometry = new THREE.SphereGeometry(.5,32,32);
     } else if (meshItem.shape === 'TextGeometry') {
       geometry = await this.getTextGeometry(meshItem);
-    }
+    } 
 
     let material: MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial = new THREE.MeshNormalMaterial();
     
@@ -181,6 +181,13 @@ export class MeshService {
         updateMesh.geometry = geometry;
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
+      } else if (updateMesh && meshItem.shape === 'SphereGeometry') {
+          const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(1, 1, 1, 1);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
       } else if (updateMesh && meshItem.shape === 'TextGeometry') {
         const geometry: TextGeometry  = await this.getTextGeometry(meshItem);
         updateMesh.geometry = geometry;
@@ -205,6 +212,16 @@ export class MeshService {
       if (geo.parameters.radius !== meshItem.radius)
       {
         const newGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(meshItem.radius, 32, 32);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'ConeGeometry' && updateMesh) {
+      const geo: THREE.ConeGeometry = updateMesh.geometry as THREE.ConeGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius || geo.parameters.height !== meshItem.height)
+      {
+        const newGeometry: THREE.ConeGeometry = new THREE.ConeGeometry(meshItem.radius, meshItem.height, 32);
         updateMesh.geometry = newGeometry;
       }
     }
