@@ -1,13 +1,13 @@
 import { FormGroup } from "@angular/forms"
 import { Subscription } from "rxjs"
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
+import { BoxGeometry, ConeGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
 import { AnimationPropertyDescriptor } from "./animations-interfaces"
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry"
 import { Font } from "three/examples/jsm/loaders/FontLoader"
 
 export interface MeshInterface {
     id: number
-    shape: 'BoxGeometry' | 'SphereGeometry' | 'TextGeometry'
+    shape: 'BoxGeometry' | 'SphereGeometry' | 'TextGeometry' | 'ConeGeometry'
     name: string
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
@@ -50,4 +50,4 @@ export type FontName = 'Helvetiker' | 'Helvetiker Bold' | 'Gentilis' | 'Gentilis
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 
-export type SupportedMeshes = Mesh<BoxGeometry | SphereGeometry | TextGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>
+export type SupportedMeshes = Mesh<BoxGeometry | SphereGeometry | ConeGeometry | TextGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>

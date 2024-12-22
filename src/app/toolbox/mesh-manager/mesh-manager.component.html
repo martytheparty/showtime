@@ -126,6 +126,7 @@ multiTemplateDataRows
                <mat-option value="BoxGeometry">Cube</mat-option>
                <mat-option value="SphereGeometry">Sphere</mat-option>
                <mat-option value="TextGeometry">Text</mat-option>
+               <mat-option value="ConeGeometry">Cone</mat-option>
             </mat-select>
             <mat-hint>
                The shape of the mesh.
@@ -141,7 +142,9 @@ multiTemplateDataRows
              </mat-form-field>
          }
 
-         @if (mesh.shape === 'BoxGeometry' || mesh.shape === 'TextGeometry')
+         @if (mesh.shape === 'BoxGeometry' ||
+               mesh.shape === 'ConeGeometry' || 
+               mesh.shape === 'TextGeometry')
          {
              <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Height</mat-label>
@@ -216,7 +219,7 @@ multiTemplateDataRows
              </mat-form-field>
          }
 
-         @if (mesh.shape === 'SphereGeometry')
+         @if (mesh.shape === 'SphereGeometry' || mesh.shape === 'ConeGeometry')
          {
             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Radius</mat-label>
