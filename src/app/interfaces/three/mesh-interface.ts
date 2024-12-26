@@ -1,13 +1,35 @@
-import { FormGroup } from "@angular/forms"
-import { Subscription } from "rxjs"
-import { BoxGeometry, ConeGeometry, Mesh, MeshBasicMaterial, MeshNormalMaterial, MeshPhongMaterial, Object3DEventMap, SphereGeometry } from "three"
+import { 
+    BoxGeometry,
+    CircleGeometry,
+    ConeGeometry,
+    Mesh,
+    MeshBasicMaterial,
+    MeshNormalMaterial,
+    MeshPhongMaterial,
+    Object3DEventMap,
+    PlaneGeometry,
+    SphereGeometry,
+    DodecahedronGeometry,
+    TetrahedronGeometry,
+    OctahedronGeometry,
+    IcosahedronGeometry
+} from "three"
 import { AnimationPropertyDescriptor } from "./animations-interfaces"
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry"
 import { Font } from "three/examples/jsm/loaders/FontLoader"
 
 export interface MeshInterface {
     id: number
-    shape: 'BoxGeometry' | 'SphereGeometry' | 'TextGeometry' | 'ConeGeometry'
+    shape: 'BoxGeometry'
+    | 'SphereGeometry'
+    | 'TextGeometry'
+    | 'ConeGeometry'
+    | 'PlaneGeometry'
+    | 'CircleGeometry'
+    | 'DodecahedronGeometry'
+    | 'TetrahedronGeometry'
+    | 'OctahedronGeometry'
+    | 'IcosahedronGeometry'
     name: string
     xPos: AnimationPropertyDescriptor
     yPos: AnimationPropertyDescriptor
@@ -50,4 +72,17 @@ export type FontName = 'Helvetiker' | 'Helvetiker Bold' | 'Gentilis' | 'Gentilis
 
 export type MaterialTypes = 'basic' | 'phong' | 'normal'
 
-export type SupportedMeshes = Mesh<BoxGeometry | SphereGeometry | ConeGeometry | TextGeometry, MeshNormalMaterial | MeshPhongMaterial | MeshBasicMaterial, Object3DEventMap>
+export type SupportedMeshes = Mesh<
+    PlaneGeometry
+    | CircleGeometry
+    | BoxGeometry
+    | SphereGeometry
+    | ConeGeometry
+    | TextGeometry
+    | DodecahedronGeometry
+    | OctahedronGeometry
+    | IcosahedronGeometry,
+    MeshNormalMaterial
+    | MeshPhongMaterial
+    | MeshBasicMaterial
+    , Object3DEventMap>
