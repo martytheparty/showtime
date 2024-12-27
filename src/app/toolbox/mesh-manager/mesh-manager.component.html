@@ -127,13 +127,19 @@ multiTemplateDataRows
                <mat-option value="SphereGeometry">Sphere</mat-option>
                <mat-option value="TextGeometry">Text</mat-option>
                <mat-option value="ConeGeometry">Cone</mat-option>
+               <mat-option value="PlaneGeometry">Plane</mat-option>
+               <mat-option value="CircleGeometry">Circle</mat-option>
+               <mat-option value="DodecahedronGeometry">Dodecahedron</mat-option>
+               <mat-option value="TetrahedronGeometry">Tetrahedron</mat-option>
+               <mat-option value="OctahedronGeometry">Octahedron</mat-option>
+               <mat-option value="IcosahedronGeometry">Icosahedron</mat-option>
             </mat-select>
             <mat-hint>
                The shape of the mesh.
             </mat-hint>
          </mat-form-field>
 
-         @if (mesh.shape === 'BoxGeometry')
+         @if (mesh.shape === 'BoxGeometry' || mesh.shape === 'PlaneGeometry')
          {
             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Width</mat-label>
@@ -144,7 +150,9 @@ multiTemplateDataRows
 
          @if (mesh.shape === 'BoxGeometry' ||
                mesh.shape === 'ConeGeometry' || 
-               mesh.shape === 'TextGeometry')
+               mesh.shape === 'TextGeometry' ||
+               mesh.shape === 'PlaneGeometry'
+               )
          {
              <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Height</mat-label>
@@ -219,12 +227,20 @@ multiTemplateDataRows
              </mat-form-field>
          }
 
-         @if (mesh.shape === 'SphereGeometry' || mesh.shape === 'ConeGeometry')
+         @if (
+         mesh.shape === 'SphereGeometry'
+         || mesh.shape === 'ConeGeometry'
+         || mesh.shape === 'CircleGeometry'
+         || mesh.shape === 'DodecahedronGeometry'
+         || mesh.shape === 'TetrahedronGeometry'
+         || mesh.shape === 'OctahedronGeometry'
+         || mesh.shape === 'IcosahedronGeometry'
+         )
          {
             <mat-form-field [formGroup]="formDataDict[mesh.id].form">
                <mat-label>Radius</mat-label>
                <input formControlName="radius" matInput >
-               <mat-hint>Sphere Radius</mat-hint>
+               <mat-hint>Radius</mat-hint>
              </mat-form-field>
          }
 

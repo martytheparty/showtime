@@ -49,3 +49,4 @@ Features That I Want In The New System
 - multiple views
 - collapsable menu
 - grouping meshes and lights
+- a way to tell what version of the application is being used

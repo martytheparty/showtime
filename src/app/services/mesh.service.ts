@@ -181,16 +181,58 @@ export class MeshService {
         updateMesh.geometry = geometry;
         // updateMesh.updateMatrix();
         // updateMesh.geometry.computeBoundingBox();
-      } else if (updateMesh && meshItem.shape === 'SphereGeometry') {
-          const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(1, 1, 1, 1);
+      } else if (updateMesh && meshItem.shape === 'ConeGeometry') {
+          const geometry: THREE.ConeGeometry = new THREE.ConeGeometry(1, 1);
           // the commented code was povided by chatGPT but does not seem to be necessary
           //updateMesh.geometry.dispose();
           updateMesh.geometry = geometry;
           // updateMesh.updateMatrix();
           // updateMesh.geometry.computeBoundingBox();
-      } else if (updateMesh && meshItem.shape === 'TextGeometry') {
-        const geometry: TextGeometry  = await this.getTextGeometry(meshItem);
-        updateMesh.geometry = geometry;
+        } else if (updateMesh && meshItem.shape === 'PlaneGeometry') {
+          const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'CircleGeometry') {
+          const geometry: THREE.CircleGeometry = new THREE.CircleGeometry(1, 32);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'DodecahedronGeometry') {
+          const geometry: THREE.DodecahedronGeometry = new THREE.DodecahedronGeometry(1,0);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'TetrahedronGeometry') {
+          const geometry: THREE.TetrahedronGeometry = new THREE.TetrahedronGeometry(1, 0);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'OctahedronGeometry') {
+          const geometry: THREE.OctahedronGeometry = new THREE.OctahedronGeometry(1,0);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'IcosahedronGeometry') {
+          const geometry: THREE.IcosahedronGeometry = new THREE.IcosahedronGeometry(1,0);
+          // the commented code was povided by chatGPT but does not seem to be necessary
+          //updateMesh.geometry.dispose();
+          updateMesh.geometry = geometry;
+          // updateMesh.updateMatrix();
+          // updateMesh.geometry.computeBoundingBox();
+        } else if (updateMesh && meshItem.shape === 'TextGeometry') {
+          const geometry: TextGeometry  = await this.getTextGeometry(meshItem);
+          updateMesh.geometry = geometry;
       }      
     }
     
@@ -222,6 +264,66 @@ export class MeshService {
       if (geo.parameters.radius !== meshItem.radius || geo.parameters.height !== meshItem.height)
       {
         const newGeometry: THREE.ConeGeometry = new THREE.ConeGeometry(meshItem.radius, meshItem.height, 32);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'PlaneGeometry' && updateMesh) {
+      const geo: THREE.PlaneGeometry = updateMesh.geometry as THREE.PlaneGeometry;
+      
+      if (geo.parameters.width !== meshItem.width || geo.parameters.height !== meshItem.height)
+      {
+        const newGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(meshItem.width, meshItem.height, 32);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'CircleGeometry' && updateMesh) {
+      const geo: THREE.CircleGeometry = updateMesh.geometry as THREE.CircleGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.CircleGeometry = new THREE.CircleGeometry(meshItem.radius, 32);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'DodecahedronGeometry' && updateMesh) {
+      const geo: THREE.DodecahedronGeometry = updateMesh.geometry as THREE.DodecahedronGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.DodecahedronGeometry = new THREE.DodecahedronGeometry(meshItem.radius, 0);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'TetrahedronGeometry' && updateMesh) {
+      const geo: THREE.TetrahedronGeometry = updateMesh.geometry as THREE.TetrahedronGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.TetrahedronGeometry = new THREE.TetrahedronGeometry(meshItem.radius, 0);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'OctahedronGeometry' && updateMesh) {
+      const geo: THREE.OctahedronGeometry = updateMesh.geometry as THREE.OctahedronGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.OctahedronGeometry = new THREE.OctahedronGeometry(meshItem.radius, 0);
+        updateMesh.geometry = newGeometry;
+      }
+    }
+
+    if (meshItem.shape === 'IcosahedronGeometry' && updateMesh) {
+      const geo: THREE.IcosahedronGeometry = updateMesh.geometry as THREE.IcosahedronGeometry;
+      
+      if (geo.parameters.radius !== meshItem.radius)
+      {
+        const newGeometry: THREE.IcosahedronGeometry = new THREE.IcosahedronGeometry(meshItem.radius, 0);
         updateMesh.geometry = newGeometry;
       }
     }
